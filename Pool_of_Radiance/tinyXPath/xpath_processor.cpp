@@ -163,19 +163,19 @@ expression_result xpath_processor::er_compute_xpath ()
          e_error = e_error_stack;
       }
    }
-   catch (syntax_error)
+   catch (syntax_error& e)
    {
       expression_result er_null (NULL);
       er_result = er_null;
       e_error = e_error_syntax;
    }
-   catch (syntax_overflow)
+   catch (syntax_overflow& e)
    {
       expression_result er_null (NULL);
       er_result = er_null;
       e_error = e_error_overflow;
    }
-   catch (execution_error)
+   catch (execution_error& e)
    {
       expression_result er_null (NULL);
       er_result = er_null;
@@ -323,7 +323,7 @@ void xpath_processor::v_execute_one (
                      v_function_or (erpp_arg);
                   }
                }
-               catch (execution_error)
+               catch (execution_error& e)
                {
                   o_error = true;
                }
@@ -362,7 +362,7 @@ void xpath_processor::v_execute_one (
 				         v_function_or (erpp_arg);
 			         }
 		         }
-		         catch (execution_error)
+		         catch (execution_error& e)
 		         {
 			         o_error = true;
 		         }
@@ -409,7 +409,7 @@ void xpath_processor::v_execute_one (
                      v_function_and (erpp_arg);
                   }
                }
-               catch (execution_error)
+               catch (execution_error& e)
                {
                   o_error = true;
                }
@@ -459,7 +459,7 @@ void xpath_processor::v_execute_one (
                         v_function_not_equal (erpp_arg);
                   }
                }
-               catch (execution_error)
+               catch (execution_error& e)
                {
                   o_error = true;
                }
@@ -508,7 +508,7 @@ void xpath_processor::v_execute_one (
                      v_function_relational (erpp_arg, u_sub);
                   }
                }
-               catch (execution_error)
+               catch (execution_error& e)
                {
                   o_error = true;
                }
@@ -560,7 +560,7 @@ void xpath_processor::v_execute_one (
                         v_function_minus (erpp_arg);
                   }
                }
-               catch (execution_error)
+               catch (execution_error& e)
                {
                   o_error = true;
                }
@@ -604,7 +604,7 @@ void xpath_processor::v_execute_one (
                         v_function_minus (erpp_arg);
                   }
                }
-               catch (execution_error)
+               catch (execution_error& e)
                {
                   o_error = true;
                }
@@ -652,7 +652,7 @@ void xpath_processor::v_execute_one (
                      v_function_mult (erpp_arg, u_sub);
                   }
                }
-               catch (execution_error)
+               catch (execution_error& e)
                {
                   o_error = true;
                }
@@ -801,7 +801,7 @@ void xpath_processor::v_execute_one (
                v_execute_function (S_name, u_variable, erpp_arg);
             }
          }
-         catch (execution_error)
+         catch (execution_error& e)
          {
             o_error = true;
          }
@@ -1001,7 +1001,7 @@ void xpath_processor::v_execute_absolute_path (
    if (o_with_rel)
    {
       int i_1, i_2, i_3;
-      int i_bak_position, i_current, i_first, i_relative;
+      int /*i_bak_position,*/ i_current, i_first, i_relative;
       TIXML_STRING S_lit;
 
       // compute position of the first (absolute) step
@@ -1022,7 +1022,7 @@ void xpath_processor::v_execute_absolute_path (
          i_first = i_relative;
       }
       // i_first = i_3 - 1;
-      i_bak_position = as_action_store . i_get_position ();
+      // i_bak_position = as_action_store . i_get_position ();
       as_action_store . v_set_position (i_first);
       if (o_everywhere)
          i_relative_action = -1;
@@ -1570,11 +1570,12 @@ void xpath_processor::v_function_name (
          if (erpp_arg [0] -> e_type == e_node_set)
          {
             nsp_set = erpp_arg [0] -> nsp_get_node_set ();
-            if (nsp_set -> u_get_nb_node_in_set ())
+            if (nsp_set -> u_get_nb_node_in_set ()) {
                if (nsp_set -> o_is_attrib (0))
                   S_res = nsp_set -> XAp_get_attribute_in_set (0) -> Name ();
                else
                   S_res = nsp_set -> XNp_get_node_in_set (0) -> Value ();
+            }
          }
          break;
       default :
