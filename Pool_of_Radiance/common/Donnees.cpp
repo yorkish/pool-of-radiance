@@ -4,7 +4,7 @@
 #include "Donnees.h"
 #include "Global.h"
 #include "Util.h"
-#include "../tinyXML/TinyXMLHelper.h"
+#include "../tinyXPath/TinyXMLHelper.h"
 
 using std::string;
 using std::cout;

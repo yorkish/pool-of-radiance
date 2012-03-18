@@ -2,8 +2,9 @@
 #include <vector>
 #include <string>
 #include "Global.h"
-#include "../tinyXML/tinyxml.h"
-#include "../tinyXML/TinyXMLHelper.h"
+#include "../tinyXPath/tinyxml.h"
+#include "../tinyXPath/TinyXMLHelper.h"
+#include "../tinyXPath/xpath_processor.h"
 
 class Donnees
 {
