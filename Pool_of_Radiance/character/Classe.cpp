@@ -17,7 +17,7 @@ void Classe::setClasse(Race_e race, Class_e classe)
 	this->classe = classe;
 	this->race   = race;
 
-	//On génère la table THAC
+	//On gÃ©nÃ¨re la table THAC
 	generateTHAC();
 }
 
@@ -28,7 +28,7 @@ void Classe::generateTHAC()
 
 	if (table.THAC == table.baseTHAC.value) {
 
-		//On doit utiliser l'offset afin de bien générer la table
+		//On doit utiliser l'offset afin de bien gÃ©nÃ©rer la table
 		int repeatsStart = THAC0 + table.baseTHAC.offset;
 
 		for(i = 0, x = repeatsStart; i  < table.baseTHAC.repeats; i++, x--)
@@ -96,8 +96,8 @@ int Classe::getLevel()
 
 int Classe::getTHAC0(int bonus)
 {
-	//Un bonus positif déplace l'indice vers la droite (meilleures chances)
-	//Un bonus négatif déplace l'indice vers la gauche du tableau (moins bonnes chances)
+	//Un bonus positif dï¿½place l'indice vers la droite (meilleures chances)
+	//Un bonus nï¿½gatif dï¿½place l'indice vers la gauche du tableau (moins bonnes chances)
 	return THAC_Table[THAC0 + bonus];
 }
 

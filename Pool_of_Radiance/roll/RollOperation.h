@@ -19,6 +19,7 @@ class RollOperation {
 
 		char getOperateur() const;
 		void setOperateur(char operateur);
+		void setOperateur(std::string operateur);
 
 		int getNbreLancersX() const;
 	    int getNbreLancersY() const;

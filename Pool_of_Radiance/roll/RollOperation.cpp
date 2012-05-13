@@ -92,6 +92,7 @@ void RollOperation::setY(string y)
 
 char RollOperation::getOperateur() const { return operateur; }
 void RollOperation::setOperateur(char operateur) { this->operateur = operateur; }
+void RollOperation::setOperateur(string operateur) { this->operateur = operateur[0]; }
 
 int  RollOperation::getNbreLancersX() const { return nbreLancersX; }
 int  RollOperation::getNbreLancersY() const { return nbreLancersY; }
@@ -120,7 +121,7 @@ string RollOperation::getStringRep()
 	return temp;
 }
 
-//Le bonus est calculé selon le nombre de lancers en X
+//Le bonus est calculï¿½ selon le nombre de lancers en X
 int RollOperation::getBonusTotal()
 {
 	return nbreLancersX * bonusPerDie;

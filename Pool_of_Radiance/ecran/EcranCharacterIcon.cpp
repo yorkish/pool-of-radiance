@@ -34,7 +34,7 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 		break;
 
 
-	// Menu PARTS DÉBUT
+	// Menu PARTS Dï¿½BUT
 	case PARTS:
 		switch (infTouches.caractere) {
 		case SDLK_h: statusEcran = CHOOSE_HEAD  ; break;
@@ -66,7 +66,7 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 	// Menu PARTS FIN
 
 
-	// Menu COLOR_1 DÉBUT
+	// Menu COLOR_1 Dï¿½BUT
 	case COLOR_1:
 		switch (infTouches.caractere) {
 		case SDLK_w: statusEcran = WEAPON_COLOR_1; couleurOriginale = character.icon.weapon1; break;
@@ -142,7 +142,7 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 	// Menu COLOR_1 FIN
 
 
-	// Menu COLOR_2 DÉBUT
+	// Menu COLOR_2 Dï¿½BUT
 	case COLOR_2:
 		switch (infTouches.caractere) {
 		case SDLK_w: statusEcran = WEAPON_COLOR_2; couleurOriginale = character.icon.weapon2; break;
@@ -221,13 +221,13 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 	case SIZE:
 		switch (infTouches.caractere) {
 		case SDLK_l:
-			if (character.icon.size == SMALL)
-				character.icon.size = LARGE;
+			if (character.icon.size == SIZE_SMALL)
+				character.icon.size = SIZE_LARGE;
 			break;
 
 		case SDLK_s:
-			if (character.icon.size == LARGE)
-				character.icon.size = SMALL;
+			if (character.icon.size == SIZE_LARGE)
+				character.icon.size = SIZE_SMALL;
 			break;
 
 		case SDLK_k: statusEcran = MAIN; break;
@@ -320,7 +320,7 @@ void EcranCharacterIcon::updateScreen()
 		break;
 
 	case SIZE:
-		if (character.icon.size == SMALL)
+		if (character.icon.size == SIZE_SMALL)
 			oListeTexte.addTexte("large",  0, 24, cVERT_CLAIR, cBLANC);
 		else
 			oListeTexte.addTexte("small",  0, 24, cVERT_CLAIR, cBLANC);

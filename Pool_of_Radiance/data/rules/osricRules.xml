@@ -32,17 +32,17 @@
 	
 	<lstRaces>
 		<race id="0" name="dwarf">
-			<ability refid="0" min="8"  max="18"/>
-			<ability refid="1" min="3"  max="17"/>
-			<ability refid="2" min="12" max="19" bonus="+1"/>
-			<ability refid="3" min="3"  max="18"/>
-			<ability refid="4" min="3"  max="18"/>
-			<ability refid="5" min="3"  max="16" bonus="-1"/>
+			<ability refId="0" min="8"  max="18"/>
+			<ability refId="1" min="3"  max="17"/>
+			<ability refId="2" min="12" max="19" bonus="+1"/>
+			<ability refId="3" min="3"  max="18"/>
+			<ability refId="4" min="3"  max="18"/>
+			<ability refId="5" min="3"  max="16" bonus="-1"/>
 			
-			<allowedClasses refid="0"/>
-			<allowedClasses refid="1"/>
-			<allowedClasses refid="5"/>
-			<allowedClasses refid="11"/>
+			<allowedClasses refId="0"/>
+			<allowedClasses refId="1"/>
+			<allowedClasses refId="5"/>
+			<allowedClasses refId="11"/>
 			
 			<startingAge classId="0" >
 				<roll x="2d20" y="250" oper="+"/> 
@@ -71,21 +71,21 @@
 		</race>
 		
 		<race id="1" name="elf">
-			<ability refid="0" min="3"  max="18"/>
-			<ability refid="1" min="7"  max="19" bonus="+1"/>
-			<ability refid="2" min="8"  max="17" bonus="-1"/>
-			<ability refid="3" min="8"  max="18"/>
-			<ability refid="4" min="3"  max="18"/>
-			<ability refid="5" min="8"  max="18"/>
+			<ability refId="0" min="3"  max="18"/>
+			<ability refId="1" min="7"  max="19" bonus="+1"/>
+			<ability refId="2" min="8"  max="17" bonus="-1"/>
+			<ability refId="3" min="8"  max="18"/>
+			<ability refId="4" min="3"  max="18"/>
+			<ability refId="5" min="8"  max="18"/>
 			
-			<allowedClasses refid="0"/>
-			<allowedClasses refid="1"/>
-			<allowedClasses refid="2"/>
-			<allowedClasses refid="5"/>
-			<allowedClasses refid="10"/>
-			<allowedClasses refid="11"/>
-			<allowedClasses refid="12"/>
-			<allowedClasses refid="13"/>
+			<allowedClasses refId="0"/>
+			<allowedClasses refId="1"/>
+			<allowedClasses refId="2"/>
+			<allowedClasses refId="5"/>
+			<allowedClasses refId="10"/>
+			<allowedClasses refId="11"/>
+			<allowedClasses refId="12"/>
+			<allowedClasses refId="13"/>
 			
 			<startingAge classId="0" >
 				<roll x="10d10" y="500" oper="+"/> 
@@ -131,17 +131,17 @@
 		</race>
 		
 		<race id="2" name="gnome">
-			<ability refid="0" min="6"  max="18"/>
-			<ability refid="1" min="3"  max="18"/>
-			<ability refid="2" min="8"  max="18"/>
-			<ability refid="3" min="7"  max="18"/>
-			<ability refid="4" min="3"  max="18"/>
-			<ability refid="5" min="3"  max="18"/>
+			<ability refId="0" min="6"  max="18"/>
+			<ability refId="1" min="3"  max="18"/>
+			<ability refId="2" min="8"  max="18"/>
+			<ability refId="3" min="7"  max="18"/>
+			<ability refId="4" min="3"  max="18"/>
+			<ability refId="5" min="3"  max="18"/>
 
-			<allowedClasses refid="0"/>
-			<allowedClasses refid="1"/>
-			<allowedClasses refid="5"/>
-			<allowedClasses refid="11"/>
+			<allowedClasses refId="0"/>
+			<allowedClasses refId="1"/>
+			<allowedClasses refId="5"/>
+			<allowedClasses refId="11"/>
 
 			<startingAge classId="0" >
 				<roll x="3d12" y="300" oper="+"/> 
@@ -169,26 +169,26 @@
 		</race>
 		
 		<race id="3" name="half-elf">
-			<ability refid="0" min="3"  max="18"/>
-			<ability refid="1" min="6"  max="18"/>
-			<ability refid="2" min="6"  max="18"/>
-			<ability refid="3" min="4"  max="18"/>
-			<ability refid="4" min="3"  max="18"/>
-			<ability refid="5" min="3"  max="18"/>
+			<ability refId="0" min="3"  max="18"/>
+			<ability refId="1" min="6"  max="18"/>
+			<ability refId="2" min="6"  max="18"/>
+			<ability refId="3" min="4"  max="18"/>
+			<ability refId="4" min="3"  max="18"/>
+			<ability refId="5" min="3"  max="18"/>
 
-			<allowedClasses refid="0"/>
-			<allowedClasses refid="1"/>
-			<allowedClasses refid="2"/>
-			<allowedClasses refid="4"/>
-			<allowedClasses refid="5"/>
-			<allowedClasses refid="6"/>
-			<allowedClasses refid="7"/>
-			<allowedClasses refid="8"/>
-			<allowedClasses refid="9"/>
-			<allowedClasses refid="10"/>
-			<allowedClasses refid="11"/>
-			<allowedClasses refid="12"/>
-			<allowedClasses refid="13"/>
+			<allowedClasses refId="0"/>
+			<allowedClasses refId="1"/>
+			<allowedClasses refId="2"/>
+			<allowedClasses refId="4"/>
+			<allowedClasses refId="5"/>
+			<allowedClasses refId="6"/>
+			<allowedClasses refId="7"/>
+			<allowedClasses refId="8"/>
+			<allowedClasses refId="9"/>
+			<allowedClasses refId="10"/>
+			<allowedClasses refId="11"/>
+			<allowedClasses refId="12"/>
+			<allowedClasses refId="13"/>
 			
 			<startingAge classId="0" >
 				<roll x="2d4" y="40" oper="+"/> 
@@ -257,16 +257,16 @@
 		</race>
 		
 		<race id="4" name="halfling">
-			<ability refid="0" min="6"  max="17" bonus="-1"/>
-			<ability refid="1" min="8"  max="19" bonus="+1"/>
-			<ability refid="2" min="10" max="18"/>
-			<ability refid="3" min="6"  max="18"/>
-			<ability refid="4" min="3"  max="17"/>
-			<ability refid="5" min="3"  max="18"/>
+			<ability refId="0" min="6"  max="17" bonus="-1"/>
+			<ability refId="1" min="8"  max="19" bonus="+1"/>
+			<ability refId="2" min="10" max="18"/>
+			<ability refId="3" min="6"  max="18"/>
+			<ability refId="4" min="3"  max="17"/>
+			<ability refId="5" min="3"  max="18"/>
 		
-			<allowedClasses refid="1"/>
-			<allowedClasses refid="5"/>
-			<allowedClasses refid="11"/>
+			<allowedClasses refId="1"/>
+			<allowedClasses refId="5"/>
+			<allowedClasses refId="11"/>
 
 			<startingAge classId="1" >
 				<roll x="3d4" y="20" oper="+"/> 
@@ -287,19 +287,19 @@
 		</race>
 		
 		<race id="5" name="human">
-			<ability refid="0" min="3"  max="18"/>
-			<ability refid="1" min="3"  max="18"/>
-			<ability refid="2" min="3"  max="18"/>
-			<ability refid="3" min="3"  max="18"/>
-			<ability refid="4" min="3"  max="18"/>
-			<ability refid="5" min="3"  max="18"/>
+			<ability refId="0" min="3"  max="18"/>
+			<ability refId="1" min="3"  max="18"/>
+			<ability refId="2" min="3"  max="18"/>
+			<ability refId="3" min="3"  max="18"/>
+			<ability refId="4" min="3"  max="18"/>
+			<ability refId="5" min="3"  max="18"/>
 
-			<allowedClasses refid="0"/>
-			<allowedClasses refid="1"/>
-			<allowedClasses refid="2"/>
-			<allowedClasses refid="3"/>
-			<allowedClasses refid="4"/>
-			<allowedClasses refid="5"/>
+			<allowedClasses refId="0"/>
+			<allowedClasses refId="1"/>
+			<allowedClasses refId="2"/>
+			<allowedClasses refId="3"/>
+			<allowedClasses refId="4"/>
+			<allowedClasses refId="5"/>
 
 			<startingAge classId="0" >
 				<roll x="1d4" y="20" oper="+"/> 
@@ -597,15 +597,15 @@
 	</lstClasses>
 
 	<lstAlignments>
-		<alignment id="0" name="lawful good"/>
-		<alignment id="1" name="lawful neutral"/>
-		<alignment id="2" name="lawful evil"/>
-		<alignment id="3" name="neutral good"/>
-		<alignment id="4" name="true neutral"/>
-		<alignment id="5" name="neutral evil"/>
-		<alignment id="6" name="chaotic good"/>
+		<alignment id="0" name="lawful good"    />
+		<alignment id="1" name="lawful neutral" />
+		<alignment id="2" name="lawful evil"    />
+		<alignment id="3" name="neutral good"   />
+		<alignment id="4" name="true neutral"   />
+		<alignment id="5" name="neutral evil"   />
+		<alignment id="6" name="chaotic good"   />
 		<alignment id="7" name="chaotic neutral"/>
-		<alignment id="8" name="chaotic evil"/>
+		<alignment id="8" name="chaotic evil"   />
 	</lstAlignments>
 
 	<lstStatus>
@@ -619,40 +619,47 @@
 	</lstStatus>
 	
 	<strengthTable>
-		<strength score="3"                  toHit="-3" toDamage="-1" encumbrance="-35"/>
-		<strength score="4;5"                toHit="-2" toDamage="-1" encumbrance="-25"/>
-		<strength score="6;7"                toHit="-1" toDamage="0"  encumbrance="-15"/>
-		<strength score="8;9"                toHit="0"  toDamage="0"  encumbrance="0"  />
-		<strength score="10;11"              toHit="0"  toDamage="0"  encumbrance="0"  />
-		<strength score="12;13"              toHit="0"  toDamage="0"  encumbrance="+10"/>
-		<strength score="14;15"              toHit="0"  toDamage="0"  encumbrance="+20"/>
-		<strength score="16"                 toHit="0"  toDamage="+1" encumbrance="+35"/>
-		<strength score="17"                 toHit="+1" toDamage="+1" encumbrance="+50"/>
-		<strength score="18"                 toHit="+1" toDamage="+2" encumbrance="+75"/>
-		<strength score="18" percUnder="51"  toHit="+1" toDamage="+3" encumbrance="+100"/>
-		<strength score="18" percUnder="76"  toHit="+2" toDamage="+3" encumbrance="+125"/>
-		<strength score="18" percUnder="91"  toHit="+2" toDamage="+4" encumbrance="+150"/>
-		<strength score="18" percUnder="100" toHit="+2" toDamage="+5" encumbrance="+200"/>
-		<strength score="19"                 toHit="+3" toDamage="+6" encumbrance="+300"/>
+		<strength score="3"                    toHit="-3" toDamage="-1" encumbrance="-35" />
+		<strength score="4"                    toHit="-2" toDamage="-1" encumbrance="-25" />
+		<strength score="5"                    toHit="-2" toDamage="-1" encumbrance="-25" />
+		<strength score="6"                    toHit="-1" toDamage="0"  encumbrance="-15" />
+		<strength score="7"                    toHit="-1" toDamage="0"  encumbrance="-15" />
+		<strength score="8"                    toHit="0"  toDamage="0"  encumbrance="0"   />
+		<strength score="9"                    toHit="0"  toDamage="0"  encumbrance="0"   />
+		<strength score="10"                   toHit="0"  toDamage="0"  encumbrance="0"   />
+		<strength score="11"                   toHit="0"  toDamage="0"  encumbrance="0"   />
+		<strength score="12"                   toHit="0"  toDamage="0"  encumbrance="+10" />
+		<strength score="13"                   toHit="0"  toDamage="0"  encumbrance="+10" />
+		<strength score="14"                   toHit="0"  toDamage="0"  encumbrance="+20" />
+		<strength score="15"                   toHit="0"  toDamage="0"  encumbrance="+20" />
+		<strength score="16"                   toHit="0"  toDamage="+1" encumbrance="+35" />
+		<strength score="17"                   toHit="+1" toDamage="+1" encumbrance="+50" />
+		<strength score="18"                   toHit="+1" toDamage="+2" encumbrance="+75" />
+		<strength score="18" min="1"  max="50" toHit="+1" toDamage="+3" encumbrance="+100"/>
+		<strength score="18" min="51" max="75" toHit="+2" toDamage="+3" encumbrance="+125"/>
+		<strength score="18" min="76" max="90" toHit="+2" toDamage="+4" encumbrance="+150"/>
+		<strength score="18" min="91" max="99" toHit="+2" toDamage="+5" encumbrance="+200"/>
+		<strength score="19"                   toHit="+3" toDamage="+6" encumbrance="+300"/>
 	</strengthTable>
 	
 	<dexterityTable>
-		<dexterity score="3"     missileToHit="-3" AC="+4"/>
-		<dexterity score="4"     missileToHit="-2" AC="+3"/>
-		<dexterity score="5"     missileToHit="-1" AC="+2"/>
-		<dexterity score="6"     missileToHit="0"  AC="+1"/>
-		<dexterity score="7"     missileToHit="0"  AC="0" />
-		<dexterity score="8"     missileToHit="0"  AC="0" />
-		<dexterity score="9"     missileToHit="0"  AC="0" />
-		<dexterity score="10"    missileToHit="0"  AC="0" />
-		<dexterity score="11"    missileToHit="0"  AC="0" />
-		<dexterity score="12"    missileToHit="0"  AC="0" />
-		<dexterity score="13"    missileToHit="0"  AC="0" />
-		<dexterity score="14"    missileToHit="0"  AC="0" />
-		<dexterity score="15"    missileToHit="0"  AC="-1"/>
-		<dexterity score="16"    missileToHit="+1" AC="-2"/>
-		<dexterity score="17"    missileToHit="+2" AC="-3"/>
-		<dexterity score="18;19" missileToHit="+3" AC="-4"/>
+		<dexterity score="3"  missileToHit="-3" AC="+4"/>
+		<dexterity score="4"  missileToHit="-2" AC="+3"/>
+		<dexterity score="5"  missileToHit="-1" AC="+2"/>
+		<dexterity score="6"  missileToHit="0"  AC="+1"/>
+		<dexterity score="7"  missileToHit="0"  AC="0" />
+		<dexterity score="8"  missileToHit="0"  AC="0" />
+		<dexterity score="9"  missileToHit="0"  AC="0" />
+		<dexterity score="10" missileToHit="0"  AC="0" />
+		<dexterity score="11" missileToHit="0"  AC="0" />
+		<dexterity score="12" missileToHit="0"  AC="0" />
+		<dexterity score="13" missileToHit="0"  AC="0" />
+		<dexterity score="14" missileToHit="0"  AC="0" />
+		<dexterity score="15" missileToHit="0"  AC="-1"/>
+		<dexterity score="16" missileToHit="+1" AC="-2"/>
+		<dexterity score="17" missileToHit="+2" AC="-3"/>
+		<dexterity score="18" missileToHit="+3" AC="-4"/>
+		<dexterity score="19" missileToHit="+3" AC="-4"/>
 	</dexterityTable>
 
 	<constitutionTable>
@@ -671,16 +678,28 @@
 		<constitution score="15" HPperDie="+1"/>
 		<constitution score="16" HPperDie="+2"/>
 		<constitution score="17">
-			<class refid="0;2;5" HPperDie="+2"/>
-			<class refid="1;3;4" HPperDie="+3"/>
+			<class refId="0" HPperDie="+2"/>
+			<class refId="2" HPperDie="+2"/>
+			<class refId="5" HPperDie="+2"/>
+			<class refId="1" HPperDie="+3"/>
+			<class refId="3" HPperDie="+3"/>
+			<class refId="4" HPperDie="+3"/>
 		</constitution> 
 		<constitution score="18">
-			<class refid="0;2;5" HPperDie="+2"/>
-			<class refid="1;3;4" HPperDie="+4"/>
+			<class refId="0" HPperDie="+2"/>
+			<class refId="2" HPperDie="+2"/>
+			<class refId="5" HPperDie="+2"/>
+			<class refId="1" HPperDie="+4"/>
+			<class refId="3" HPperDie="+4"/>
+			<class refId="4" HPperDie="+4"/>
 		</constitution>
 		<constitution score="19">
-			<class refid="0;2;5" HPperDie="+2"/>
-			<class refid="1;3;4" HPperDie="+5"/>
+			<class refId="0" HPperDie="+2"/>
+			<class refId="2" HPperDie="+2"/>
+			<class refId="5" HPperDie="+2"/>
+			<class refId="1" HPperDie="+5"/>
+			<class refId="3" HPperDie="+5"/>
+			<class refId="4" HPperDie="+5"/>
 		</constitution>
 	</constitutionTable>
 

@@ -67,7 +67,7 @@ enum MClassRestiction_e { LESS_RETRICTIVE, MOST_RETRICTIVE };
 
 enum Status_e { OKAY, UNCONSCIOUS, DYING, DEAD, STONED, FLED, GONE };
 
-enum Size_e { SMALL, LARGE };
+enum Size_e { SIZE_SMALL, SIZE_LARGE };
 
 enum Couleur {cNOIR       , cBLEU         , cVERT      , cCYAN        ,
 	          cROUGE      , cMAGENTA      , cBRUN      , cGRIS_CLAIR  ,

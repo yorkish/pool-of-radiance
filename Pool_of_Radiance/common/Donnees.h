@@ -2,9 +2,11 @@
 #include <vector>
 #include <string>
 #include "Global.h"
-#include "../tinyXPath/tinyxml.h"
-#include "../tinyXPath/TinyXMLHelper.h"
-#include "../tinyXPath/xpath_processor.h"
+
+#include <xalanc/XalanSourceTree/XalanSourceTreeInit.hpp>
+#include <xalanc/XalanSourceTree/XalanSourceTreeDOMSupport.hpp>
+#include <xalanc/XalanSourceTree/XalanSourceTreeParserLiaison.hpp>
+#include <xalanc/DOMSupport/XalanDocumentPrefixResolver.hpp>
 
 class Donnees
 {
@@ -31,8 +33,10 @@ class Donnees
 	private:
 		Donnees();
 
+		void initXalanC();
 		void init();
-		bool loadFile();
+
+		bool isXMLloaded();
 		void loadRaces();
 		void loadGenders();
 		void loadClasses();
@@ -42,17 +46,18 @@ class Donnees
 		~Donnees();
 
 		static Donnees* singleton;
-		TinyXMLHelper oHelper;
 
-		TiXmlDocument   doc;
-		TiXmlHandle     hRoot;
+		xalanc_1_10::XalanSourceTreeInit			theSourceTreeInit;
+		xalanc_1_10::XalanSourceTreeDOMSupport		theDOMSupport;
+		xalanc_1_10::XalanSourceTreeParserLiaison	theLiaison;
+		xalanc_1_10::XalanDocument*					theDocument;
+		xalanc_1_10::XalanDocumentPrefixResolver*	thePrefixResolver;
+		xalanc_1_10::XalanNode* 					root;
 
-		bool fileLoaded;
 		bool loadError;
 
 		std::vector<NodeRace>      vctRaces;
 		std::vector<NodeGender>    vctGenders;
 		std::vector<NodeAlignment> vctAlignments;
 		std::vector<NodeClasse>    vctClasses;
-		std::vector<NodeClasse>    vctClassesPermises;
 };
