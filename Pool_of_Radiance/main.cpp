@@ -8,8 +8,10 @@
 #include "common/Global.h"
 #include "MainLoop.h"
 
-using std::cout; using std::endl;
-using std::vector; using std::string;
+using std::cout;
+using std::endl;
+using std::vector;
+using std::string;
 
 vector<InfoAlloc> gbl_Memoire;
 
@@ -23,9 +25,8 @@ int main(int argc, char** argv)
 	setvbuf(stdout, NULL, _IONBF, 0);
 	setvbuf(stderr, NULL, _IONBF, 0);
 
-	//initialise le g�n�rateur de nombres al�atoires
+	//initialise le générateur de nombres aléatoires
 	srand( (unsigned) time(NULL) );
-
 
 	bErreur = oMainLoop.start();
 

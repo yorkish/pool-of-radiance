@@ -27,6 +27,6 @@ class Classe {
 		Class_e classe;
 
 		int level;
-		int THAC_Table[21]; //de -10 à 10
+		int THAC_Table[21]; //de -10 Ã  10
 };
 

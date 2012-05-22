@@ -17,7 +17,7 @@ void Race::setRace(NodeRace& nodeRace)
 {
 	RaceInfo raceInfo;
 
-	//On va chercher les informations rattachées à la race choisie
+	//On va chercher les informations rattachÃ©es Ã  la race choisie
 	race              = nodeRace.val;
 	raceInfo          = Donnees::getInstance().getRaceInfo(race);
 	movementRate      = raceInfo.baseMovementRate;

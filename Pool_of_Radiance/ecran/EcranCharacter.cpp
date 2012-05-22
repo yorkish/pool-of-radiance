@@ -119,7 +119,7 @@ void EcranCharacter::afficherPortrait()
 {
 	SDL_Rect src;
 
-	//La tête
+	//La tÃªte
 	src.w = 88; src.h = 40;
 	src.x = src.w * (character.portrait.indTete % TETES_PAR_RANGEES);
 	src.y = src.h * (character.portrait.indTete / TETES_PAR_RANGEES);

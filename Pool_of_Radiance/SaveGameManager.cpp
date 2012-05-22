@@ -24,7 +24,7 @@ void SaveGameManager::verifierMessages()
 			break;
 
 		case GM_CHARGER_PARTIE:
-			oPileMessage.popMessage();
+			oPileMessage.popMessage(); break;
 
 		default: break;
 		}

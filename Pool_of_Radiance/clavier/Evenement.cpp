@@ -24,7 +24,7 @@ bool Evenement::traiterEvenementsGeneraux()
 	bool evenementValide = true;
 	bToggleFullScreen = false;
 
-	//Cas g�n�raux
+	//Cas généraux
 	switch (event.type)
 	{
 	case SDL_KEYDOWN:

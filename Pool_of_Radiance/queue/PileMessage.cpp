@@ -1,6 +1,6 @@
 #include "PileMessage.h"
 
-// Initialisation du singleton à NULL
+// Initialisation du singleton Ã  NULL
 PileMessage* PileMessage::singleton = 0;
 
 PileMessage::PileMessage() {}

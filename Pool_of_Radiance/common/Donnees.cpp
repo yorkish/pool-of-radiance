@@ -254,7 +254,7 @@ string Donnees::getnomStatus(Status_e status)
 	if ( !isXMLloaded() )
 		return "";
 
-	xpath << "//status[@id = '" << status << "']/text()";
+	xpath << "//status[@id = " << status << "]/@name";
 	return XalanCHelper::getStrResult(xpath);
 }
 
@@ -306,7 +306,7 @@ AbilitiesTable Donnees::getAbilitiesTable(Race_e race)
 		for(int i = 0; i < repetitions; i++)
 			table.rolls.appendRoll(rollOp);
 
-		node = node->getNextSibling();
+		node = XalanCHelper::NextSibling(node);
 		if (node != 0) {
 			rollOp.setX( XalanCHelper::getAttributeValue(node, "x") );
 			rollOp.setY( XalanCHelper::getAttributeValue(node, "y") );
@@ -320,10 +320,10 @@ AbilitiesTable Donnees::getAbilitiesTable(Race_e race)
 	node = XalanCHelper::selectSingleNode(xpath);
 
 	if (node != 0) {
-		node = node->getFirstChild();
+		node = XalanCHelper::FirstChild(node);
 		table.STR.condition.score = XalanCHelper::getAttributeIntValue(node, "score");
 
-		node = node->getFirstChild();
+		node = XalanCHelper::FirstChild(node);
 		table.STR.condition.then.setX( XalanCHelper::getAttributeValue(node, "x") );
 		table.STR.condition.then.setY( XalanCHelper::getAttributeValue(node, "y") );
 		table.STR.condition.then.setOperateur( XalanCHelper::getAttributeValue(node, "oper") );
@@ -331,7 +331,7 @@ AbilitiesTable Donnees::getAbilitiesTable(Race_e race)
 
 	//On va chercher les habilitées de la race
 	xpath.str(""); xpath << "//race[@id='" << race << "']/ability";
-	node = XalanCHelper::selectSingleNode(xpath);
+	nodeList = XalanCHelper::selectNodeList(nodeList, xpath);
 
 	nbNodes = nodeList.getLength();
 	for (int i=0; i < nbNodes; i++) {
@@ -357,7 +357,6 @@ AbilitiesTable Donnees::getAbilitiesTable(Race_e race)
 
 Condition Donnees::getConditionPercentage(Class_e classe)
 {
-	XPathEvaluator evaluator;
 	XalanNode* node;
 	Condition condition = {-1, -1};
 	stringstream xpath;
@@ -379,7 +378,6 @@ Condition Donnees::getConditionPercentage(Class_e classe)
 
 void Donnees::getBonusPerAbilities(CharacterInfo& character)
 {
-	XPathEvaluator evaluator;
 	XalanNode* node;
 	stringstream xpath;
 
@@ -388,12 +386,11 @@ void Donnees::getBonusPerAbilities(CharacterInfo& character)
 
 	// Bonus reliés à la force
 	if (character.STR == 18 && character.strPercentage != 0)
-
 		xpath << "//strengthTable/strength[@score = " << character.STR << " and @min <= "<< character.strPercentage << " and @max >= " << character.strPercentage << "]";
 	else
 		xpath << "//strengthTable/strength[@score = " << character.STR << "]";
 
-	cout << "****" << "\n";
+	cout << "****" << endl;
 	cout << xpath.str();
 
 	node = XalanCHelper::selectSingleNode(xpath);
@@ -401,11 +398,11 @@ void Donnees::getBonusPerAbilities(CharacterInfo& character)
 	character.bonus.toDamage    = XalanCHelper::getAttributeIntValue(node, "toDamage");
 	character.bonus.encumbrance = XalanCHelper::getAttributeIntValue(node, "encumbrance");
 
-	cout << "character.bonus.toHit       = " << character.bonus.toHit << "\n";
-	cout << "character.bonus.toDamage    = " << character.bonus.toDamage << "\n";
-	cout << "character.bonus.encumbrance = " << character.bonus.encumbrance << "\n";
+	cout << "character.bonus.toHit       = " << character.bonus.toHit << endl;
+	cout << "character.bonus.toDamage    = " << character.bonus.toDamage << endl;
+	cout << "character.bonus.encumbrance = " << character.bonus.encumbrance << endl;
 
-	cout << "****" << "\n";
+	cout << "****" << endl;
 
 	// Bonus reliées à la dextérité
 	xpath.str(""); xpath << "//dexterityTable/dexterity[@score = " << character.DEX << "]";
@@ -443,14 +440,11 @@ void Donnees::getBonusPerAbilities(CharacterInfo& character)
 	}
 }
 
-// TODO
 RaceInfo Donnees::getRaceInfo(Race_e race)
 {
 	const string MOST = "most";
 	const string SMALL = "small";
 
-	XPathEvaluator evaluator;
-	XalanNode* node;
 	stringstream xpath;
 	string valeur;
 	RaceInfo raceInfo = { -1, LESS_RETRICTIVE, SIZE_LARGE };
@@ -458,186 +452,196 @@ RaceInfo Donnees::getRaceInfo(Race_e race)
 	if ( !isXMLloaded() )
 		return raceInfo;
 
-	//On va chercher la node de la race
-	xpath << "//race[@id = " << race << "]";
-	node = evaluator.selectSingleNode(theDOMSupport, root, XalanCHelper::toDOMString(xpath).c_str(), *thePrefixResolver);
+	xpath << "//race[@id = " << race << "]/movementRate/text()";
+	raceInfo.baseMovementRate = XalanCHelper::getIntResult(xpath);
 
-	if (node != 0) {
-		xpath << "//race[@id = " << race << "]";
-		node = evaluator.selectSingleNode(theDOMSupport, root, XalanCHelper::toDOMString(xpath).c_str(), *thePrefixResolver);
-		//raceInfo.baseMovementRate = TinyXPath::i_xpath_int(node, "//movementRate/text()");
+	// Restriction Multi-classe
+	xpath.str(""); xpath << "//race[@id = " << race << "]/multiClass/@restriction";
+	valeur = XalanCHelper::getStrResult(xpath);
+	Util::toLowerCase(valeur);
 
-		// Restriction Multi-classe
-//		valeur = TinyXPath::S_xpath_string(node, "//multiClass/@restriction");
-//		Util::toLowerCase(valeur);
+	if ( valeur.compare(MOST) == 0 )
+		raceInfo.mClassRestriction = MOST_RETRICTIVE;
+	else
+		raceInfo.mClassRestriction = LESS_RETRICTIVE;
 
-		if ( valeur.compare(MOST) == 0 )
-			raceInfo.mClassRestriction = MOST_RETRICTIVE;
-		else
-			raceInfo.mClassRestriction = LESS_RETRICTIVE;
+	// Icône
+	xpath.str(""); xpath << "//race[@id = " << race << "]/icon/@size";
+	valeur =  XalanCHelper::getStrResult(xpath);
+	Util::toLowerCase(valeur);
 
-		// Icône
-//		valeur =  TinyXPath::S_xpath_string(node, "//icon/@size");
-		Util::toLowerCase(valeur);
-
-		if ( valeur.compare(SMALL) == 0 )
-			raceInfo.iconSize = SIZE_SMALL;
-		else
-			raceInfo.iconSize = SIZE_LARGE;
-	}
+	if ( valeur.compare(SMALL) == 0 )
+		raceInfo.iconSize = SIZE_SMALL;
+	else
+		raceInfo.iconSize = SIZE_LARGE;
 
 	return raceInfo;
 }
 
 vector<NodeClasse> Donnees::getAllowedClasses(Race_e race)
 {
+	NodeRefList nodeList;
+	XalanNode* node;
+	stringstream xpath;
 	std::vector<NodeClasse> vctClassesPermises;
-	stringstream expression;
-//	int refid;
-//	int nbNodes;
+	int refid;
+	int nbNodes;
 
 	if ( !isXMLloaded() )
 		return vctClassesPermises;
 
-//	//On va chercher la node de la race
-//	expression << "//race[@id = " << race << "]/allowedClasses[@refId]";
-//	TinyXPath::xpath_processor xp_proc (root, expression.str().c_str());
-//	nbNodes = xp_proc.u_compute_xpath_node_set();
-//
-//	for (int i=0; i < nbNodes; i++) {
-//		node = xp_proc.XNp_get_xpath_node(i);
-//
-//		refid = TinyXPath::i_xpath_int(node, "@refId");
-//		vctClassesPermises.push_back(vctClasses[refid]);
-//	}
+	//On va chercher la node de la race
+	xpath << "//race[@id = " << race << "]/allowedClasses[@refId]";
+	nodeList = XalanCHelper::selectNodeList(nodeList, xpath);
+
+	nbNodes = nodeList.getLength();
+	for (int i=0; i < nbNodes; i++) {
+		node = nodeList.item(i);
+
+		refid = XalanCHelper::getAttributeIntValue(node, "refId");
+		vctClassesPermises.push_back(vctClasses[refid]);
+	}
 
 	return vctClassesPermises;
 }
 
 vector<NodeClasse> Donnees::getCharacterClasses(Class_e classe)
 {
+	stringstream xpath;
+	XalanNode* node;
 	vector<string> vctSousClasses;
 	vector<string>::iterator iter;
 	vector<NodeClasse> charClasses;
 	string sousClasses;
-	stringstream expression;
-//	int x;
+	int x;
 
-//	//On va chercher les info pour la classe
-//	expression << "//class[@id = " << classe << "]";
-//	node = TinyXPath::XNp_xpath_node(root, expression.str().c_str());
-//
-//	//Est-ce un personnage multi-classe?
-//	vctSousClasses = Util::splitString(TinyXPath::S_xpath_string(node, "@subClasses"), ';');
-//
-//	if (vctSousClasses.size() != 0 ) {
-//		for(iter = vctSousClasses.begin(); iter != vctSousClasses.end(); iter++) {
-//			x = atoi( (*iter).c_str() );
-//			charClasses.push_back(vctClasses[x]);
-//		}
-//	} else
-//		charClasses.push_back(vctClasses[classe]);
+	//On va chercher les info pour la classe
+	xpath << "//class[@id = " << classe << "]";
+	node = XalanCHelper::selectSingleNode(xpath);
+
+	//Est-ce un personnage multi-classe?
+	vctSousClasses = Util::splitString(XalanCHelper::getAttributeValue(node, "subClasses"), ';');
+
+	if (vctSousClasses.size() != 0 ) {
+		for(iter = vctSousClasses.begin(); iter != vctSousClasses.end(); iter++) {
+			x = atoi( (*iter).c_str() );
+			charClasses.push_back(vctClasses[x]);
+		}
+	} else
+		charClasses.push_back(vctClasses[classe]);
 
 	return charClasses;
 }
 
 THAC_GenerationTable Donnees::getTHACInfo(Class_e classe, int level)
 {
+	stringstream xpath;
+	XalanNode* node;
 	THAC_GenerationTable table = { {-1, -1, -1}, -1};
-	stringstream expression;
 
 	if ( !isXMLloaded() )
 		return table;
 
-//	//On va chercher les info sur la table THAC
-//	expression << "/osricRules/characterCommon/THAC_Table";
-//	node = TinyXPath::XNp_xpath_node(root, expression.str().c_str());
-//
-//	table.baseTHAC.value   = TinyXPath::i_xpath_int(node, "@value");
-//	table.baseTHAC.repeats = TinyXPath::i_xpath_int(node, "@repeats");
-//
-//	//On va chercher les infos sur la table THAC pour la classe
-//	expression.str("");
-//	expression << "//class[@id =" << classe << "]/THAC/level[@levels = " << level << "]";
-//	node = TinyXPath::XNp_xpath_node(root, expression.str().c_str());
-//
-//	table.baseTHAC.offset = TinyXPath::i_xpath_int(node, "@offset");
-//	table.THAC            = TinyXPath::i_xpath_int(node, "@value");
+	//On va chercher les info sur la table THAC
+	xpath << "//characterCommon/THAC_Table";
+	node = XalanCHelper::selectSingleNode(xpath);
+
+	table.baseTHAC.value   = XalanCHelper::getAttributeIntValue(node, "value");
+	table.baseTHAC.repeats = XalanCHelper::getAttributeIntValue(node, "repeats");
+
+	//On va chercher les infos sur la table THAC pour la classe
+	xpath.str(""); xpath << "//class[@id =" << classe << "]/THAC/level[@levels = " << level << "]";
+	node = XalanCHelper::selectSingleNode(xpath);
+
+	table.baseTHAC.offset = XalanCHelper::getAttributeIntValue(node, "offset");
+	table.THAC            = XalanCHelper::getAttributeIntValue(node, "value");
 
 	return table;
 }
 
-RollOperation Donnees::getStartingAge(Race_e race, Class_e classe)
+std::vector<RollOperation> Donnees::getStartingAge(Race_e race, Class_e classe)
 {
-	RollOperation rollOperation;
-
-	if ( !isXMLloaded() )
-		return rollOperation;
-
-//	//On va chercher la node de la race et la node de l'age reli�e � la classe
-//	node = oHelper.findChildNodeById(hRoot.FirstChild( "lstRaces" ).ToNode(), "id", race);
-//	node = oHelper.findChildNodeById(node, "startingAge", "classId", classe);
-//
-//	// On suppose qu'il n'y a qu'une node � lire
-//	node = node->FirstChild();
-//	rollOperation.setX(oHelper.getAttributeValue(node, "x"));
-//	rollOperation.setY(oHelper.getAttributeValue(node, "y"));
-//	rollOperation.setOperateur(oHelper.getAttributeValue(node, "oper")[0]);
-
-	return rollOperation;
-}
-
-std::vector<RollOperation> Donnees::getStartingGold(Class_e classe)
-{
+	stringstream xpath;
+	NodeRefList nodeList;
+	XalanNode* node;
 	vector<RollOperation> vctRolls;
 	RollOperation rollOperation;
+	int nbNodes;
 
 	if ( !isXMLloaded() )
 		return vctRolls;
 
-//	//On va chercher la node de la race et la node de l'age reli�e � la classe
-//	node = oHelper.findChildNodeById(hRoot.FirstChild( "lstClasses" ).ToNode(), "id", classe);
-//
-//	// On suppose qu'il y a, au plus, deux nodes � lire
-//	node = node->FirstChild("startingGold")->FirstChild();
-//	rollOperation.setX(oHelper.getAttributeValue(node, "x"));
-//	rollOperation.setY(oHelper.getAttributeValue(node, "y"));
-//	rollOperation.setOperateur(oHelper.getAttributeValue(node, "oper")[0]);
-//	vctRolls.push_back(rollOperation);
-//
-//	node = node->NextSibling();
-//	if (node != 0) {
-//		rollOperation.setX(oHelper.getAttributeValue(node, "x"));
-//		rollOperation.setY(oHelper.getAttributeValue(node, "y"));
-//		rollOperation.setOperateur(oHelper.getAttributeValue(node, "oper")[0]);
-//		vctRolls.push_back(rollOperation);
-//	}
+	//On va chercher la node de la race et la node de l'age reliée à la classe
+	xpath << "//race[@id = " << race << "]/startingAge[@classId = " << classe << "]/roll";
+	nodeList = XalanCHelper::selectNodeList(nodeList, xpath);
+
+	nbNodes = nodeList.getLength();
+	for (int i=0; i < nbNodes; i++) {
+		node = nodeList.item(i);
+
+		rollOperation.setX( XalanCHelper::getAttributeValue(node, "x") );
+		rollOperation.setY( XalanCHelper::getAttributeValue(node, "y") );
+		rollOperation.setOperateur( XalanCHelper::getAttributeValue(node, "oper") );
+		vctRolls.push_back(rollOperation);
+	}
+
+	return vctRolls;
+}
+
+std::vector<RollOperation> Donnees::getStartingGold(Class_e classe)
+{
+	stringstream xpath;
+	NodeRefList nodeList;
+	XalanNode* node;
+	vector<RollOperation> vctRolls;
+	RollOperation rollOperation;
+	int nbNodes;
+
+	if ( !isXMLloaded() )
+		return vctRolls;
+
+	//On va chercher la node de la race et la node de l'age reliée à la classe
+	xpath << "//class[@id =" << classe << "]/startingGold/roll";
+	nodeList = XalanCHelper::selectNodeList(nodeList, xpath);
+
+	nbNodes = nodeList.getLength();
+	for (int i=0; i < nbNodes; i++) {
+		node = nodeList.item(i);
+
+		rollOperation.setX( XalanCHelper::getAttributeValue(node, "x") );
+		rollOperation.setY( XalanCHelper::getAttributeValue(node, "y") );
+		rollOperation.setOperateur( XalanCHelper::getAttributeValue(node, "oper") );
+		vctRolls.push_back(rollOperation);
+	}
 
 	return vctRolls;
 }
 
 RollOperation Donnees::getHpRoll(Class_e classe, int level, int bonusPerDie)
 {
+	stringstream xpath;
+	XalanNode* node;
 	RollOperation rollOperation;
 
 	if ( !isXMLloaded() )
 		return rollOperation;
 
-//	node = oHelper.findChildNodeById(hRoot.FirstChild( "lstClasses" ).ToNode(), "id", classe);
-//	node = oHelper.findChildNodeById(node->FirstChild("levels"), "level", level);
-//
-//	if (node != 0) {
-//		rollOperation.setX( oHelper.getAttributeValue(node, "hp") );
-//		rollOperation.setY( "0" );
-//		rollOperation.setOperateur( '+' );
-//		rollOperation.setBonusPerDie(bonusPerDie);
-//	}
+	xpath << "//class[@id =" << classe << "]/levels/level[@level = " << level << "]";
+	node = XalanCHelper::selectSingleNode(xpath);
+
+	rollOperation.setX( XalanCHelper::getAttributeValue(node, "hp") );
+	rollOperation.setY( "0" );
+	rollOperation.setOperateur( '+' );
+	rollOperation.setBonusPerDie(bonusPerDie);
 
 	return rollOperation;
 }
 
+// TODO
 Class_e Donnees::getMClassRestriction(Class_e classe, MClassRestiction_e mClassRestriction)
 {
+	stringstream xpath;
+	XalanNode* node;
 	string restriction;
 	int pos = 0;
 
@@ -649,9 +653,9 @@ Class_e Donnees::getMClassRestriction(Class_e classe, MClassRestiction_e mClassR
 	else
 		restriction = "less";
 
-//	node = oHelper.findChildNodeById(hRoot.FirstChild( "lstClasses" ).ToNode(), "id", classe);
-//	node = oHelper.findChildNodeById(node, "THAC", "mcRestriction", restriction);
-//	pos  = oHelper.getAttributeIntValue(node, "classId");
+	xpath << "//class[@id =" << classe << "]/THAC[@mcRestriction = '" << restriction << "']";
+	node = XalanCHelper::selectSingleNode(xpath);
+	pos  = XalanCHelper::getAttributeIntValue(node, "classId");
 
 	return vctClasses[pos].val;
 }

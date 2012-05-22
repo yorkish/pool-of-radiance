@@ -53,7 +53,7 @@ void EcranUtil::dessinerCadreEtPortrait()
 
 	src.w = 8; src.h = 8;
 
-	//Les 3 coins supplémentaires
+	//Les 3 coins supplÃ©mentaires
 	src.x = 0; src.y = 0;
 	oAffichage.applySurface(216,  0, tuileMenu, src);
 	oAffichage.applySurface(216, 96, tuileMenu, src);

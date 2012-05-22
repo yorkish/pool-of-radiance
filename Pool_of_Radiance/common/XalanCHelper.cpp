@@ -1,4 +1,5 @@
 #include "XalanCHelper.h"
+#include <iostream>
 #include <vector>
 #include <stdlib.h>
 #include "../common/Util.h"
@@ -11,6 +12,8 @@
 using std::string;
 using std::vector;
 using std::stringstream;
+using std::cout;
+using std::endl;
 
 XALAN_USING_XALAN(XalanSourceTreeDOMSupport)
 XALAN_USING_XALAN(XalanDocumentPrefixResolver)
@@ -28,39 +31,17 @@ XalanDocumentPrefixResolver* XalanCHelper::thePrefixResolver = 0;
 
 XalanCHelper::XalanCHelper() {}
 
-string XalanCHelper::getTextValue(XalanNode* node)
-{
-//	if (node != 0)
-//		return node->ToElement()->GetText();
-//	else
-		return "";
+NodeRefList& XalanCHelper::selectNodeList(NodeRefList& nodeList, stringstream& xpath) {
+	string strXpath(xpath.str());
+	return XalanCHelper::selectNodeList(nodeList, strXpath);
 }
 
-int XalanCHelper::getTextValueInt(XalanNode* node)
-{
-//	string text = getTextValue(node);
-
-//	if  (text.length() != 0) {
-//		int value;
-
-//		if (sscanf (text.c_str(), "%d", &value) == 1)
-//			return value;
-//	}
-
-	return 0;
-}
-
-NodeRefList& XalanCHelper::selectNodeList(NodeRefList& nodeList, string& xpath) {
+NodeRefList& XalanCHelper::selectNodeList(NodeRefList& nodeList, string xpath) {
 	XPathEvaluator evaluator;
 	return evaluator.selectNodeList(nodeList, *theDOMSupport, root, XalanCHelper::toDOMString(xpath).c_str(), *thePrefixResolver);
 }
 
-NodeRefList& XalanCHelper::selectNodeList(NodeRefList& nodeList, const char* xpath) {
-	string strXpath(xpath);
-	return XalanCHelper::selectNodeList(nodeList, strXpath);
-}
-
-XalanNode* XalanCHelper::selectSingleNode(string& xpath) {
+XalanNode* XalanCHelper::selectSingleNode(string xpath) {
 	XPathEvaluator evaluator;
 	return evaluator.selectSingleNode(*theDOMSupport, root, XalanCHelper::toDOMString(xpath).c_str(), *thePrefixResolver);
 }
@@ -70,32 +51,30 @@ XalanNode* XalanCHelper::selectSingleNode(stringstream& xpath) {
 	return XalanCHelper::selectSingleNode(strXpath);
 }
 
-XalanNode* XalanCHelper::selectSingleNode(const char* xpath) {
-	string strXpath(xpath);
-	return XalanCHelper::selectSingleNode(strXpath);
-}
-
-string XalanCHelper::getStrResult(const char* xpath) {
-	string strXpath(xpath);
-	return XalanCHelper::getStrResult(strXpath);
-}
-
 string XalanCHelper::getStrResult(stringstream& xpath) {
 	string strXpath(xpath.str());
 	return XalanCHelper::getStrResult(strXpath);
 }
 
-string XalanCHelper::getStrResult(string& xpath) {
+string XalanCHelper::getStrResult(string xpath) {
 	XPathEvaluator evaluator;
 	XObjectPtr theResult;
 
 	theResult = evaluator.evaluate(*theDOMSupport, root, XalanCHelper::toDOMString(xpath).c_str(), *thePrefixResolver);
-
+	cout << "* *" << endl;
+	cout << xpath << endl;
+	cout << theResult->str() << endl;
+	cout << "* *" << endl;
 	return XalanCHelper::toStdString(theResult->str());
 
 }
 
-int XalanCHelper::getIntResult(string& xpath) {
+int XalanCHelper::getIntResult(stringstream& xpath) {
+	string strXpath(xpath.str());
+	return XalanCHelper::getIntResult(strXpath);
+}
+
+int XalanCHelper::getIntResult(string xpath) {
 	XPathEvaluator evaluator;
 	XObjectPtr theResult;
 
@@ -104,27 +83,24 @@ int XalanCHelper::getIntResult(string& xpath) {
 	return XalanCHelper::toInt(theResult->str());
 }
 
-int XalanCHelper::getIntResult(const char* xpath) {
-	string strXpath(xpath);
-	return XalanCHelper::getIntResult(strXpath);
-}
-
 string XalanCHelper::getAttributeValue(XalanNode* node, const char* attribute)
 {
-	string result;
+	string result = "";
 	XalanNode* attributeNode;
 	XalanDOMString xalanString;
 
 	if (node == 0)
-		return "";
+		return result;
 
-	try {
-		const XalanNamedNodeMap* mapAttributes = node->getAttributes();
+	const XalanNamedNodeMap* mapAttributes = node->getAttributes();
+
+	if (mapAttributes != 0) {
 		attributeNode = mapAttributes->getNamedItem(XalanCHelper::toDOMString(attribute));
-		xalanString = attributeNode->getNodeValue();
-		result = XalanCHelper::toStdString(xalanString);
-	} catch (...) {
-		result = "";
+
+		if (attributeNode != 0) {
+			xalanString = attributeNode->getNodeValue();
+			result = XalanCHelper::toStdString(xalanString);
+		}
 	}
 
 	return result;
@@ -179,12 +155,22 @@ XalanDOMString XalanCHelper::toDOMString(stringstream& ss) {
 	return XalanDOMString(ss.str().c_str());
 }
 
-XalanDOMString XalanCHelper::toDOMString(string& string) {
+XalanDOMString XalanCHelper::toDOMString(string string) {
 	return XalanDOMString(string.c_str());
 }
 
-XalanDOMString XalanCHelper::toDOMString(const char* string) {
-	return XalanDOMString(string);
+XalanNode* XalanCHelper::NextSibling(XalanNode* node) {
+	XalanNode* newNode = node->getNextSibling();
+
+	while (newNode->getNodeType() != XalanNode::ELEMENT_NODE)
+		newNode = newNode->getNextSibling();
+
+	return newNode;
+}
+
+XalanNode* XalanCHelper::FirstChild(XalanNode* node) {
+	XalanNode* newNode = node->getFirstChild();
+	return XalanCHelper::NextSibling(newNode);
 }
 
 void XalanCHelper::setWorkingObjects(xalanc_1_10::XalanSourceTreeDOMSupport*	theDOMSupport,

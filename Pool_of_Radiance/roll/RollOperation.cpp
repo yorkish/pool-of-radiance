@@ -121,7 +121,7 @@ string RollOperation::getStringRep()
 	return temp;
 }
 
-//Le bonus est calcul� selon le nombre de lancers en X
+//Le bonus est calculé selon le nombre de lancers en X
 int RollOperation::getBonusTotal()
 {
 	return nbreLancersX * bonusPerDie;

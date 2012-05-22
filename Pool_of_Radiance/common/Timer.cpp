@@ -9,11 +9,11 @@ Timer::Timer() : startTicks(0), pausedTicks(0), bPaused(false), bStarted(false)
 
 void Timer::start()
 {
-	//On d�marre le timer
+	//On démarre le timer
 	bStarted = true;
-	//On enl�ve la pause du timer
+	//On enlève la pause du timer
 	bPaused = false;
-	//On r�cup�re le temps courant
+	//On récupère le temps courant
 	startTicks = SDL_GetTicks();
 }
 
@@ -21,7 +21,7 @@ void Timer::stop()
 {
 	//On stoppe le timer
 	bStarted = false;
-	//On enl�ve la pause
+	//On enlève la pause
 	bPaused = false;
 }
 
@@ -32,10 +32,10 @@ int Timer::get_ticks()
 	{
 		//Si le timer est en pause
 		if( bPaused )
-			//On retourne le nombre de ticks quand le timer a �t� mis en pause
+			//On retourne le nombre de ticks quand le timer a été mis en pause
 			return pausedTicks;
 		else
-			//On retourne le temps courant moins le temps quand il a d�marr�
+			//On retourne le temps courant moins le temps quand il a démarré
 			return SDL_GetTicks() - startTicks;
 	}
 
@@ -61,10 +61,10 @@ void Timer::unpause()
 	{
 		bPaused = false;
 
-		//On remet � zero le startTicks
+		//On remet à zero le startTicks
 		startTicks = SDL_GetTicks() - pausedTicks;
 
-		//Remise � zero du pausedTicks
+		//Remise à zero du pausedTicks
 		pausedTicks = 0;
 	}
 }

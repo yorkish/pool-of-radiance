@@ -25,7 +25,7 @@ class Donnees
 		RaceInfo                   getRaceInfo(Race_e race);
 		std::vector<NodeClasse>    getCharacterClasses(Class_e classe);
 		THAC_GenerationTable       getTHACInfo(Class_e classe, int level);
-		RollOperation              getStartingAge(Race_e race, Class_e classe);
+		std::vector<RollOperation> getStartingAge(Race_e race, Class_e classe);
 		std::vector<RollOperation> getStartingGold(Class_e classe);
 		RollOperation              getHpRoll(Class_e classe, int level, int bonusPerDie);
 		Class_e                    getMClassRestriction(Class_e classe, MClassRestiction_e mClassRestriction);

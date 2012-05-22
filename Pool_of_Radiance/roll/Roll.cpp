@@ -51,7 +51,7 @@ int Roll::throwDice()
 			nbreLancersY = (*iter).getNbreLancersY();
 			diceResultX = diceResultY = 0;
 
-			//On ex�cute la fonction sp�ciale de l'op�rande X
+			//On exécute la fonction spéciale de l'opérande X
 			diceResultX = appliquerFonctionSpeciale(resultats, iter);
 
 			for(j = 0; j < nbreLancersY; j++)
@@ -63,7 +63,7 @@ int Roll::throwDice()
 			nbreLancersY = (*iter).getNbreLancersY();
 			diceResultX = diceResultY = 0;
 
-			//On roule les d�s
+			//On roule les dés
 			for(j = 0; j < nbreLancersX; j++)
 				diceResultX += (*iter).getDiceX().throwDice();
 
@@ -93,7 +93,7 @@ int Roll::appliquerFonctionSpeciale(vector<int>& resultats, vector<RollOperation
 	int temp;
 
 	if ( (*iter).isX_OperationMAX() ) {
-		//Utilise la fonction de trie par d�faut (ordre croissant);
+		//Utilise la fonction de trie par défaut (ordre croissant);
 		sort(resultats.begin(), resultats.end());
 
 		temp = resultats.back();
@@ -106,10 +106,10 @@ int Roll::appliquerFonctionSpeciale(vector<int>& resultats, vector<RollOperation
 		return temp;
 
 	} else if ( (*iter).isX_OperationBEST3() ) {
-		//Utilise la fonction de trie par d�faut (ordre croissant);
+		//Utilise la fonction de trie par défaut (ordre croissant);
 		sort(resultats.begin(), resultats.end(), decroissant);
 
-		//On garde les 3 plus grand lancer de d�s
+		//On garde les 3 plus grand lancer de dés
 		int nbreElem = resultats.size() - 3;
 		for (int i = 0; i < nbreElem; i++)
 			resultats.pop_back();

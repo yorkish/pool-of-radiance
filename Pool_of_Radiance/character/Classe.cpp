@@ -96,8 +96,8 @@ int Classe::getLevel()
 
 int Classe::getTHAC0(int bonus)
 {
-	//Un bonus positif d�place l'indice vers la droite (meilleures chances)
-	//Un bonus n�gatif d�place l'indice vers la gauche du tableau (moins bonnes chances)
+	//Un bonus positif déplace l'indice vers la droite (meilleures chances)
+	//Un bonus négatif déplace l'indice vers la gauche du tableau (moins bonnes chances)
 	return THAC_Table[THAC0 + bonus];
 }
 

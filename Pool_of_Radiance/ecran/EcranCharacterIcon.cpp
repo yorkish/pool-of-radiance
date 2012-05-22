@@ -34,7 +34,7 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 		break;
 
 
-	// Menu PARTS D�BUT
+	// Menu PARTS DÉBUT
 	case PARTS:
 		switch (infTouches.caractere) {
 		case SDLK_h: statusEcran = CHOOSE_HEAD  ; break;
@@ -66,7 +66,7 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 	// Menu PARTS FIN
 
 
-	// Menu COLOR_1 D�BUT
+	// Menu COLOR_1 DÉBUT
 	case COLOR_1:
 		switch (infTouches.caractere) {
 		case SDLK_w: statusEcran = WEAPON_COLOR_1; couleurOriginale = character.icon.weapon1; break;
@@ -142,7 +142,7 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 	// Menu COLOR_1 FIN
 
 
-	// Menu COLOR_2 D�BUT
+	// Menu COLOR_2 DÉBUT
 	case COLOR_2:
 		switch (infTouches.caractere) {
 		case SDLK_w: statusEcran = WEAPON_COLOR_2; couleurOriginale = character.icon.weapon2; break;

@@ -31,13 +31,17 @@ void EcranMenuPrincipal::handleEvent( TInfoTouches& infTouches )
 
 		default: break;
 		}
+
 	else if (posMenu == LOAD) {
 		vector<char>::iterator iter = lstSauvegarde.begin();
 		while (iter != lstSauvegarde.end()) {
-			if (*iter == infTouches.caractere)
+			if (*iter == infTouches.caractere) {
 				oPileMessage.pushMessage( Message(OBJ_ECRAN_MENU_PRINCIPAL, OBJ_SAVE_GAME_MANAGER, GM_CHARGER_PARTIE, &infTouches.caractere) );
+			}
 			iter++;
 		}
+		posMenu = MAIN_MENU;
+
 	} else
 		switch (infTouches.caractere) {
 		case SDLK_c:
@@ -51,8 +55,6 @@ void EcranMenuPrincipal::handleEvent( TInfoTouches& infTouches )
 		case SDLK_a:
 			if (posMenu == MAIN_MENU)
 				posMenu = EXIT;
-			else if (posMenu == LOAD)
-				posMenu = MAIN_MENU;
 			break;
 
 		case SDLK_l:
@@ -70,7 +72,7 @@ void EcranMenuPrincipal::handleEvent( TInfoTouches& infTouches )
 		default: break;
 		}
 
-	if (posMenu != LOAD && posMenu != EXITING)
+	if (posMenu != EXITING)
 		switchPosition();
 }
 

@@ -5,7 +5,7 @@
 using std::string;
 using std::cout  ; using std::endl;
 
-// Initialisation du singleton à NULL
+// Initialisation du singleton Ã  NULL
 Affichage* Affichage::singleton = 0;
 
 Affichage::Affichage() : fullScreen(0) {
@@ -79,7 +79,7 @@ SDL_Surface* Affichage::loadImage(string filename)
 SDL_Surface* Affichage::loadImage(string filename, Uint8 cKeyR, Uint8 cKeyG, Uint8 cKeyB)
 {
 	SDL_Surface* loadedImage    = NULL; // Surface tampon qui nous servira pour charger l'image
-	SDL_Surface* optimizedImage = NULL; // L'image optimisée qu'on va utiliser
+	SDL_Surface* optimizedImage = NULL; // L'image optimisÃ©e qu'on va utiliser
 	Uint32 colorkey;                    // Code couleur pour la transparence
 
 	loadedImage = loadImage(filename);
@@ -88,10 +88,10 @@ SDL_Surface* Affichage::loadImage(string filename, Uint8 cKeyR, Uint8 cKeyG, Uin
 		colorkey = SDL_MapRGB(loadedImage->format, cKeyR, cKeyG, cKeyB);
 		SDL_SetColorKey(loadedImage, SDL_RLEACCEL | SDL_SRCCOLORKEY, colorkey);
 
-		//Création de l'image optimisée
+		//CrÃ©ation de l'image optimisÃ©e
 		optimizedImage = SDL_DisplayFormat(loadedImage);
 
-		//Libération de l'ancienne image
+		//LibÃ©ration de l'ancienne image
 		SDL_FreeSurface(loadedImage);
 	}
 
@@ -132,18 +132,18 @@ SDL_Surface* Affichage::swapColor(SDL_Surface* surface, Couleur oldColor, Couleu
 	if (surface == NULL)
 		return newSurface;
 
-	//On crée une nouvelle surface que l'on remplie de la nouvelle couleur
+	//On crÃ©e une nouvelle surface que l'on remplie de la nouvelle couleur
 	newSurface = copySurface(surface);
 	fillRect(newSurface, NULL, newColor);
 
-	//On change le clé de transparence = à la vieille couleur
+	//On change le clÃ© de transparence = la vieille couleur
 	setColorKey(surface, oldColor);
 
 	//On applique la surface source sur la nouvelle surface
 	//Ce qui donnera changera l'ancienne couleur par la nouvelle
 	SDL_BlitSurface(surface, NULL, newSurface, NULL);
 
-	//On applique la clé de transparence sur la nouvelle surface (noir)
+	//On applique la clÃ© de transparence sur la nouvelle surface (noir)
 	setColorKey(newSurface, cNOIR);
 
 	SDL_FreeSurface(surface);
