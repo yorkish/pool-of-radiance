@@ -1,5 +1,5 @@
 #include "Evenement.h"
-#include <SDL/SDL_keyboard.h>
+#include <SDL2/SDL_keyboard.h>
 #include <iostream>
 #include <string>
 
@@ -66,21 +66,20 @@ TInfoTouches Evenement::lireClavier()
 
 	if (event.type == SDL_KEYDOWN) {
 
-		Uint16 unicode = event.key.keysym.unicode;
-		SDLKey touche  = event.key.keysym.sym;
+		SDL_Keycode key  = event.key.keysym.sym;
 
-		if( unicode >= SDLK_EXCLAIM && unicode < SDLK_DELETE ) {
+		if( key >= SDLK_EXCLAIM && key < SDLK_DELETE ) {
 
 			// 'A-Z' --> 'a-z'
-			if (unicode >= 65 && unicode <= 90)
-				infoTouches.caractere = (char) (unicode - 65 + 97);
+			if (key >= 65 && key <= 90)
+				infoTouches.caractere = (char) (key - 65 + 97);
 
-			else if ( (unicode >= SDLK_a && unicode <= SDLK_z)   ||
-					  (unicode >= SDLK_0 && unicode <= SDLK_9)    )
-				infoTouches.caractere = (char) unicode;
+			else if ( (key >= SDLK_a && key <= SDLK_z)   ||
+					  (key >= SDLK_0 && key <= SDLK_9)    )
+				infoTouches.caractere = (char) key;
 
 			else {
-				switch(unicode) {
+				switch(key) {
 				case SDLK_EXCLAIM    : case SDLK_AMPERSAND  :
 				case SDLK_AT         : case SDLK_COLON      :
 				case SDLK_COMMA      : case SDLK_EQUALS     :
@@ -94,25 +93,25 @@ TInfoTouches Evenement::lireClavier()
 				case SDLK_KP_PLUS    : case SDLK_PERIOD     :
 				case SDLK_KP_PERIOD  : case SDLK_SLASH      :
 				case SDLK_KP_DIVIDE  :
-					infoTouches.caractere = (char) unicode; break;
+					infoTouches.caractere = (char) key; break;
 
 				default: break;
 				}
 			}
 
 		} else {
-			switch (touche) {
-			case SDLK_KP1       : infoTouches.bBas           = true;
+			switch (key) {
+			case SDLK_KP_1       : infoTouches.bBas           = true;
 								  infoTouches.bGauche        = true; break;
-			case SDLK_KP2       : infoTouches.bBas           = true; break;
-			case SDLK_KP3       : infoTouches.bBas           = true;
+			case SDLK_KP_2       : infoTouches.bBas           = true; break;
+			case SDLK_KP_3       : infoTouches.bBas           = true;
 								  infoTouches.bDroite        = true; break;
-			case SDLK_KP4       : infoTouches.bGauche        = true; break;
-			case SDLK_KP6       : infoTouches.bDroite        = true; break;
-			case SDLK_KP7       : infoTouches.bHaut          = true;
+			case SDLK_KP_4       : infoTouches.bGauche        = true; break;
+			case SDLK_KP_6       : infoTouches.bDroite        = true; break;
+			case SDLK_KP_7       : infoTouches.bHaut          = true;
 								  infoTouches.bGauche        = true; break;
-			case SDLK_KP8		: infoTouches.bHaut          = true; break;
-			case SDLK_KP9		: infoTouches.bHaut          = true;
+			case SDLK_KP_8		: infoTouches.bHaut          = true; break;
+			case SDLK_KP_9		: infoTouches.bHaut          = true;
 								  infoTouches.bDroite        = true; break;
 			case SDLK_DOWN		: infoTouches.bBas           = true; break;
 			case SDLK_LEFT		: infoTouches.bGauche        = true; break;

@@ -1,6 +1,6 @@
 #include "Timer.h"
 #include <iostream>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 using namespace std;
 

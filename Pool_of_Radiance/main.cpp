@@ -1,6 +1,6 @@
 #define SDL_main main
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include <time.h>
 #include <iostream>
 #include <vector>

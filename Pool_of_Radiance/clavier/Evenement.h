@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include "../common/Global.h"
 
 static class Evenement
@@ -20,8 +20,6 @@ static class Evenement
 
 	private:
 		bool traiterEvenementsGeneraux();
-		void PrintKeyInfo( SDL_KeyboardEvent *key );
-		void PrintModifiers( SDLMod mod );
 
 		SDL_Event event;
 

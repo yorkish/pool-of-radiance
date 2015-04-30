@@ -13,6 +13,8 @@ class EtatJeu
         virtual void verifierMessages() = 0;
         virtual void release() = 0;
 
+        virtual ~EtatJeu() {}
+
     protected:
         PileMessage& oPileMessage;
 };

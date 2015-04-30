@@ -19,7 +19,7 @@ class EtatIntro : public EtatJeu
 
         bool finished();
 
-		~EtatIntro();
+		virtual ~EtatIntro();
 
 	private:
 

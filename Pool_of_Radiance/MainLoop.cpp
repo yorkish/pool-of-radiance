@@ -6,7 +6,9 @@
 #include "common/Timer.h"
 #include "common/Donnees.h"
 
-MainLoop::MainLoop() {}
+MainLoop::MainLoop()
+{
+}
 
 bool MainLoop::start()
 {
@@ -16,25 +18,30 @@ bool MainLoop::start()
 	int ticks;
 	TInfoTouches infoTouches;
 
-	//On affiche en 640x400
-	if (!affichage.initSurfacePrincipale())
+	if (!affichage.initRenderer())
+	{
 		return true;
-
-	//On travaille en 320x200
-	affichage.initSurfaceTravail();
+	}
 
 	if (!oJeu.init())
+	{
 		return true;
+	}
 
-	while ( true )
+	while (true)
 	{
 		fps.start();
 
-		if ( oEvenement.verifierEvent() ) {
-			if ( oEvenement.estToggleFullScreen())
+		if (oEvenement.verifierEvent())
+		{
+			if (oEvenement.estToggleFullScreen())
+			{
 				affichage.toggleFullScreen();
-			else if ( oEvenement.estQuitter() )
+			}
+			else if (oEvenement.estQuitter())
+			{
 				break;
+			}
 
 			infoTouches = oEvenement.lireClavier();
 
@@ -44,19 +51,27 @@ bool MainLoop::start()
 
 		oJeu.verifierMessages();
 
+		affichage.preRender();
+
 		oJeu.draw();
 
-		affichage.afficherSurfacePrincipale();
+		affichage.preRender();
 
 		ticks = fps.get_ticks();
-		if ( ticks < DELAIS_MS )
+		if (ticks < DELAIS_MS)
+		{
 			affichage.introduireDelai(DELAIS_MS - ticks);
+		}
 
 		if (oJeu.exitRequested())
+		{
 			break;
+		}
 	}
 
 	return false;
 }
 
-MainLoop::~MainLoop() {}
+MainLoop::~MainLoop()
+{
+}

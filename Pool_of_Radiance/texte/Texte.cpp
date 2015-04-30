@@ -1,16 +1,16 @@
 #include <string>
 #include <cstring>
 #include <list>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include <iostream>
 #include "Texte.h"
 
 using namespace std;
 
-Texte::Texte(SDL_Surface* imageFont) : idTexte(-1), tabTexte(0), tabTexteMax(-1),
+Texte::Texte(SDL_Surface* imageFont) : oAffichage(Affichage::getInstance()) /*idTexte(-1), tabTexte(0), tabTexteMax(-1),
 									   couleurTexte(cBLANC), couleurPremiereLettre(cBLANC),
 									   couleurDerniereLettre(cBLANC), posX(0), posY(0),
-									   oAffichage(Affichage::getInstance())
+									   */
 {
 	fontPremiereLettre = oAffichage.copySurface(imageFont);
 	fontTexte          = oAffichage.copySurface(imageFont);

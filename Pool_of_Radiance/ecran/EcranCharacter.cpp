@@ -16,8 +16,8 @@ EcranCharacter::EcranCharacter() :
 bool EcranCharacter::init()
 {
 	if (oListeTexte.init()) {
-		spritesTetes = oAffichage.loadImage("data/images/HEAD_DAX.png", 0, 0, 255);
-		spritesCorps = oAffichage.loadImage("data/images/BODY_DAX.png", 0, 0, 255);
+		spritesTetes = oAffichage.loadImageAsSurface("data/images/HEAD_DAX.png", 0, 0, 255);
+		spritesCorps = oAffichage.loadImageAsSurface("data/images/BODY_DAX.png", 0, 0, 255);
 
 		oPileMessage.pushMessage( Message(OBJ_ECRAN_CHARACTER, OBJ_PERSONNAGE_EN_CREATION, GM_GENERER_PERSONNAGE) );
 

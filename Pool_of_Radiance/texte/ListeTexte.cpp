@@ -7,7 +7,7 @@ ListeTexte::ListeTexte(): oAffichage(Affichage::getInstance())
 
 bool ListeTexte::init()
 {
-	imageFont = oAffichage.loadImage("data/images/font.png", 0, 0, 0);
+	imageFont = oAffichage.loadImageAsSurface("data/images/font.png", 0, 0, 0);
 
 	return (imageFont != 0);
 }

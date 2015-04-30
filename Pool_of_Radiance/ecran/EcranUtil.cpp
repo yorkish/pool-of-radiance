@@ -6,7 +6,7 @@ EcranUtil::EcranUtil(): oAffichage(Affichage::getInstance()), tuileMenu(0) {}
 bool EcranUtil::init()
 {
 	if (tuileMenu == 0)
-		tuileMenu = oAffichage.loadImage("data/images/common.png", 0, 0, 0);
+		tuileMenu = oAffichage.loadImageAsSurface("data/images/common.png", 0, 0, 0);
 
 	return (tuileMenu != 0);
 }

@@ -7,7 +7,7 @@
 
 using std::cout;
 
-Jeu::Jeu(): oPileMessage(PileMessage::getInstance())
+Jeu::Jeu(): typeEtat(GAME_STATE_UNDEFINED), oPileMessage(PileMessage::getInstance())
 {}
 
 bool Jeu::init()

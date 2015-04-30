@@ -1,7 +1,7 @@
 #include "EtatIntro.h"
 #include "../queue/Message.h"
 
-EtatIntro::EtatIntro() : sequence(CREDITS), oAffichage(Affichage::getInstance())
+EtatIntro::EtatIntro() : sequence(LOADING), oAffichage(Affichage::getInstance()), imagesIntro(0)
 {}
 
 bool EtatIntro::init()
@@ -21,7 +21,7 @@ bool EtatIntro::chargerImage()
 	case SSI:
 	case POOL:
 	case CREDITS:
-		imagesIntro = oAffichage.loadImage("data/images/TITLE_DAX.png", 0, 0, 255);
+		imagesIntro = oAffichage.loadImageAsSurface("data/images/TITLE_DAX.png", 0, 0, 255);
 		break;
 	}
 

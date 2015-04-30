@@ -47,12 +47,12 @@ class Donnees
 
 		static Donnees* singleton;
 
-		xalanc_1_10::XalanSourceTreeInit			theSourceTreeInit;
-		xalanc_1_10::XalanSourceTreeDOMSupport		theDOMSupport;
-		xalanc_1_10::XalanSourceTreeParserLiaison	theLiaison;
-		xalanc_1_10::XalanDocument*					theDocument;
-		xalanc_1_10::XalanDocumentPrefixResolver*	thePrefixResolver;
-		xalanc_1_10::XalanNode* 					root;
+		xalanc_1_11::XalanSourceTreeInit			theSourceTreeInit;
+		xalanc_1_11::XalanSourceTreeDOMSupport		theDOMSupport;
+		xalanc_1_11::XalanSourceTreeParserLiaison	theLiaison;
+		xalanc_1_11::XalanDocument*					theDocument;
+		xalanc_1_11::XalanDocumentPrefixResolver*	thePrefixResolver;
+		xalanc_1_11::XalanNode* 					root;
 
 		bool loadError;
 

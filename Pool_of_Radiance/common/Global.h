@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include <vector>
 #include "../roll/Roll.h"
 #include "../roll/RollOperation.h"
@@ -23,7 +23,7 @@ class InfoAlloc {
 
 extern std::vector<InfoAlloc> gbl_Memoire;
 
-//Les attributs de notre �cran
+//Les attributs de notre écran
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 400;
 const int SCREEN_BPP = 32;
@@ -45,7 +45,7 @@ const int PORTRAIT_MAX_CORPS = 12;
 const std::string FILE_WINDOW_SETTING = "data/settings/window.txt";
 const std::string FILE_OSRIC_RULES    = "data/rules/osricRules.xml";
 
-enum GameState { INTRO, MENU, VIEWPORT, MAP, EXIT_REQUESTED };
+enum GameState { INTRO, MENU, VIEWPORT, MAP, EXIT_REQUESTED, GAME_STATE_UNDEFINED };
 
 enum TypeDirection { DIR_N, DIR_S, DIR_O, DIR_E };
 
@@ -75,22 +75,22 @@ enum Couleur {cNOIR       , cBLEU         , cVERT      , cCYAN        ,
 	          cROUGE_CLAIR, cMAGENTA_CLAIR, cJAUNE     , cBLANC       ,
 	          cMEME_COULEUR                                            };
 
-const SDL_Color COUL_NOIR          = {0x00, 0x00, 0x00, 0}; // Default Palette:  0
-const SDL_Color COUL_BLEU          = {0x00, 0x00, 0xAA, 0}; // Default Palette:  1
-const SDL_Color COUL_VERT          = {0x00, 0xAA, 0x00, 0}; // Default Palette:  2
-const SDL_Color COUL_CYAN          = {0x00, 0xAA, 0xAA, 0}; // Default Palette:  3
-const SDL_Color COUL_ROUGE         = {0xAA, 0x00, 0x00, 0}; // Default Palette:  4
-const SDL_Color COUL_MAGENTA       = {0xAA, 0x00, 0xAA, 0}; // Default Palette:  5
-const SDL_Color COUL_BRUN          = {0xAA, 0x55, 0x00, 0}; // Default Palette:  6
-const SDL_Color COUL_GRIS_CLAIR    = {0xAA, 0xAA, 0xAA, 0}; // Default Palette:  7
-const SDL_Color COUL_GRIS_FONCE    = {0x55, 0x55, 0x55, 0}; // Default Palette:  8
-const SDL_Color COUL_BLEU_CLAIR    = {0x55, 0x55, 0xFF, 0}; // Default Palette:  9
-const SDL_Color COUL_VERT_CLAIR    = {0x55, 0xFF, 0x55, 0}; // Default Palette: 10
-const SDL_Color COUL_CYAN_CLAIR    = {0x55, 0xFF, 0xFF, 0}; // Default Palette: 11
-const SDL_Color COUL_ROUGE_CLAIR   = {0xFF, 0x55, 0x55, 0}; // Default Palette: 12
-const SDL_Color COUL_MAGENTA_CLAIR = {0xFF, 0x55, 0xFF, 0}; // Default Palette: 13
-const SDL_Color COUL_JAUNE         = {0xFF, 0xFF, 0x55, 0}; // Default Palette: 14
-const SDL_Color COUL_BLANC         = {0xFF, 0xFF, 0xFF, 0}; // Default Palette: 15
+const SDL_Color COUL_NOIR          = {0x00, 0x00, 0x00, 0xFF}; // Default Palette:  0
+const SDL_Color COUL_BLEU          = {0x00, 0x00, 0xAA, 0xFF}; // Default Palette:  1
+const SDL_Color COUL_VERT          = {0x00, 0xAA, 0x00, 0xFF}; // Default Palette:  2
+const SDL_Color COUL_CYAN          = {0x00, 0xAA, 0xAA, 0xFF}; // Default Palette:  3
+const SDL_Color COUL_ROUGE         = {0xAA, 0x00, 0x00, 0xFF}; // Default Palette:  4
+const SDL_Color COUL_MAGENTA       = {0xAA, 0x00, 0xAA, 0xFF}; // Default Palette:  5
+const SDL_Color COUL_BRUN          = {0xAA, 0x55, 0x00, 0xFF}; // Default Palette:  6
+const SDL_Color COUL_GRIS_CLAIR    = {0xAA, 0xAA, 0xAA, 0xFF}; // Default Palette:  7
+const SDL_Color COUL_GRIS_FONCE    = {0x55, 0x55, 0x55, 0xFF}; // Default Palette:  8
+const SDL_Color COUL_BLEU_CLAIR    = {0x55, 0x55, 0xFF, 0xFF}; // Default Palette:  9
+const SDL_Color COUL_VERT_CLAIR    = {0x55, 0xFF, 0x55, 0xFF}; // Default Palette: 10
+const SDL_Color COUL_CYAN_CLAIR    = {0x55, 0xFF, 0xFF, 0xFF}; // Default Palette: 11
+const SDL_Color COUL_ROUGE_CLAIR   = {0xFF, 0x55, 0x55, 0xFF}; // Default Palette: 12
+const SDL_Color COUL_MAGENTA_CLAIR = {0xFF, 0x55, 0xFF, 0xFF}; // Default Palette: 13
+const SDL_Color COUL_JAUNE         = {0xFF, 0xFF, 0x55, 0xFF}; // Default Palette: 14
+const SDL_Color COUL_BLANC         = {0xFF, 0xFF, 0xFF, 0xFF}; // Default Palette: 15
 
 // Overload the Couleur++ operator
 inline Couleur& operator++(Couleur& eDOW, int)

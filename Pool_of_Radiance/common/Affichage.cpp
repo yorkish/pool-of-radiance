@@ -3,22 +3,28 @@
 #include "Fichier.h"
 
 using std::string;
-using std::cout  ; using std::endl;
+using std::cout;
+using std::endl;
 
 // Initialisation du singleton à NULL
 Affichage* Affichage::singleton = 0;
 
-Affichage::Affichage() : fullScreen(0) {
+Affichage::Affichage() :
+		fullScreen(0)
+{
 
 	Fichier oFic;
 
-	surfacePrincipale = 0;
-	surfaceTravail = 0;
-	surfaceZoom2x = 0;
+	renderer = 0;
+	window = 0;
+	screen = 0;
 
-	src.w = SCREEN_WIDTH; src.h = SCREEN_HEIGHT;
-	src.y = 0; src.x = 0;
-	dst.x = 0; dst.y = 0;
+	src.w = SCREEN_WIDTH;
+	src.h = SCREEN_HEIGHT;
+	src.y = 0;
+	src.x = 0;
+	dst.x = 0;
+	dst.y = 0;
 
 	// Read window properties
 	if (!oFic.ouvrirFichier(FILE_WINDOW_SETTING))
@@ -29,46 +35,55 @@ Affichage::Affichage() : fullScreen(0) {
 	oFic.fermerFichier();
 }
 
-Affichage& Affichage::getInstance() {
+Affichage& Affichage::getInstance()
+{
 	if (singleton == 0)
 		singleton = new Affichage();
 
 	return *singleton;
 }
 
-bool Affichage::initSurfacePrincipale() {
-	// initialise SDL
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) == -1) {
+bool Affichage::initRenderer()
+{
+	// Initialize SDL
+	if (SDL_Init(SDL_INIT_VIDEO) == -1)
+	{
 		printf("Could not load SDL : %s\n", SDL_GetError());
 		return false;
 	}
 
-	SDL_EnableUNICODE(SDL_ENABLE);
 	atexit(SDL_Quit);
 
 	// Window Properties
-	SDL_WM_SetCaption(strCaption.c_str(), NULL);
+	window = SDL_CreateWindow(strCaption.c_str(),
+	SDL_WINDOWPOS_UNDEFINED,
+	SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+
+	screen = SDL_CreateRGBSurface(0, TRAVAIL_WIDTH, TRAVAIL_HEIGHT, SCREEN_BPP, 0x00FF0000, 0x0000FF00, 0x000000FF,
+			0xFF000000);
+
+	renderer = SDL_CreateRenderer(window, -1, 0);
+
+	// Icon
 	SDL_Surface* icon = SDL_LoadBMP(strIcone.c_str());
-	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, SDL_MapRGB(icon->format, 0, 0, 0));
-	SDL_WM_SetIcon(icon, NULL);
+	SDL_SetColorKey(icon, SDL_TRUE, SDL_MapRGB(icon->format, 0, 0, 0));
+	SDL_SetWindowIcon(window, icon);
+	SDL_FreeSurface(icon);
+
+	// Cursor
 	SDL_ShowCursor(SDL_ENABLE);
 
-	surfacePrincipale
-			= SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP,
-								SDL_HWSURFACE | SDL_DOUBLEBUF /*|SDL_FULLSCREEN*/);
+	// Set logical 640x480
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // make the scaled rendering look smoother.
+	SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	if (surfacePrincipale != 0)
+	if (renderer != 0)
 		return true;
-	else {
-		printf("Can't set video mode: %s\n", SDL_GetError());
+	else
+	{
+		printf("Can't init window: %s\n", SDL_GetError());
 		return false;
 	}
-}
-
-void Affichage::initSurfaceTravail() {
-	surfaceTravail = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_DOUBLEBUF,
-											TRAVAIL_WIDTH, TRAVAIL_HEIGHT,
-											SCREEN_BPP, 0, 0, 0, 0);
 }
 
 SDL_Surface* Affichage::loadImage(string filename)
@@ -76,26 +91,54 @@ SDL_Surface* Affichage::loadImage(string filename)
 	return IMG_Load(filename.c_str());
 }
 
-SDL_Surface* Affichage::loadImage(string filename, Uint8 cKeyR, Uint8 cKeyG, Uint8 cKeyB)
+SDL_Texture* Affichage::loadImage(string filename, Uint8 cKeyR, Uint8 cKeyG, Uint8 cKeyB)
 {
-	SDL_Surface* loadedImage    = NULL; // Surface tampon qui nous servira pour charger l'image
-	SDL_Surface* optimizedImage = NULL; // L'image optimisée qu'on va utiliser
-	Uint32 colorkey;                    // Code couleur pour la transparence
+	SDL_Surface* surface = NULL;
+	SDL_Texture* texture = NULL;
+	Uint32 colorkey;
 
-	loadedImage = loadImage(filename);
+	surface = loadImage(filename);
 
-	if (loadedImage != NULL) {
-		colorkey = SDL_MapRGB(loadedImage->format, cKeyR, cKeyG, cKeyB);
-		SDL_SetColorKey(loadedImage, SDL_RLEACCEL | SDL_SRCCOLORKEY, colorkey);
+	if (surface != NULL)
+	{
 
-		//Création de l'image optimisée
-		optimizedImage = SDL_DisplayFormat(loadedImage);
+		colorkey = SDL_MapRGB(surface->format, cKeyR, cKeyG, cKeyB);
+		SDL_SetColorKey(surface, SDL_TRUE, colorkey);
 
-		//Libération de l'ancienne image
-		SDL_FreeSurface(loadedImage);
+		texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+		SDL_FreeSurface(surface);
 	}
 
-	return optimizedImage;
+	return texture;
+}
+
+SDL_Surface* Affichage::loadImageAsSurface(string filename, Uint8 cKeyR, Uint8 cKeyG, Uint8 cKeyB)
+{
+	SDL_Surface* surface = NULL;
+	SDL_Surface* optimizedSurface = NULL;
+	Uint32 colorkey;
+
+	surface = loadImage(filename);
+
+	if (surface != NULL)
+	{
+		colorkey = SDL_MapRGB(surface->format, cKeyR, cKeyG, cKeyB);
+		SDL_SetColorKey(surface, SDL_TRUE, colorkey);
+
+		optimizedSurface = SDL_ConvertSurface(surface, screen->format, 0);
+
+		SDL_FreeSurface(surface);
+	}
+
+	return optimizedSurface;
+}
+
+void Affichage::fillRect(SDL_Rect* clip, Couleur couleur)
+{
+	SDL_Color couleurRGB = mapColor(couleur);
+	SDL_SetRenderDrawColor(renderer, couleurRGB.r, couleurRGB.g, couleurRGB.b, couleurRGB.a);
+	SDL_RenderFillRect(renderer, clip);
 }
 
 void Affichage::fillRect(SDL_Surface* surface, SDL_Rect* clip, Couleur couleur)
@@ -108,21 +151,24 @@ void Affichage::fillRect(SDL_Surface* surface, SDL_Rect* clip, Couleur couleur)
 
 void Affichage::wipeScreen(Couleur couleur)
 {
-	fillRect(surfaceTravail, NULL, couleur);
+	SDL_Color couleurRGB = mapColor(couleur);
+	SDL_SetRenderDrawColor(renderer, couleurRGB.r, couleurRGB.g, couleurRGB.b, couleurRGB.a);
+	SDL_RenderClear(renderer);
 }
 
-SDL_Surface* Affichage::copySurface(SDL_Surface* source)
+SDL_Surface* Affichage::copySurface(SDL_Surface* surface)
 {
-	SDL_Surface* destination = NULL;
+	SDL_Surface* newSurface = NULL;
 
-	if (source != NULL) {
-		destination = SDL_DisplayFormat(source);
+	if (surface != NULL)
+	{
+		newSurface = SDL_ConvertSurface(surface, screen->format, 0);
 
-		if(destination != NULL)
-			SDL_BlitSurface(source, NULL, destination, NULL);
+		if (newSurface != NULL)
+			SDL_BlitSurface(surface, NULL, newSurface, NULL);
 	}
 
-  return destination;
+	return newSurface;
 }
 
 SDL_Surface* Affichage::swapColor(SDL_Surface* surface, Couleur oldColor, Couleur newColor)
@@ -158,125 +204,149 @@ void Affichage::setColorKey(SDL_Surface* surface, Couleur couleur)
 
 	couleurRGB = mapColor(couleur);
 	colorKey = SDL_MapRGB(surface->format, couleurRGB.r, couleurRGB.g, couleurRGB.b);
-	SDL_SetColorKey(surface, SDL_RLEACCEL | SDL_SRCCOLORKEY, colorKey);
+	SDL_SetColorKey(surface, SDL_TRUE, colorKey);
 }
 
 void Affichage::applySurface(int x, int y, SDL_Surface* source, SDL_Rect& clip)
 {
-	SDL_Rect offset;
+	/*SDL_Rect offset;
 
 	offset.x = x;
 	offset.y = y;
 
 	//On blit la surface
-	SDL_BlitSurface(source, &clip, surfaceTravail, &offset);
+	SDL_BlitSurface(source, &clip, surfaceTravail, &offset);*/
 }
 
-void Affichage::drawPixel(int x, int y, Uint8 R, Uint8 G, Uint8 B) {
-	Uint32 color = SDL_MapRGB(surfaceTravail->format, R, G, B);
+/*void Affichage::drawPixel(int x, int y, Uint8 R, Uint8 G, Uint8 B) {
+ Uint32 color = SDL_MapRGB(surfaceTravail->format, R, G, B);
 
-	switch(surfaceTravail->format->BytesPerPixel) {
-	case 1: // Assuming 8-bpp
-	{
-		Uint8 *bufp;
-		bufp = (Uint8 *) surfaceTravail->pixels + y * surfaceTravail->pitch + x;
-		*bufp = color;
-	}
-		break;
+ switch(surfaceTravail->format->BytesPerPixel) {
+ case 1: // Assuming 8-bpp
+ {
+ Uint8 *bufp;
+ bufp = (Uint8 *) surfaceTravail->pixels + y * surfaceTravail->pitch + x;
+ *bufp = color;
+ }
+ break;
 
-	case 2: // Probably 15-bpp or 16-bpp
-	{
-		Uint16 *bufp;
-		bufp = (Uint16 *) surfaceTravail->pixels + y * surfaceTravail->pitch
-				/ 2 + x;
-		*bufp = color;
-	}
-		break;
+ case 2: // Probably 15-bpp or 16-bpp
+ {
+ Uint16 *bufp;
+ bufp = (Uint16 *) surfaceTravail->pixels + y * surfaceTravail->pitch
+ / 2 + x;
+ *bufp = color;
+ }
+ break;
 
-	case 3: // Slow 24-bpp mode, usually not used
-	{
-		Uint8 *bufp;
-		bufp = (Uint8 *) surfaceTravail->pixels + y * surfaceTravail->pitch + x
-				* 3;
-		if (SDL_BYTEORDER == SDL_LIL_ENDIAN) {
-			bufp[0] = color;
-			bufp[1] = color >> 8;
-			bufp[2] = color >> 16;
-		} else {
-			bufp[2] = color;
-			bufp[1] = color >> 8;
-			bufp[0] = color >> 16;
-		}
-	}
-		break;
+ case 3: // Slow 24-bpp mode, usually not used
+ {
+ Uint8 *bufp;
+ bufp = (Uint8 *) surfaceTravail->pixels + y * surfaceTravail->pitch + x
+ * 3;
+ if (SDL_BYTEORDER == SDL_LIL_ENDIAN) {
+ bufp[0] = color;
+ bufp[1] = color >> 8;
+ bufp[2] = color >> 16;
+ } else {
+ bufp[2] = color;
+ bufp[1] = color >> 8;
+ bufp[0] = color >> 16;
+ }
+ }
+ break;
 
-	case 4: // Probably 32-bpp
-	{
-		Uint32 *bufp;
-		bufp = (Uint32 *) surfaceTravail->pixels + y * surfaceTravail->pitch
-				/ 4 + x;
-		*bufp = color;
-	}
-		break;
-	}
-}
+ case 4: // Probably 32-bpp
+ {
+ Uint32 *bufp;
+ bufp = (Uint32 *) surfaceTravail->pixels + y * surfaceTravail->pitch
+ / 4 + x;
+ *bufp = color;
+ }
+ break;
+ }
+ }*/
 
-void Affichage::afficherSurfacePrincipale() {
-	SDL_FreeSurface(surfaceZoom2x);
-	surfaceZoom2x = zoomSurface(surfaceTravail, 2, 2, 0);
-	SDL_BlitSurface(surfaceZoom2x, &src, surfacePrincipale, &dst);
-
-	SDL_Flip(surfacePrincipale);
-}
-
-void Affichage::introduireDelai(Uint32 msec) {
+void Affichage::introduireDelai(Uint32 msec)
+{
 	SDL_Delay(msec);
 }
 
-void Affichage::toggleFullScreen() {
-	fullScreen = (fullScreen ? 0 : SDL_FULLSCREEN);
+void Affichage::toggleFullScreen()
+{
+	/*	fullScreen = (fullScreen ? 0 : SDL_WINDOW_FULLSCREEN);
 
-	fullScreen ? SDL_ShowCursor(SDL_DISABLE) : SDL_ShowCursor(SDL_ENABLE);
-
-	surfacePrincipale = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_HWSURFACE
-			| SDL_DOUBLEBUF | fullScreen);
+	 fullScreen ? SDL_ShowCursor(SDL_DISABLE) : SDL_ShowCursor(SDL_ENABLE);
+	 */
 }
 
-SDL_Color Affichage::mapColor(Couleur color) {
+void Affichage::preRender()
+{
+	SDL_RenderClear(renderer);
+}
 
-	switch (color) {
-	case cNOIR:				return COUL_NOIR;
-	case cBLEU:				return COUL_BLEU;
-	case cVERT:				return COUL_VERT;
-	case cCYAN:				return COUL_CYAN;
-	case cROUGE:			return COUL_ROUGE;
-	case cMAGENTA:			return COUL_MAGENTA;
-	case cBRUN:				return COUL_BRUN;
-	case cGRIS_CLAIR:		return COUL_GRIS_CLAIR;
-	case cGRIS_FONCE:		return COUL_GRIS_FONCE;
-	case cBLEU_CLAIR:		return COUL_BLEU_CLAIR;
-	case cVERT_CLAIR:		return COUL_VERT_CLAIR;
-	case cCYAN_CLAIR:		return COUL_CYAN_CLAIR;
-	case cROUGE_CLAIR:		return COUL_ROUGE_CLAIR;
-	case cMAGENTA_CLAIR:	return COUL_MAGENTA_CLAIR;
-	case cJAUNE:			return COUL_JAUNE;
-	case cBLANC:			return COUL_BLANC;
+void Affichage::postRender()
+{
+	SDL_RenderPresent(renderer);
+}
+
+SDL_Color Affichage::mapColor(Couleur color)
+{
+
+	switch (color)
+	{
+	case cNOIR:
+		return COUL_NOIR;
+	case cBLEU:
+		return COUL_BLEU;
+	case cVERT:
+		return COUL_VERT;
+	case cCYAN:
+		return COUL_CYAN;
+	case cROUGE:
+		return COUL_ROUGE;
+	case cMAGENTA:
+		return COUL_MAGENTA;
+	case cBRUN:
+		return COUL_BRUN;
+	case cGRIS_CLAIR:
+		return COUL_GRIS_CLAIR;
+	case cGRIS_FONCE:
+		return COUL_GRIS_FONCE;
+	case cBLEU_CLAIR:
+		return COUL_BLEU_CLAIR;
+	case cVERT_CLAIR:
+		return COUL_VERT_CLAIR;
+	case cCYAN_CLAIR:
+		return COUL_CYAN_CLAIR;
+	case cROUGE_CLAIR:
+		return COUL_ROUGE_CLAIR;
+	case cMAGENTA_CLAIR:
+		return COUL_MAGENTA_CLAIR;
+	case cJAUNE:
+		return COUL_JAUNE;
+	case cBLANC:
+		return COUL_BLANC;
 
 	case cMEME_COULEUR:
-	default:				return COUL_BLANC;
+	default:
+		return COUL_BLANC;
 	}
 }
 
-Affichage::~Affichage() {
+Affichage::~Affichage()
+{
 	if (singleton != 0)
 		delete singleton;
 
-	if (surfacePrincipale != 0)
-		SDL_FreeSurface(surfacePrincipale);
+	//Destroy window
+	if (renderer != 0)
+		SDL_DestroyRenderer(renderer);
 
-	if (surfaceTravail != 0)
-		SDL_FreeSurface(surfaceTravail);
+	if (window != 0)
+		SDL_DestroyWindow(window);
 
-	if (surfaceZoom2x != 0)
-		SDL_FreeSurface(surfaceZoom2x);
+	singleton = 0;
+	window = 0;
+	renderer = 0;
 }

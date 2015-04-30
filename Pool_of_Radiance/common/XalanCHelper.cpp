@@ -173,9 +173,9 @@ XalanNode* XalanCHelper::FirstChild(XalanNode* node) {
 	return XalanCHelper::NextSibling(newNode);
 }
 
-void XalanCHelper::setWorkingObjects(xalanc_1_10::XalanSourceTreeDOMSupport*	theDOMSupport,
-									 xalanc_1_10::XalanNode* 					root,
-									 xalanc_1_10::XalanDocumentPrefixResolver*	thePrefixResolver) {
+void XalanCHelper::setWorkingObjects(xalanc_1_11::XalanSourceTreeDOMSupport*	theDOMSupport,
+									 xalanc_1_11::XalanNode* 					root,
+									 xalanc_1_11::XalanDocumentPrefixResolver*	thePrefixResolver) {
 
 	XalanCHelper::theDOMSupport = theDOMSupport;
 	XalanCHelper::root = root;

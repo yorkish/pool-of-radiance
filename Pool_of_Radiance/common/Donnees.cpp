@@ -23,15 +23,8 @@ using std::list;
 using std::endl;
 using std::stringstream;
 
-XALAN_USING_XERCES(XMLPlatformUtils)
-XALAN_USING_XERCES(LocalFileInputSource)
-XALAN_USING_XALAN(XPathEvaluator)
-XALAN_USING_XALAN(XalanDocumentPrefixResolver)
-XALAN_USING_XALAN(XalanDOMString)
-XALAN_USING_XALAN(XObjectPtr)
-XALAN_USING_XALAN(NodeRefList);
-XALAN_USING_XALAN(XalanNode);
-XALAN_USING_XALAN(XalanNamedNodeMap);
+XALAN_CPP_NAMESPACE_USE
+XERCES_CPP_NAMESPACE_USE
 
 // Initialisation du singleton à NULL
 Donnees* Donnees::singleton = 0;
