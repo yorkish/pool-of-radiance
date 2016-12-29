@@ -20,7 +20,7 @@ class Affichage
 		void fillRect(SDL_Rect* clip, Couleur couleur);
 		void fillRect(SDL_Surface* surface, SDL_Rect* clip, Couleur couleur);
 
-		void wipeScreen(Couleur couleur = cNOIR);
+		void wipeScreen(Couleur couleur = Couleur::cNOIR);
 		SDL_Surface* copySurface(SDL_Surface* source);
 		SDL_Surface* swapColor(SDL_Surface* surface, Couleur oldColor, Couleur newColor);
 

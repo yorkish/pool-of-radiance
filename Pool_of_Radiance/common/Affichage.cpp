@@ -190,7 +190,7 @@ SDL_Surface* Affichage::swapColor(SDL_Surface* surface, Couleur oldColor, Couleu
 	SDL_BlitSurface(surface, NULL, newSurface, NULL);
 
 	//On applique la clé de transparence sur la nouvelle surface (noir)
-	setColorKey(newSurface, cNOIR);
+	setColorKey(newSurface, Couleur::cNOIR);
 
 	SDL_FreeSurface(surface);
 
@@ -295,40 +295,40 @@ SDL_Color Affichage::mapColor(Couleur color)
 
 	switch (color)
 	{
-	case cNOIR:
+	case Couleur::cNOIR:
 		return COUL_NOIR;
-	case cBLEU:
+	case Couleur::cBLEU:
 		return COUL_BLEU;
-	case cVERT:
+	case Couleur::cVERT:
 		return COUL_VERT;
-	case cCYAN:
+	case Couleur::cCYAN:
 		return COUL_CYAN;
-	case cROUGE:
+	case Couleur::cROUGE:
 		return COUL_ROUGE;
-	case cMAGENTA:
+	case Couleur::cMAGENTA:
 		return COUL_MAGENTA;
-	case cBRUN:
+	case Couleur::cBRUN:
 		return COUL_BRUN;
-	case cGRIS_CLAIR:
+	case Couleur::cGRIS_CLAIR:
 		return COUL_GRIS_CLAIR;
-	case cGRIS_FONCE:
+	case Couleur::cGRIS_FONCE:
 		return COUL_GRIS_FONCE;
-	case cBLEU_CLAIR:
+	case Couleur::cBLEU_CLAIR:
 		return COUL_BLEU_CLAIR;
-	case cVERT_CLAIR:
+	case Couleur::cVERT_CLAIR:
 		return COUL_VERT_CLAIR;
-	case cCYAN_CLAIR:
+	case Couleur::cCYAN_CLAIR:
 		return COUL_CYAN_CLAIR;
-	case cROUGE_CLAIR:
+	case Couleur::cROUGE_CLAIR:
 		return COUL_ROUGE_CLAIR;
-	case cMAGENTA_CLAIR:
+	case Couleur::cMAGENTA_CLAIR:
 		return COUL_MAGENTA_CLAIR;
-	case cJAUNE:
+	case Couleur::cJAUNE:
 		return COUL_JAUNE;
-	case cBLANC:
+	case Couleur::cBLANC:
 		return COUL_BLANC;
 
-	case cMEME_COULEUR:
+	case Couleur::cMEME_COULEUR:
 	default:
 		return COUL_BLANC;
 	}
