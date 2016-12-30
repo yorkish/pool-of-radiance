@@ -21,7 +21,7 @@ class InfoAlloc {
 		int line;  std::string source;  char type;
 };
 
-extern std::vector<InfoAlloc> gbl_Memoire;
+extern std::vector<InfoAlloc> _gblMemory;
 
 //Les attributs de notre écran
 const int SCREEN_WIDTH = 640;

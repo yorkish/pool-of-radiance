@@ -154,7 +154,7 @@ void Texte::setCouleurs(Couleur couleurTexte, Couleur couleurPremiereLettre, Cou
 Texte::~Texte()
 {
 	delete[] tabTexte;
-	//gbl_Memoire.push_back(InfoAlloc('R',__FILE__, __LINE__));
+	//_gblMemory.push_back(InfoAlloc('R',__FILE__, __LINE__));
 	SDL_FreeSurface(fontPremiereLettre);
 	SDL_FreeSurface(fontTexte);
 }

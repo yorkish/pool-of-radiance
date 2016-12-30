@@ -34,7 +34,7 @@ void SaveGameManager::verifierMessages()
 void* SaveGameManager::getLettresSauvegardes()
 {
 	vector<char>* lstSauvegarde = new vector<char>;
-	gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+	_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 
 	lstSauvegarde->push_back('A');  lstSauvegarde->push_back('B');
 	lstSauvegarde->push_back('C');  lstSauvegarde->push_back('D');

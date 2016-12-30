@@ -142,7 +142,7 @@ void EcranMenuPrincipal::verifierMessages()
 			lstSauvegarde = *temp;
 			ajouterLettresSauvegardes();
 			delete temp;
-			gbl_Memoire.push_back(InfoAlloc('D',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('D',__FILE__, __LINE__));
 			break;
 
 		default: break;

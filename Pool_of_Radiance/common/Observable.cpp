@@ -27,7 +27,7 @@ Observable::~Observable() {
 
 	while (iter != lstObserver.end()) {
 		delete *iter ;
-		gbl_Memoire.push_back(InfoAlloc('D',__FILE__, __LINE__));
+		_gblMemory.push_back(InfoAlloc('D',__FILE__, __LINE__));
 		iter++;
 	}
 

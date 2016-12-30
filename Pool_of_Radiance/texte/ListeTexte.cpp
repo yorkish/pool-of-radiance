@@ -25,7 +25,7 @@ void ListeTexte::draw()
 void ListeTexte::addTexte(string texte, int colonne, int ligne, Couleur couleurTexte, Couleur couleurPremiereLettre, Couleur couleurDerniereLettre)
 {
 	Texte* unTexte = new Texte(imageFont);
-	//gbl_Memoire.push_back(InfoAlloc('A',__FILE__, __LINE__));
+	//_gblMemory.push_back(InfoAlloc('A',__FILE__, __LINE__));
 
 	unTexte->setPosition(colonne*8, ligne*8);
 	unTexte->setCouleurs(couleurTexte, couleurPremiereLettre, couleurDerniereLettre);

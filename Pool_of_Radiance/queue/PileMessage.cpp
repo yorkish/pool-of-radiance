@@ -3,24 +3,25 @@
 // Initialisation du singleton à NULL
 PileMessage* PileMessage::singleton = 0;
 
-PileMessage::PileMessage() {}
+PileMessage::PileMessage()
+{
+}
 
-PileMessage& PileMessage::getInstance() {
-	if (singleton == 0)
-		singleton = new PileMessage();
+PileMessage& PileMessage::getInstance()
+{
+	if (singleton == 0) singleton = new PileMessage();
 
 	return *singleton;
 }
 
-void PileMessage::pushMessage( Message message )
+void PileMessage::pushMessage(Message message)
 {
-	pileMessage.push( message );
+	pileMessage.push(message);
 }
 
 void PileMessage::popMessage()
 {
-    if ( !pileMessage.empty() )
-    	pileMessage.pop();
+	if (!pileMessage.empty()) pileMessage.pop();
 }
 
 Message PileMessage::getMessageCourant()
@@ -33,10 +34,8 @@ Message PileMessage::getMessageCourant()
 
 PileMessage::~PileMessage()
 {
-    if ( !pileMessage.empty() )
-    	pileMessage.pop();
+	if (!pileMessage.empty()) pileMessage.pop();
 
-	if (singleton != 0)
-		delete singleton;
+	if (singleton != 0) delete singleton;
 }
 

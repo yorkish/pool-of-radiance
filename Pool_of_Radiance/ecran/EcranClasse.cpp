@@ -63,7 +63,7 @@ void EcranClasse::verifierMessages()
 			vctClasse = *temp;
 			MAX_POS = vctClasse.size();
 			delete temp;
-			gbl_Memoire.push_back(InfoAlloc('D',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('D',__FILE__, __LINE__));
 
 			updateScreen();
 			break;

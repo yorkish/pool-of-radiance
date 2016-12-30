@@ -277,7 +277,7 @@ void Character::verifierMessages()
 
 		case GM_OBTENIR_CLASSES_PERMISES:
 			temp = new vector<NodeClasse>;
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			*temp = oRace.getAllowedClasses();
 			oPileMessage.popMessage();
 			oPileMessage.pushMessage( Message(OBJ_PERSONNAGE, OBJ_ECRAN_MENU_CLASSE, GM_LISTE_CLASSES_PERMISES, temp) );
@@ -294,7 +294,7 @@ void Character::verifierMessages()
 			infoTemp = (CharacterInfo*) (unMessage.getContenu());
 			info     = *infoTemp;
 			delete infoTemp;
-			gbl_Memoire.push_back(InfoAlloc('D',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('D',__FILE__, __LINE__));
 			oPileMessage.popMessage();
 			break;
 

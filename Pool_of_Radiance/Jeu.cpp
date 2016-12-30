@@ -13,7 +13,7 @@ Jeu::Jeu(): typeEtat(GAME_STATE_UNDEFINED), oPileMessage(PileMessage::getInstanc
 bool Jeu::init()
 {
 	pushEtat( new EtatIntro() );
-	gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+	_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 	typeEtat = INTRO;
 
 	return true;
@@ -38,18 +38,18 @@ void Jeu::verifierMessages() {
 		switch (unMessage.getTypeMessage()) {
 		case GM_INTRO_FINI:
 			popPushEtat( new EtatMenu() );
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			typeEtat = MENU;
 			break;
 
 		case GM_NOUVEAU_PERSONNAGE:
 			lstCharacter.push_back( new Character() );
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_ANNULER_PERSONNAGE:
 			delete lstCharacter.back();
-			gbl_Memoire.push_back(InfoAlloc('D',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('D',__FILE__, __LINE__));
 			lstCharacter.pop_back();
 			break;
 
@@ -97,7 +97,7 @@ void Jeu::popEtat()
     Etats.top()->release();
 
     delete Etats.top();
-	gbl_Memoire.push_back(InfoAlloc('D',__FILE__, __LINE__));
+    _gblMemory.push_back(InfoAlloc('D',__FILE__, __LINE__));
 
     Etats.pop();
 }

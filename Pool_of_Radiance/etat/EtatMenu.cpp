@@ -13,7 +13,7 @@ EtatMenu::EtatMenu() {}
 bool EtatMenu::init()
 {
 	popPushMenu( new EcranMenuPrincipal() );
-	gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+	_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 	return true;
 }
 
@@ -40,37 +40,37 @@ void EtatMenu::verifierMessages()
 
 		case GM_MENU_RACE:
 			popPushMenu( new EcranRace() );
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_GENDER:
 			popPushMenu( new EcranGender() );
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_CLASSE:
 			popPushMenu( new EcranClasse() );
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_ALIGNMENT:
 			popPushMenu( new EcranAlignment() );
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_CHARACTER:
 			popPushMenu( new EcranCharacter() );
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_CHARACTER_ICON:
 			popPushMenu( new EcranCharacterIcon() );
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_REVENIR_MENU_PRINCIPAL:
 			popPushMenu( new EcranMenuPrincipal() );
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		default: break;
@@ -109,7 +109,7 @@ void EtatMenu::popMenu()
     Ecrans.top()->release();
 
     delete Ecrans.top();
-	gbl_Memoire.push_back(InfoAlloc('D',__FILE__, __LINE__));
+    _gblMemory.push_back(InfoAlloc('D',__FILE__, __LINE__));
 
     Ecrans.pop();
 }

@@ -81,7 +81,7 @@ void EcranCharacter::handleEvent( TInfoTouches& infTouches )
 		case SDLK_k:
 			statusEcran = EXITING;
 			info  = new CharacterInfo;
-			gbl_Memoire.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			*info = character;
 			oPileMessage.pushMessage( Message(OBJ_ECRAN_MENU_GENDER, OBJ_ETAT_MENU, GM_MENU_CHARACTER_ICON) );
 			oPileMessage.pushMessage( Message(OBJ_ECRAN_CHARACTER, OBJ_PERSONNAGE_EN_CREATION, GM_PERSONNAGE_CHOISI, info) );
