@@ -5,6 +5,7 @@
 #include <vector>
 #include "../roll/Roll.h"
 #include "../roll/RollOperation.h"
+#include "Cleanup.h"
 
 class InfoAlloc {
 	public:
@@ -22,18 +23,6 @@ class InfoAlloc {
 };
 
 extern std::vector<InfoAlloc> _gblMemory;
-
-//Les attributs de notre écran
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 400;
-const int SCREEN_BPP = 32;
-
-//Les attributs de notre surface de travail
-const int TRAVAIL_WIDTH = 320;
-const int TRAVAIL_HEIGHT = 200;
-
-const int FRAMES_PER_SECOND = 40;
-const int DELAIS_MS = 1000 / FRAMES_PER_SECOND;
 
 const int LOADING_TIME = 2000;
 

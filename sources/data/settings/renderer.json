@@ -1,0 +1,16 @@
+{
+	"window": {
+		"title": "Pool Of Radiance",
+		"icon": "assets/logo/SPRIT2.DAX_16_0.bmp"
+	},
+	"screen": {
+		"width": 960,
+		"height": 600,
+		"bpp": 32,
+		"fps": 40
+	},
+	"work": {
+		"width": 320,
+		"height": 200
+	}
+}

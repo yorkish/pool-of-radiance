@@ -21,6 +21,9 @@ class Affichage
 		void fillRect(SDL_Surface* surface, SDL_Rect* clip, Couleur couleur);
 
 		void wipeScreen(Couleur couleur = Couleur::cNOIR);
+		void applyTexture(int x, int y, SDL_Texture* texture, SDL_Rect& clip);
+		void applyTextureColorMod(SDL_Texture* texture, Couleur color);
+
 		SDL_Surface* copySurface(SDL_Surface* source);
 		SDL_Surface* swapColor(SDL_Surface* surface, Couleur oldColor, Couleur newColor);
 
@@ -29,7 +32,7 @@ class Affichage
 		void preRender();
 		void postRender();
 
-		void introduireDelai( Uint32 msec );
+		void introduireDelai( Uint32 frameTime );
 
 		void toggleFullScreen();
   private:
@@ -47,6 +50,7 @@ class Affichage
 		SDL_Window *window;
 
 		SDL_Surface *screen;
+		SDL_Texture *sdlTexture;
 
 		SDL_Rect src;
 		SDL_Rect dst;
@@ -55,4 +59,6 @@ class Affichage
 
 		std::string strCaption;
 		std::string strIcone;
+
+		int delay;	// in ms
 };

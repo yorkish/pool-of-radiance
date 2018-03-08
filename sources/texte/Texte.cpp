@@ -7,14 +7,11 @@
 
 using namespace std;
 
-Texte::Texte(SDL_Surface* imageFont) : oAffichage(Affichage::getInstance()) /*idTexte(-1), tabTexte(0), tabTexteMax(-1),
-									   couleurTexte(cBLANC), couleurPremiereLettre(cBLANC),
-									   couleurDerniereLettre(cBLANC), posX(0), posY(0),
-									   */
+Texte::Texte(SDL_Texture* imageFont) : oAffichage(Affichage::getInstance()), idTexte(-1), tabTexte(0),
+										tabTexteMax(-1), couleurPremiereLettre(cBLANC), couleurTexte(cBLANC),
+										couleurDerniereLettre(cBLANC),posX(0), posY(0)
 {
-	fontPremiereLettre = oAffichage.copySurface(imageFont);
-	fontTexte          = oAffichage.copySurface(imageFont);
-	fontDerniereLettre = oAffichage.copySurface(imageFont);
+	this->imageFont = imageFont;
 }
 
 void Texte::draw() 
@@ -106,11 +103,20 @@ void Texte::drawLettre(int pos, char lettre, int x, int y)
 	src.x *= 8 ; src.y *= 8;
 
 	if (pos == 0)
-		oAffichage.applySurface(x, y, fontPremiereLettre, src);
+	{
+		oAffichage.applyTextureColorMod(imageFont, couleurPremiereLettre);
+		oAffichage.applyTexture(x, y, imageFont, src);
+	}
 	else if (pos == tabTexteMax -1)
-		oAffichage.applySurface(x, y, fontDerniereLettre, src);
+	{
+		oAffichage.applyTextureColorMod(imageFont, couleurDerniereLettre);
+		oAffichage.applyTexture(x, y, imageFont, src);
+	}
 	else
-		oAffichage.applySurface(x, y, fontTexte, src);
+	{
+		oAffichage.applyTextureColorMod(imageFont, couleurTexte);
+		oAffichage.applyTexture(x, y, imageFont, src);
+	}
 }
 
 void Texte::setTexte(string texte)
@@ -130,10 +136,6 @@ void Texte::setPosition(int x, int y)
 
 void Texte::setCouleurs(Couleur couleurTexte, Couleur couleurPremiereLettre, Couleur CouleurDerniereLettre)
 {
-	Couleur oldPremiere = this->couleurPremiereLettre;
-	Couleur oldTexte    = this->couleurTexte;
-	Couleur oldDerniere = this->couleurDerniereLettre;
-
 	this->couleurTexte = couleurTexte;
 
 	if (couleurPremiereLettre == cMEME_COULEUR)
@@ -145,16 +147,10 @@ void Texte::setCouleurs(Couleur couleurTexte, Couleur couleurPremiereLettre, Cou
 		this->couleurDerniereLettre = couleurTexte;
 	else
 		this->couleurDerniereLettre = CouleurDerniereLettre;
-
-	fontPremiereLettre = oAffichage.swapColor(fontPremiereLettre, oldPremiere, this->couleurPremiereLettre);
-	fontTexte          = oAffichage.swapColor(fontTexte         , oldTexte   , this->couleurTexte);
-	fontDerniereLettre = oAffichage.swapColor(fontDerniereLettre, oldDerniere, this->couleurDerniereLettre);
 }
 
 Texte::~Texte()
 {
 	delete[] tabTexte;
 	//_gblMemory.push_back(InfoAlloc('R',__FILE__, __LINE__));
-	SDL_FreeSurface(fontPremiereLettre);
-	SDL_FreeSurface(fontTexte);
 }

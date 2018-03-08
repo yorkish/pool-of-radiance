@@ -7,7 +7,7 @@ class Texte
 {
     public :
 
-        Texte(SDL_Surface* imageFont);
+        Texte(SDL_Texture* imageFont);
 		void draw();
 		static void release();
 
@@ -21,18 +21,17 @@ class Texte
 
         void drawLettre(int pos, char lettre, int x, int y);
 
+        Affichage&  oAffichage;
+
 		int     idTexte;
 	    char*   tabTexte;
 		int     tabTexteMax;
-		Couleur couleurTexte;
 		Couleur couleurPremiereLettre;
+		Couleur couleurTexte;
 		Couleur couleurDerniereLettre;
 
 		int posX;
         int posY;
 
-        SDL_Surface* fontPremiereLettre;
-        SDL_Surface* fontTexte;
-        SDL_Surface* fontDerniereLettre;
-        Affichage&  oAffichage;
+        SDL_Texture* imageFont;
 };

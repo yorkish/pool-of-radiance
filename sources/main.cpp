@@ -1,6 +1,5 @@
 #define SDL_main main
 
-#include <SDL2/SDL.h>
 #include <time.h>
 #include <iostream>
 #include <vector>
@@ -60,20 +59,19 @@ void showMemorySequence()
 
 int main(int argc, char** argv)
 {
-	bool bErreur = false;
+	uint8_t returnCode = false;
 	MainLoop oMainLoop;
 
+	// Hack needed on a Windows system
 	setvbuf(stdout, NULL, _IONBF, 0);
 	setvbuf(stderr, NULL, _IONBF, 0);
 
 	// Init the seed for random numbers
 	srand((unsigned) time(NULL));
 
-	bErreur = oMainLoop.start();
-
-	SDL_ShowCursor(SDL_ENABLE);
+	returnCode = oMainLoop.start();
 
 	showMemorySequence();
 
-	return (!bErreur) ? EXIT_SUCCESS : EXIT_FAILURE;
+	return returnCode;
 }

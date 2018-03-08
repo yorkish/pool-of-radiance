@@ -2,12 +2,12 @@
 
 using namespace std;
 
-ListeTexte::ListeTexte(): oAffichage(Affichage::getInstance())
+ListeTexte::ListeTexte(): oAffichage(Affichage::getInstance()), imageFont(0)
 {}
 
 bool ListeTexte::init()
 {
-	imageFont = oAffichage.loadImageAsSurface("data/images/font.png", 0, 0, 0);
+	imageFont = oAffichage.loadImage("assets/font.png", 0, 0, 0);
 
 	return (imageFont != 0);
 }
@@ -71,5 +71,4 @@ void ListeTexte::release() {}
 ListeTexte::~ListeTexte()
 {
 	reset();
-	SDL_FreeSurface(imageFont);
 }

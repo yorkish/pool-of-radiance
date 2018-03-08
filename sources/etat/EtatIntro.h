@@ -30,5 +30,5 @@ class EtatIntro : public EtatJeu
 		ListeTexte oLoading;
 		Timer      oTimer;
 
-		SDL_Surface* imagesIntro;
+		SDL_Texture* imagesIntro;
 };

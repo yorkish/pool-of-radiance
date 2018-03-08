@@ -1,9 +1,11 @@
 #pragma once
 
+#include <cstdint>
+
 class MainLoop
 {
 	public:
 	MainLoop();
-	bool start();
+	uint8_t start();
 	~MainLoop();
 };

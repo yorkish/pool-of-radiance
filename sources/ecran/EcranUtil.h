@@ -14,5 +14,5 @@ class EcranUtil {
 		bool init();
 
 		Affichage&  oAffichage;
-		SDL_Surface* tuileMenu;
+		SDL_Texture* tuileMenu;
 };

@@ -32,6 +32,6 @@ class ListeTexte {
 		std::vector <Texte*> lstTexte;
 
         Affichage&   oAffichage;
-		SDL_Surface* imageFont;
+		SDL_Texture* imageFont;
 };
 

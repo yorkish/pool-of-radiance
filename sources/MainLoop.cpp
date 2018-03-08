@@ -6,70 +6,84 @@
 #include "common/Timer.h"
 #include "common/Donnees.h"
 
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
 MainLoop::MainLoop()
 {
 }
 
-bool MainLoop::start()
+uint8_t MainLoop::start()
 {
 	Affichage& affichage = Affichage::getInstance();
 	Jeu oJeu;
 	Timer fps;
-	int ticks;
 	TInfoTouches infoTouches;
+	uint8_t returnCode = EXIT_SUCCESS;
 
-	if (!affichage.initRenderer())
+	cout << "renderer init attempt..." << endl;
+	if (affichage.initRenderer())
 	{
-		return true;
-	}
-
-	if (!oJeu.init())
-	{
-		return true;
-	}
-
-	while (true)
-	{
-		fps.start();
-
-		if (oEvenement.verifierEvent())
+		cout << "game init attempt..." << endl;
+		if (oJeu.init())
 		{
-			if (oEvenement.estToggleFullScreen())
+			cout << "main loop entered..." << endl;
+
+			while (true)
 			{
-				affichage.toggleFullScreen();
+				fps.start();
+
+				if (oEvenement.verifierEvent())
+				{
+					if (oEvenement.estToggleFullScreen())
+					{
+						affichage.toggleFullScreen();
+					}
+					else
+						if (oEvenement.estQuitter())
+						{
+							break;
+						}
+
+					infoTouches = oEvenement.lireClavier();
+
+					oJeu.handleEvent(infoTouches);
+					oJeu.move();
+				}
+
+				oJeu.verifierMessages();
+
+				affichage.preRender();
+
+				oJeu.draw();
+
+				affichage.postRender();
+
+				affichage.introduireDelai(fps.get_ticks());
+
+				if (oJeu.exitRequested())
+				{
+					break;
+				}
 			}
-			else if (oEvenement.estQuitter())
-			{
-				break;
-			}
-
-			infoTouches = oEvenement.lireClavier();
-
-			oJeu.handleEvent(infoTouches);
-			oJeu.move();
 		}
-
-		oJeu.verifierMessages();
-
-		affichage.preRender();
-
-		oJeu.draw();
-
-		affichage.preRender();
-
-		ticks = fps.get_ticks();
-		if (ticks < DELAIS_MS)
+		else
 		{
-			affichage.introduireDelai(DELAIS_MS - ticks);
-		}
-
-		if (oJeu.exitRequested())
-		{
-			break;
+			cout << "Game init failure - " << SDL_GetError() << endl;
+			returnCode = EXIT_FAILURE;
 		}
 	}
+	else
+	{
+		cout << "Renderer init failure - " << SDL_GetError() << endl;
+		returnCode = EXIT_FAILURE;
+	}
 
-	return false;
+	SDL_ShowCursor(SDL_ENABLE);
+
+	return returnCode;
 }
 
 MainLoop::~MainLoop()

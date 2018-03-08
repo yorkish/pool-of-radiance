@@ -16,8 +16,8 @@ EcranCharacter::EcranCharacter() :
 bool EcranCharacter::init()
 {
 	if (oListeTexte.init()) {
-		spritesTetes = oAffichage.loadImageAsSurface("data/images/HEAD_DAX.png", 0, 0, 255);
-		spritesCorps = oAffichage.loadImageAsSurface("data/images/BODY_DAX.png", 0, 0, 255);
+		spritesTetes = oAffichage.loadImage("assets/HEAD_DAX.png", 0, 0, 255);
+		spritesCorps = oAffichage.loadImage("assets/BODY_DAX.png", 0, 0, 255);
 
 		oPileMessage.pushMessage( Message(OBJ_ECRAN_CHARACTER, OBJ_PERSONNAGE_EN_CREATION, GM_GENERER_PERSONNAGE) );
 
@@ -123,13 +123,13 @@ void EcranCharacter::afficherPortrait()
 	src.w = 88; src.h = 40;
 	src.x = src.w * (character.portrait.indTete % TETES_PAR_RANGEES);
 	src.y = src.h * (character.portrait.indTete / TETES_PAR_RANGEES);
-	oAffichage.applySurface(224, 8, spritesTetes, src);
+	oAffichage.applyTexture(224, 8, spritesTetes, src);
 
 	//Le corps
 	src.w = 88; src.h = 48;
 	src.x = src.w * (character.portrait.indCorps % CORPS_PAR_RANGEES);
 	src.y = src.h * (character.portrait.indCorps / CORPS_PAR_RANGEES);
-	oAffichage.applySurface(224, 48, spritesCorps, src);
+	oAffichage.applyTexture(224, 48, spritesCorps, src);
 }
 
 void EcranCharacter::updateScreen()
@@ -187,6 +187,7 @@ void EcranCharacter::updateScreen()
 		oListeTexte.addTexte("body",  5 , 24, cVERT_CLAIR, cBLANC);
 		oListeTexte.addTexte("keep",  10, 24, cVERT_CLAIR, cBLANC);
 		oListeTexte.addTexte("exit",  15, 24, cVERT_CLAIR, cBLANC);
+		break;
 
 	case EXITING:
 		break;
@@ -198,8 +199,10 @@ void EcranCharacter::updateAbilities()
 	string temp;
 
 	temp = "str " + Util::toStr(character.STR, 2);
+
 	if (character.strPercentage > 0)
 		temp += "(" + Util::toStr(character.strPercentage, 2, true) + ")";
+
 	oListeTexte.addTexte(temp, 1, 7, cVERT_CLAIR);
 
 	temp = "dex " + Util::toStr(character.DEX, 2);
@@ -329,6 +332,8 @@ void EcranCharacter::verifierMessages()
 void EcranCharacter::release()
 {
 	oListeTexte.reset();
+	cleanup(spritesCorps);
+	cleanup(spritesTetes);
 }
 
 EcranCharacter::~EcranCharacter() {}

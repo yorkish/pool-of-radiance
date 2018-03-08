@@ -34,8 +34,8 @@ class EcranCharacter: public Ecran, public EcranUtil {
 		CharacterInfo character;
 
 		Affichage&   oAffichage;
-		SDL_Surface* spritesTetes;
-		SDL_Surface* spritesCorps;
+		SDL_Texture* spritesTetes;
+		SDL_Texture* spritesCorps;
 
 		StatusEcran statusEcran;
 };

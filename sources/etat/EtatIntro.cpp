@@ -21,7 +21,7 @@ bool EtatIntro::chargerImage()
 	case SSI:
 	case POOL:
 	case CREDITS:
-		imagesIntro = oAffichage.loadImageAsSurface("data/images/TITLE_DAX.png", 0, 0, 255);
+		imagesIntro = oAffichage.loadImage("assets/TITLE_DAX.png", 0, 0, 255);
 		break;
 	}
 
@@ -33,7 +33,7 @@ bool EtatIntro::chargerImage()
 
 void EtatIntro::handleEvent( TInfoTouches& infTouches )
 {
-	if (infTouches.bEnter)
+	if (infTouches.bEnter){
 		switch (sequence) {
 		case LOADING:
 			break;
@@ -51,8 +51,8 @@ void EtatIntro::handleEvent( TInfoTouches& infTouches )
 		case CREDITS:
 			oPileMessage.pushMessage( Message(OBJ_ETAT_INTRO, OBJ_JEU, GM_INTRO_FINI) );
 			break;
-
 		}
+	}
 }
 
 void EtatIntro::draw()
@@ -77,17 +77,17 @@ void EtatIntro::draw()
 
 	case SSI:
 		src.x = 0; src.y = 0;
-		oAffichage.applySurface(dst.x, dst.y, imagesIntro, src);
+		oAffichage.applyTexture(dst.x, dst.y, imagesIntro, src);
 		break;
 
 	case POOL:
 		src.x = 320; src.y = 0;
-		oAffichage.applySurface(dst.x, dst.y, imagesIntro, src);
+		oAffichage.applyTexture(dst.x, dst.y, imagesIntro, src);
 		break;
 
 	case CREDITS:
 		src.x = 640; src.y = 0;
-		oAffichage.applySurface(dst.x, dst.y, imagesIntro, src);
+		oAffichage.applyTexture(dst.x, dst.y, imagesIntro, src);
 		break;
 	}
 }
@@ -96,8 +96,7 @@ void EtatIntro::verifierMessages() {}
 
 void EtatIntro::release()
 {
-	if (imagesIntro != 0)
-		SDL_FreeSurface(imagesIntro);
+	cleanup(imagesIntro);
 }
 
 EtatIntro::~EtatIntro()
