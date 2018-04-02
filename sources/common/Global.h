@@ -58,53 +58,37 @@ enum Status_e { OKAY, UNCONSCIOUS, DYING, DEAD, STONED, FLED, GONE };
 
 enum Size_e { SIZE_SMALL, SIZE_LARGE };
 
-enum Couleur {cNOIR       , cBLEU         , cVERT      , cCYAN        ,
-	          cROUGE      , cMAGENTA      , cBRUN      , cGRIS_CLAIR  ,
-	          cGRIS_FONCE , cBLEU_CLAIR   , cVERT_CLAIR, cCYAN_CLAIR  ,
-	          cROUGE_CLAIR, cMAGENTA_CLAIR, cJAUNE     , cBLANC       ,
-	          cMEME_COULEUR                                            };
+union RgbaPixel {
+	Uint32 pixelColor;
+	Uint8 r;
+	Uint8 g;
+	Uint8 b;
+	Uint8 a;
+};
 
-const SDL_Color COUL_NOIR          = {0x00, 0x00, 0x00, 0xFF}; // Default Palette:  0
-const SDL_Color COUL_BLEU          = {0x00, 0x00, 0xAA, 0xFF}; // Default Palette:  1
-const SDL_Color COUL_VERT          = {0x00, 0xAA, 0x00, 0xFF}; // Default Palette:  2
-const SDL_Color COUL_CYAN          = {0x00, 0xAA, 0xAA, 0xFF}; // Default Palette:  3
-const SDL_Color COUL_ROUGE         = {0xAA, 0x00, 0x00, 0xFF}; // Default Palette:  4
-const SDL_Color COUL_MAGENTA       = {0xAA, 0x00, 0xAA, 0xFF}; // Default Palette:  5
-const SDL_Color COUL_BRUN          = {0xAA, 0x55, 0x00, 0xFF}; // Default Palette:  6
-const SDL_Color COUL_GRIS_CLAIR    = {0xAA, 0xAA, 0xAA, 0xFF}; // Default Palette:  7
-const SDL_Color COUL_GRIS_FONCE    = {0x55, 0x55, 0x55, 0xFF}; // Default Palette:  8
-const SDL_Color COUL_BLEU_CLAIR    = {0x55, 0x55, 0xFF, 0xFF}; // Default Palette:  9
-const SDL_Color COUL_VERT_CLAIR    = {0x55, 0xFF, 0x55, 0xFF}; // Default Palette: 10
-const SDL_Color COUL_CYAN_CLAIR    = {0x55, 0xFF, 0xFF, 0xFF}; // Default Palette: 11
-const SDL_Color COUL_ROUGE_CLAIR   = {0xFF, 0x55, 0x55, 0xFF}; // Default Palette: 12
-const SDL_Color COUL_MAGENTA_CLAIR = {0xFF, 0x55, 0xFF, 0xFF}; // Default Palette: 13
-const SDL_Color COUL_JAUNE         = {0xFF, 0xFF, 0x55, 0xFF}; // Default Palette: 14
-const SDL_Color COUL_BLANC         = {0xFF, 0xFF, 0xFF, 0xFF}; // Default Palette: 15
+enum class Couleur : Uint32 {black = 0x000000FF,    blue = 0x0000AAFF,          green = 0x00AA00FF,       cyan = 0x00AAAAFF,
+							 red = 0xAA0000FF,      magenta = 0xAA00AAFF,       brown = 0xAA5500FF,       lightGray = 0xAAAAAAFF,
+							 darkGray = 0x555555FF, brightBlue = 0x5555FFFF,    brightGreen = 0x55FF55FF, brightCyan = 0x55FFFFFF,
+							 lightRed = 0xFF5555FF, brightMagenta = 0xFF55FFFF, yellow = 0xFFFF55FF,      white = 0xFFFFFFFF,
+							 sameColor = 0xFFFFFFFF};
 
-// Overload the Couleur++ operator
-inline Couleur& operator++(Couleur& eDOW, int)
-{
-	const int i = static_cast<int>(eDOW)+1;
-	eDOW = static_cast<Couleur>((i) % 16);
-	return eDOW;
-}
-
-// Overload the Couleur-- operator
-inline Couleur& operator--(Couleur& type, int)
-{
-	const int i = static_cast<int>(type) - 1;
-
-	type = static_cast<Couleur> ((i < 0) ? 15 : i);
-
-/*
-	if (i < 0) // Check whether to cycle to last item if number goes below 0
-		type = static_cast<Couleur>(15);
-	else // Else set it to current number -1
-		type = static_cast<Couleur>((i) % 16);
-*/
-	return type;
-
-}
+//// Overload the Couleur++ operator
+//inline Couleur& operator++(Couleur& eDOW, int)
+//{
+//	const int i = static_cast<int>(eDOW)+1;
+//	eDOW = static_cast<Couleur>((i) % 16);
+//	return eDOW;
+//}
+//
+//// Overload the Couleur-- operator
+//inline Couleur& operator--(Couleur& type, int)
+//{
+//	const int i = static_cast<int>(type) - 1;
+//
+//	type = static_cast<Couleur> ((i < 0) ? 15 : i);
+//
+//	return type;
+//}
 
 struct TInfoTouches
 {
@@ -166,6 +150,7 @@ struct BaseCommonValues
 	int coinsPerPounds;
 };
 
+//// Overload the Couleur-- operator
 struct RaceInfo
 {
 	int baseMovementRate;

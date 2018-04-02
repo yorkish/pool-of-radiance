@@ -7,7 +7,7 @@
 class EcranCharacterIcon: public Ecran, public EcranUtil
 {
 	public:
-		EcranCharacterIcon();
+		EcranCharacterIcon(Renderer &renderer);
 
 		bool init();
 		void handleEvent( TInfoTouches& infTouches );
@@ -33,10 +33,8 @@ class EcranCharacterIcon: public Ecran, public EcranUtil
 						   SIZE,
 						   EXITING };
 
-		ListeTexte oListeTexte;
 		CharacterInfo character;
 
-		Affichage&   oAffichage;
 		StatusEcran statusEcran;
 		Couleur couleurOriginale;
 };

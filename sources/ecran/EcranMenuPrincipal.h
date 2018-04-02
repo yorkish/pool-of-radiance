@@ -1,14 +1,15 @@
 #pragma once
 #include <vector>
+
+#include "../common/Renderer.h"
 #include "Ecran.h"
-#include "../common/Affichage.h"
 #include "../texte/ListeTexte.h"
 #include "EcranUtil.h"
 
 class EcranMenuPrincipal: public Ecran, public EcranUtil
 {
 	public:
-		EcranMenuPrincipal();
+		EcranMenuPrincipal(Renderer &renderer);
 
 		bool init();
 		bool chargerImage();
@@ -26,7 +27,6 @@ class EcranMenuPrincipal: public Ecran, public EcranUtil
 		enum PositionMenuPrincipal { MAIN_MENU, LOAD, EXIT, EXITING};
 		PositionMenuPrincipal posMenu;
 
-		ListeTexte oListeTexte;
 		std::vector<char> lstSauvegarde;
 };
 

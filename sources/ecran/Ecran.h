@@ -1,12 +1,13 @@
 #pragma once
-
+#include <memory>
 #include "../common/Global.h"
 #include "../queue/PileMessage.h"
+#include "../texte/ListeTexte.h"
 
 class Ecran
 {
     public :
-		Ecran(): oPileMessage(PileMessage::getInstance()) {}
+		Ecran(Renderer &renderer): renderer(renderer), oListeTexte(std::make_unique<ListeTexte>(renderer)), oPileMessage(PileMessage::getInstance()) {}
 
         virtual bool init() = 0;
 		virtual void handleEvent( TInfoTouches& infTouches ) = 0;
@@ -17,5 +18,7 @@ class Ecran
         virtual ~Ecran() {}
 
     protected:
+		Renderer&   renderer;
+        std::unique_ptr<ListeTexte> oListeTexte;
         PileMessage& oPileMessage;
 };

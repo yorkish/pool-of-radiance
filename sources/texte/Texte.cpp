@@ -7,14 +7,14 @@
 
 using namespace std;
 
-Texte::Texte(SDL_Texture* imageFont) : oAffichage(Affichage::getInstance()), idTexte(-1), tabTexte(0),
-										tabTexteMax(-1), couleurPremiereLettre(cBLANC), couleurTexte(cBLANC),
-										couleurDerniereLettre(cBLANC),posX(0), posY(0)
+Texte::Texte(Renderer &renderer, SDL_Texture* imageFont) : renderer(renderer), idTexte(-1), tabTexte(0),
+										tabTexteMax(-1), couleurPremiereLettre(Couleur::white), couleurTexte(Couleur::white),
+										couleurDerniereLettre(Couleur::white),posX(0), posY(0)
 {
 	this->imageFont = imageFont;
 }
 
-void Texte::draw() 
+void Texte::draw()
 {
 	int posLettreX, posLettreY;
 
@@ -104,18 +104,18 @@ void Texte::drawLettre(int pos, char lettre, int x, int y)
 
 	if (pos == 0)
 	{
-		oAffichage.applyTextureColorMod(imageFont, couleurPremiereLettre);
-		oAffichage.applyTexture(x, y, imageFont, src);
+		renderer.applyTextureColorMod(imageFont, couleurPremiereLettre);
+		renderer.applyTexture(x, y, imageFont, src);
 	}
 	else if (pos == tabTexteMax -1)
 	{
-		oAffichage.applyTextureColorMod(imageFont, couleurDerniereLettre);
-		oAffichage.applyTexture(x, y, imageFont, src);
+		renderer.applyTextureColorMod(imageFont, couleurDerniereLettre);
+		renderer.applyTexture(x, y, imageFont, src);
 	}
 	else
 	{
-		oAffichage.applyTextureColorMod(imageFont, couleurTexte);
-		oAffichage.applyTexture(x, y, imageFont, src);
+		renderer.applyTextureColorMod(imageFont, couleurTexte);
+		renderer.applyTexture(x, y, imageFont, src);
 	}
 }
 
@@ -138,12 +138,12 @@ void Texte::setCouleurs(Couleur couleurTexte, Couleur couleurPremiereLettre, Cou
 {
 	this->couleurTexte = couleurTexte;
 
-	if (couleurPremiereLettre == cMEME_COULEUR)
+	if (couleurPremiereLettre == Couleur::sameColor)
 		this->couleurPremiereLettre = couleurTexte;
 	else
 		this->couleurPremiereLettre = couleurPremiereLettre;
 
-	if (CouleurDerniereLettre == cMEME_COULEUR)
+	if (CouleurDerniereLettre == Couleur::sameColor)
 		this->couleurDerniereLettre = couleurTexte;
 	else
 		this->couleurDerniereLettre = CouleurDerniereLettre;

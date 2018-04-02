@@ -6,18 +6,20 @@
 using std::string;
 using std::cout; using std::endl;
 
-EcranCharacter::EcranCharacter() :
+EcranCharacter::EcranCharacter(Renderer &renderer) :
+			Ecran(renderer),
 	        TETES_PAR_RANGEES(PORTRAIT_MAX_TETES / 2),
 			CORPS_PAR_RANGEES(PORTRAIT_MAX_CORPS / 2),
-			oAffichage(Affichage::getInstance()),
-			spritesTetes(0), spritesCorps(0), statusEcran(GENERATION)
+			spritesTetes(0),
+			spritesCorps(0),
+			statusEcran(GENERATION)
 {}
 
 bool EcranCharacter::init()
 {
-	if (oListeTexte.init()) {
-		spritesTetes = oAffichage.loadImage("assets/HEAD_DAX.png", 0, 0, 255);
-		spritesCorps = oAffichage.loadImage("assets/BODY_DAX.png", 0, 0, 255);
+	if (oListeTexte->init()) {
+		spritesTetes = renderer.loadImage("assets/HEAD_DAX.png");
+		spritesCorps = renderer.loadImage("assets/BODY_DAX.png");
 
 		oPileMessage.pushMessage( Message(OBJ_ECRAN_CHARACTER, OBJ_PERSONNAGE_EN_CREATION, GM_GENERER_PERSONNAGE) );
 
@@ -104,11 +106,11 @@ void EcranCharacter::handleEvent( TInfoTouches& infTouches )
 
 void EcranCharacter::draw()
 {
-	if (!oListeTexte.isEmpty()) {
-		dessinerCadreEtPortrait();
+	if (!oListeTexte->isEmpty()) {
+		dessinerCadreEtPortrait(renderer);
 
 		// Le texte
-		oListeTexte.draw();
+		oListeTexte->draw();
 
 		// Le Portrait
 		afficherPortrait();
@@ -123,70 +125,70 @@ void EcranCharacter::afficherPortrait()
 	src.w = 88; src.h = 40;
 	src.x = src.w * (character.portrait.indTete % TETES_PAR_RANGEES);
 	src.y = src.h * (character.portrait.indTete / TETES_PAR_RANGEES);
-	oAffichage.applyTexture(224, 8, spritesTetes, src);
+	renderer.applyTexture(224, 8, spritesTetes, src);
 
 	//Le corps
 	src.w = 88; src.h = 48;
 	src.x = src.w * (character.portrait.indCorps % CORPS_PAR_RANGEES);
 	src.y = src.h * (character.portrait.indCorps / CORPS_PAR_RANGEES);
-	oAffichage.applyTexture(224, 48, spritesCorps, src);
+	renderer.applyTexture(224, 48, spritesCorps, src);
 }
 
 void EcranCharacter::updateScreen()
 {
 	string temp;
-	oListeTexte.reset();
+	oListeTexte->reset();
 
 	temp = character.gender.nom + " " + character.race.nom + " age " + Util::toStr(character.age);
-	oListeTexte.addTexte(temp, 1, 3, cBLANC);
+	oListeTexte->addTexte(temp, 1, 3, Couleur::white);
 
-	oListeTexte.addTexte(character.alignment.nom, 1, 4, cBLANC);
-	oListeTexte.addTexte(character.classe.nom   , 1, 5, cBLANC);
+	oListeTexte->addTexte(character.alignment.nom, 1, 4, Couleur::white);
+	oListeTexte->addTexte(character.classe.nom   , 1, 5, Couleur::white);
 
 	updateAbilities();
 	updateCoins();
 	updateLevels();
 
-	oListeTexte.addTexte("exp", 17, 15, cBLANC);
-	oListeTexte.addTexte(Util::toStr(character.experience), 21, 15, cBLANC);
+	oListeTexte->addTexte("exp", 17, 15, Couleur::white);
+	oListeTexte->addTexte(Util::toStr(character.experience), 21, 15, Couleur::white);
 
-	oListeTexte.addTexte("ac", 1, 17, cBLANC);
-	oListeTexte.addTexte(Util::toStr(character.AC), 4, 17, cVERT_CLAIR);
+	oListeTexte->addTexte("ac", 1, 17, Couleur::white);
+	oListeTexte->addTexte(Util::toStr(character.AC), 4, 17, Couleur::brightGreen);
 
-	oListeTexte.addTexte("thac0",  9, 17, cBLANC);
-	oListeTexte.addTexte(Util::toStr(character.THAC0), 15, 17, cVERT_CLAIR);
+	oListeTexte->addTexte("thac0",  9, 17, Couleur::white);
+	oListeTexte->addTexte(Util::toStr(character.THAC0), 15, 17, Couleur::brightGreen);
 
-	oListeTexte.addTexte("encumbrance", 22, 17, cBLANC);
-	oListeTexte.addTexte(Util::toStr(character.encumbrance), 34, 17, cVERT_CLAIR);
+	oListeTexte->addTexte("encumbrance", 22, 17, Couleur::white);
+	oListeTexte->addTexte(Util::toStr(character.encumbrance), 34, 17, Couleur::brightGreen);
 
 	updateHP();
 
-	oListeTexte.addTexte("damage",  8, 18, cBLANC);
-	oListeTexte.addTexte(character.damage.getStringRep(), 15, 18, cVERT_CLAIR);
+	oListeTexte->addTexte("damage",  8, 18, Couleur::white);
+	oListeTexte->addTexte(character.damage.getStringRep(), 15, 18, Couleur::brightGreen);
 
-	oListeTexte.addTexte("movement", 25, 18, cBLANC);
-	oListeTexte.addTexte(Util::toStr(character.movementRate), 34, 18, cVERT_CLAIR);
+	oListeTexte->addTexte("movement", 25, 18, Couleur::white);
+	oListeTexte->addTexte(Util::toStr(character.movementRate), 34, 18, Couleur::brightGreen);
 
 	updateStatus();
 
 	switch (statusEcran) {
 	case GENERATION:
-		oListeTexte.addTexte("keep this character?", 0, 24, cMAGENTA_CLAIR);
-		oListeTexte.addTexte("yes" , 21, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("no"  , 25, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("exit", 28, 24, cVERT_CLAIR, cBLANC);
+		oListeTexte->addTexte("keep this character?", 0, 24, Couleur::brightMagenta);
+		oListeTexte->addTexte("yes" , 21, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("no"  , 25, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("exit", 28, 24, Couleur::brightGreen, Couleur::white);
 		break;
 
 	case CHOISIR_NOM:
-		oListeTexte.addTexte("character name:  ",  0, 24, cMAGENTA_CLAIR);
-		oListeTexte.addTexte(character.name     , 16, 24, cBLANC);
+		oListeTexte->addTexte("character name:  ",  0, 24, Couleur::brightMagenta);
+		oListeTexte->addTexte(character.name     , 16, 24, Couleur::white);
 		break;
 
 	case CHOISIR_PORTRAIT:
-		oListeTexte.addTexte("head",  0 , 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("body",  5 , 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("keep",  10, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("exit",  15, 24, cVERT_CLAIR, cBLANC);
+		oListeTexte->addTexte("head",  0 , 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("body",  5 , 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("keep",  10, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("exit",  15, 24, Couleur::brightGreen, Couleur::white);
 		break;
 
 	case EXITING:
@@ -203,22 +205,22 @@ void EcranCharacter::updateAbilities()
 	if (character.strPercentage > 0)
 		temp += "(" + Util::toStr(character.strPercentage, 2, true) + ")";
 
-	oListeTexte.addTexte(temp, 1, 7, cVERT_CLAIR);
+	oListeTexte->addTexte(temp, 1, 7, Couleur::brightGreen);
 
 	temp = "dex " + Util::toStr(character.DEX, 2);
-	oListeTexte.addTexte(temp, 1, 8, cVERT_CLAIR);
+	oListeTexte->addTexte(temp, 1, 8, Couleur::brightGreen);
 
 	temp = "con " + Util::toStr(character.CON, 2);
-	oListeTexte.addTexte(temp, 1, 9, cVERT_CLAIR);
+	oListeTexte->addTexte(temp, 1, 9, Couleur::brightGreen);
 
 	temp = "int " + Util::toStr(character.INT, 2);
-	oListeTexte.addTexte(temp, 1, 10, cVERT_CLAIR);
+	oListeTexte->addTexte(temp, 1, 10, Couleur::brightGreen);
 
 	temp = "wis " + Util::toStr(character.WIS, 2);
-	oListeTexte.addTexte(temp, 1, 11, cVERT_CLAIR);
+	oListeTexte->addTexte(temp, 1, 11, Couleur::brightGreen);
 
 	temp = "cha " + Util::toStr(character.CHA, 2);
-	oListeTexte.addTexte(temp, 1, 12, cVERT_CLAIR);
+	oListeTexte->addTexte(temp, 1, 12, Couleur::brightGreen);
 }
 
 void EcranCharacter::updateCoins()
@@ -228,26 +230,26 @@ void EcranCharacter::updateCoins()
 
 	if (character.coins.platinum != 0) {
 		coins = Util::toStr(character.coins.platinum);
-		oListeTexte.addTexte("platinum " + coins, 12, ligne++ , cVERT_CLAIR);
+		oListeTexte->addTexte("platinum " + coins, 12, ligne++ , Couleur::brightGreen);
 	}
 
 	if (character.coins.gold != 0) {
 		coins = Util::toStr(character.coins.gold);
-		oListeTexte.addTexte("gold " + coins, 16, ligne++ , cVERT_CLAIR);
+		oListeTexte->addTexte("gold " + coins, 16, ligne++ , Couleur::brightGreen);
 	}
 	if (character.coins.electrum != 0) {
 		coins = Util::toStr(character.coins.electrum);
-		oListeTexte.addTexte("electrum " + coins, 12, ligne++ , cVERT_CLAIR);
+		oListeTexte->addTexte("electrum " + coins, 12, ligne++ , Couleur::brightGreen);
 	}
 
 	if (character.coins.silver != 0) {
 		coins = Util::toStr(character.coins.silver);
-		oListeTexte.addTexte("silver " + coins, 14, ligne++ , cVERT_CLAIR);
+		oListeTexte->addTexte("silver " + coins, 14, ligne++ , Couleur::brightGreen);
 	}
 
 	if (character.coins.copper != 0) {
 		coins = Util::toStr(character.coins.copper);
-		oListeTexte.addTexte("copper " + coins, 14, ligne, cVERT_CLAIR);
+		oListeTexte->addTexte("copper " + coins, 14, ligne, Couleur::brightGreen);
 	}
 }
 
@@ -266,49 +268,49 @@ void EcranCharacter::updateLevels()
 		level += "/" + temp;
 	}
 
-	oListeTexte.addTexte("level " + level, 1, 15, cBLANC);
+	oListeTexte->addTexte("level " + level, 1, 15, Couleur::white);
 }
 
 void EcranCharacter::updateHP()
 {
 	Couleur couleur;
 
-	oListeTexte.addTexte("hp", 1, 18, cBLANC);
+	oListeTexte->addTexte("hp", 1, 18, Couleur::white);
 
 	if (character.HP == character.MAX_HP)
-		couleur = cVERT_CLAIR;
+		couleur = Couleur::brightGreen;
 	else if(character.HP >= 0)
-		couleur = cJAUNE;
+		couleur = Couleur::yellow;
 	else
-		couleur = cROUGE_CLAIR;
+		couleur = Couleur::lightRed;
 
-	oListeTexte.addTexte(Util::toStr(character.HP), 4, 18, couleur);
+	oListeTexte->addTexte(Util::toStr(character.HP), 4, 18, couleur);
 }
 
 void EcranCharacter::updateStatus()
 {
 	Couleur couleur;
 
-	oListeTexte.addTexte("status", 1 , 22, cBLANC);
+	oListeTexte->addTexte("status", 1 , 22, Couleur::white);
 
 	switch (character.status.val) {
 	case OKAY:
-		couleur = cVERT_CLAIR;
+		couleur = Couleur::brightGreen;
 		break;
 
 	case UNCONSCIOUS:
 	case FLED:
 	case STONED:
-		couleur = cJAUNE;
+		couleur = Couleur::yellow;
 		break;
 
 	case DYING:
 	case DEAD:
 	case GONE:
-		couleur = cROUGE_CLAIR;
+		couleur = Couleur::lightRed;
 	}
 
-	oListeTexte.addTexte(character.status.nom, 8, 22, couleur);
+	oListeTexte->addTexte(character.status.nom, 8, 22, couleur);
 }
 
 void EcranCharacter::verifierMessages()
@@ -331,7 +333,7 @@ void EcranCharacter::verifierMessages()
 
 void EcranCharacter::release()
 {
-	oListeTexte.reset();
+	oListeTexte->reset();
 	cleanup(spritesCorps);
 	cleanup(spritesTetes);
 }

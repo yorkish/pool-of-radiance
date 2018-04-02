@@ -1,11 +1,11 @@
 #include "EcranCharacterIcon.h"
 
-EcranCharacterIcon::EcranCharacterIcon(): oAffichage(Affichage::getInstance()), statusEcran(MAIN)
+EcranCharacterIcon::EcranCharacterIcon(Renderer &renderer): Ecran(renderer), statusEcran(MAIN), couleurOriginale(Couleur::white)
 {}
 
 bool EcranCharacterIcon::init()
 {
-	if (oListeTexte.init()) {
+	if (oListeTexte->init()) {
 
 		oPileMessage.pushMessage( Message(OBJ_ECRAN_CHARACTER_ICON, OBJ_PERSONNAGE_EN_CREATION, GM_INFO_CHARACTER) );
 		return true;
@@ -82,8 +82,8 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 
 	case WEAPON_COLOR_1:
 		switch (infTouches.caractere) {
-		case SDLK_n: character.icon.weapon1++; break;
-		case SDLK_p: character.icon.weapon1--; break;
+//		case SDLK_n: character.icon.weapon1++; break;
+//		case SDLK_p: character.icon.weapon1--; break;
 		case SDLK_k: statusEcran = COLOR_1   ; break;
 		case SDLK_e: statusEcran = COLOR_1   ; character.icon.weapon1 = couleurOriginale; break;
 		default    : break;
@@ -92,8 +92,8 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 
 	case BODY_COLOR_1:
 		switch (infTouches.caractere) {
-		case SDLK_n: character.icon.body1++; break;
-		case SDLK_p: character.icon.body1--; break;
+//		case SDLK_n: character.icon.body1++; break;
+//		case SDLK_p: character.icon.body1--; break;
 		case SDLK_k: statusEcran = COLOR_1 ; break;
 		case SDLK_e: statusEcran = COLOR_1 ; character.icon.body1 = couleurOriginale; break;
 		default    : break;
@@ -102,8 +102,8 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 
 	case HAIR_COLOR:
 		switch (infTouches.caractere) {
-		case SDLK_n: character.icon.hair++; break;
-		case SDLK_p: character.icon.hair--; break;
+//		case SDLK_n: character.icon.hair++; break;
+//		case SDLK_p: character.icon.hair--; break;
 		case SDLK_k: statusEcran = COLOR_1; break;
 		case SDLK_e: statusEcran = COLOR_1; character.icon.hair = couleurOriginale; break;
 		default    : break;
@@ -112,8 +112,8 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 
 	case SHIELD_COLOR_1:
 		switch (infTouches.caractere) {
-		case SDLK_n: character.icon.shield1++; break;
-		case SDLK_p: character.icon.shield1--; break;
+//		case SDLK_n: character.icon.shield1++; break;
+//		case SDLK_p: character.icon.shield1--; break;
 		case SDLK_k: statusEcran = COLOR_1   ; break;
 		case SDLK_e: statusEcran = COLOR_1   ; character.icon.shield1 = couleurOriginale; break;
 		default    : break;
@@ -122,8 +122,8 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 
 	case ARM_COLOR_1:
 		switch (infTouches.caractere) {
-		case SDLK_n: character.icon.arm1++; break;
-		case SDLK_p: character.icon.arm1--; break;
+//		case SDLK_n: character.icon.arm1++; break;
+//		case SDLK_p: character.icon.arm1--; break;
 		case SDLK_k: statusEcran = COLOR_1; break;
 		case SDLK_e: statusEcran = COLOR_1; character.icon.arm1 = couleurOriginale; break;
 		default    : break;
@@ -132,8 +132,8 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 
 	case LEG_COLOR_1:
 		switch (infTouches.caractere) {
-		case SDLK_n: character.icon.leg1++; break;
-		case SDLK_p: character.icon.leg1--; break;
+//		case SDLK_n: character.icon.leg1++; break;
+//		case SDLK_p: character.icon.leg1--; break;
 		case SDLK_k: statusEcran = COLOR_1; break;
 		case SDLK_e: statusEcran = COLOR_1; character.icon.leg1 = couleurOriginale; break;
 		default    : break;
@@ -247,56 +247,56 @@ void EcranCharacterIcon::handleEvent( TInfoTouches& infTouches )
 
 void EcranCharacterIcon::draw()
 {
-	if (!oListeTexte.isEmpty()) {
-		dessinerCadre(cGRIS_FONCE);
+	if (!oListeTexte->isEmpty()) {
+		dessinerCadre(renderer, Couleur::darkGray);
 
 		// Le texte
-		oListeTexte.draw();
+		oListeTexte->draw();
 	}
 }
 
 void EcranCharacterIcon::updateScreen()
 {
-	oListeTexte.reset();
+	oListeTexte->reset();
 
-	oListeTexte.addTexte("old"           , 8, 6 , cBLANC);
-	oListeTexte.addTexte("ready   action", 3, 10, cBLANC);
-	oListeTexte.addTexte("new"           , 8, 12, cBLANC);
-	oListeTexte.addTexte("ready   action", 3, 16, cBLANC);
+	oListeTexte->addTexte("old"           , 8, 6 , Couleur::white);
+	oListeTexte->addTexte("ready   action", 3, 10, Couleur::white);
+	oListeTexte->addTexte("new"           , 8, 12, Couleur::white);
+	oListeTexte->addTexte("ready   action", 3, 16, Couleur::white);
 
 	switch (statusEcran) {
 	case MAIN:
-		oListeTexte.addTexte("parts"  , 0 , 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("color-1", 6 , 24, cVERT_CLAIR, cMEME_COULEUR, cBLANC);
-		oListeTexte.addTexte("color-2", 14, 24, cVERT_CLAIR, cMEME_COULEUR, cBLANC);
-		oListeTexte.addTexte("size"   , 22, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("exit"   , 27, 24, cVERT_CLAIR, cBLANC);
+		oListeTexte->addTexte("parts"  , 0 , 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("color-1", 6 , 24, Couleur::brightGreen, Couleur::sameColor, Couleur::white);
+		oListeTexte->addTexte("color-2", 14, 24, Couleur::brightGreen, Couleur::sameColor, Couleur::white);
+		oListeTexte->addTexte("size"   , 22, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("exit"   , 27, 24, Couleur::brightGreen, Couleur::white);
 		break;
 
 	case PARTS:
-		oListeTexte.addTexte("head"  ,  0, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("weapon",  5, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("exit"  , 12, 24, cVERT_CLAIR, cBLANC);
+		oListeTexte->addTexte("head"  ,  0, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("weapon",  5, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("exit"  , 12, 24, Couleur::brightGreen, Couleur::white);
 		break;
 
 	case COLOR_1:
-		oListeTexte.addTexte("weapon",  0, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("body"  ,  7, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("hair"  , 12, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("shield", 17, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("arm"   , 24, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("leg"   , 28, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("exit"  , 32, 24, cVERT_CLAIR, cBLANC);
+		oListeTexte->addTexte("weapon",  0, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("body"  ,  7, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("hair"  , 12, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("shield", 17, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("arm"   , 24, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("leg"   , 28, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("exit"  , 32, 24, Couleur::brightGreen, Couleur::white);
 		break;
 
 	case COLOR_2:
-		oListeTexte.addTexte("weapon",  0, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("body"  ,  7, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("face"  , 12, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("shield", 17, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("arm"   , 24, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("leg"   , 28, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("exit"  , 32, 24, cVERT_CLAIR, cBLANC);
+		oListeTexte->addTexte("weapon",  0, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("body"  ,  7, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("face"  , 12, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("shield", 17, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("arm"   , 24, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("leg"   , 28, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("exit"  , 32, 24, Couleur::brightGreen, Couleur::white);
 		break;
 
 	case CHOOSE_HEAD   :
@@ -313,20 +313,20 @@ void EcranCharacterIcon::updateScreen()
 	case SHIELD_COLOR_2:
 	case ARM_COLOR_2   :
 	case LEG_COLOR_2   :
-		oListeTexte.addTexte("next"    ,  0, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("previous",  5, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("keep"    , 14, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("exit"    , 19, 24, cVERT_CLAIR, cBLANC);
+		oListeTexte->addTexte("next"    ,  0, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("previous",  5, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("keep"    , 14, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("exit"    , 19, 24, Couleur::brightGreen, Couleur::white);
 		break;
 
 	case SIZE:
 		if (character.icon.size == SIZE_SMALL)
-			oListeTexte.addTexte("large",  0, 24, cVERT_CLAIR, cBLANC);
+			oListeTexte->addTexte("large",  0, 24, Couleur::brightGreen, Couleur::white);
 		else
-			oListeTexte.addTexte("small",  0, 24, cVERT_CLAIR, cBLANC);
+			oListeTexte->addTexte("small",  0, 24, Couleur::brightGreen, Couleur::white);
 
-		oListeTexte.addTexte("keep" ,  6, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("exit" , 11, 24, cVERT_CLAIR, cBLANC);
+		oListeTexte->addTexte("keep" ,  6, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("exit" , 11, 24, Couleur::brightGreen, Couleur::white);
 		break;
 
 	case EXITING:
@@ -355,24 +355,24 @@ void EcranCharacterIcon::verifierMessages()
 
 void EcranCharacterIcon::setStartingColors()
 {
-	character.icon.weapon1 = cGRIS_CLAIR;
-	character.icon.body1   = cBLEU;
-	character.icon.hair    = cROUGE;
-	character.icon.shield1 = cBRUN;
-	character.icon.arm1    = cVERT;
-	character.icon.leg1    = cCYAN;
+	character.icon.weapon1 = Couleur::lightGray;
+	character.icon.body1   = Couleur::blue;
+	character.icon.hair    = Couleur::red;
+	character.icon.shield1 = Couleur::brown;
+	character.icon.arm1    = Couleur::green;
+	character.icon.leg1    = Couleur::cyan;
 
-	character.icon.weapon2 = cBLANC;
-	character.icon.body2   = cBLEU_CLAIR;
-	character.icon.face    = cROUGE_CLAIR;
-	character.icon.shield2 = cJAUNE;
-	character.icon.arm2    = cVERT_CLAIR;
-	character.icon.leg2    = cCYAN_CLAIR;
+	character.icon.weapon2 = Couleur::white;
+	character.icon.body2   = Couleur::brightBlue;
+	character.icon.face    = Couleur::lightRed;
+	character.icon.shield2 = Couleur::yellow;
+	character.icon.arm2    = Couleur::brightGreen;
+	character.icon.leg2    = Couleur::brightCyan;
 }
 
 void EcranCharacterIcon::release()
 {
-	oListeTexte.reset();
+	oListeTexte->reset();
 }
 
 EcranCharacterIcon::~EcranCharacterIcon() {}

@@ -5,14 +5,14 @@
 
 using std::vector;
 
-EcranClasse::EcranClasse(): posCourante(0)
+EcranClasse::EcranClasse(Renderer &renderer): Ecran(renderer), posCourante(0), MAX_POS(0)
 {
 	oPileMessage.pushMessage( Message(OBJ_ECRAN_MENU_RACE, OBJ_PERSONNAGE_EN_CREATION, GM_OBTENIR_CLASSES_PERMISES) );
 }
 
 bool EcranClasse::init()
 {
-	if (oListeTexte.init())
+	if (oListeTexte->init())
 		return true;
 	else
 		return false;
@@ -43,11 +43,11 @@ void EcranClasse::handleEvent( TInfoTouches& infTouches )
 
 void EcranClasse::draw()
 {
-	if (!oListeTexte.isEmpty()) {
-		dessinerCadre();
+	if (!oListeTexte->isEmpty()) {
+		dessinerCadre(renderer);
 
 		//Le texte
-		oListeTexte.draw();
+		oListeTexte->draw();
 	}
 }
 
@@ -77,22 +77,22 @@ void EcranClasse::verifierMessages()
 
 void EcranClasse::updateScreen()
 {
-	oListeTexte.reset();
-	oListeTexte.addTexte("pick class", 1, 2, cMAGENTA_CLAIR);
+	oListeTexte->reset();
+	oListeTexte->addTexte("pick class", 1, 2, Couleur::brightMagenta);
 
 	for (int i=0, ligne=3; i < MAX_POS; i++, ligne++) {
 		if (posCourante == i)
-			oListeTexte.addTexte(vctClasse[i].nom, 3, ligne, cBLANC);
+			oListeTexte->addTexte(vctClasse[i].nom, 3, ligne, Couleur::white);
 		else
-			oListeTexte.addTexte(vctClasse[i].nom, 3, ligne, cVERT_CLAIR);
+			oListeTexte->addTexte(vctClasse[i].nom, 3, ligne, Couleur::brightGreen);
 	}
 
-	oListeTexte.addTexte("exit", 1, 24, cVERT_CLAIR, cBLANC);
+	oListeTexte->addTexte("exit", 1, 24, Couleur::brightGreen, Couleur::white);
 }
 
 void EcranClasse::release()
 {
-	oListeTexte.reset();
+	oListeTexte->reset();
 }
 
 EcranClasse::~EcranClasse()

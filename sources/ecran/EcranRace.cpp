@@ -5,7 +5,7 @@
 
 using std::vector;
 
-EcranRace::EcranRace(): posCourante(0)
+EcranRace::EcranRace(Renderer &renderer): Ecran(renderer), posCourante(0)
 {
 	vctRace = Donnees::getInstance().getRaces();
 	MAX_POS = vctRace.size();
@@ -13,7 +13,7 @@ EcranRace::EcranRace(): posCourante(0)
 
 bool EcranRace::init()
 {
-	if (oListeTexte.init()) {
+	if (oListeTexte->init()) {
 		updateScreen();
 		return true;
 	} else
@@ -45,34 +45,34 @@ void EcranRace::handleEvent( TInfoTouches& infTouches )
 
 void EcranRace::draw()
 {
-	if (!oListeTexte.isEmpty()) {
-		dessinerCadre();
+	if (!oListeTexte->isEmpty()) {
+		dessinerCadre(renderer);
 
 		//Le texte
-		oListeTexte.draw();
+		oListeTexte->draw();
 	}
 }
 
 void EcranRace::updateScreen()
 {
-	oListeTexte.reset();
-	oListeTexte.addTexte("pick race", 1, 2, cMAGENTA_CLAIR);
+	oListeTexte->reset();
+	oListeTexte->addTexte("pick race", 1, 2, Couleur::brightMagenta);
 
 	for (int i=0, ligne=3; i < MAX_POS; i++, ligne++) {
 		if (posCourante == i)
-			oListeTexte.addTexte(vctRace[i].nom, 3, ligne, cBLANC);
+			oListeTexte->addTexte(vctRace[i].nom, 3, ligne, Couleur::white);
 		else
-			oListeTexte.addTexte(vctRace[i].nom, 3, ligne, cVERT_CLAIR);
+			oListeTexte->addTexte(vctRace[i].nom, 3, ligne, Couleur::brightGreen);
 	}
 
-	oListeTexte.addTexte("exit", 1, 24, cVERT_CLAIR, cBLANC);
+	oListeTexte->addTexte("exit", 1, 24, Couleur::brightGreen, Couleur::white);
 }
 
 void EcranRace::verifierMessages() {}
 
 void EcranRace::release()
 {
-	oListeTexte.reset();
+	oListeTexte->reset();
 }
 
 EcranRace::~EcranRace()

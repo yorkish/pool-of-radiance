@@ -1,18 +1,17 @@
 #pragma once
 #include "../common/Global.h"
-#include "../common/Affichage.h"
+#include "../common/Renderer.h"
 
 class EcranUtil {
 	public:
 		EcranUtil();
-		void dessinerCadre(Couleur couleurFond = cNOIR);
-		void dessinerCadreEtPortrait();
+		void dessinerCadre(Renderer &renderer, Couleur couleurFond = Couleur::black);
+		void dessinerCadreEtPortrait(Renderer &renderer);
 
 		~EcranUtil();
 
 	private:
-		bool init();
+		bool init(Renderer &renderer);
 
-		Affichage&  oAffichage;
 		SDL_Texture* tuileMenu;
 };

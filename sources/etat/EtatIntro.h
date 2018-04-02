@@ -1,14 +1,14 @@
 #pragma once
-
+#include <memory>
+#include "../common/Renderer.h"
 #include "EtatJeu.h"
-#include "../common/Affichage.h"
 #include "../texte/ListeTexte.h"
 #include "../common/Timer.h"
 
 class EtatIntro : public EtatJeu
 {
 	public:
-		EtatIntro();
+		EtatIntro(Renderer &renderer);
 
 		bool init();
 		bool chargerImage();
@@ -26,8 +26,7 @@ class EtatIntro : public EtatJeu
 		enum IntroSequence { LOADING, SSI, POOL, CREDITS };
 		IntroSequence sequence;
 
-		Affichage& oAffichage;
-		ListeTexte oLoading;
+		std::unique_ptr<ListeTexte> loading;
 		Timer      oTimer;
 
 		SDL_Texture* imagesIntro;

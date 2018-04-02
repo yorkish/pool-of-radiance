@@ -8,7 +8,7 @@
 class EcranGender: public Ecran, public EcranUtil
 {
 	public:
-		EcranGender();
+		EcranGender(Renderer &renderer);
 
 		bool init();
 		void handleEvent( TInfoTouches& infTouches );
@@ -21,7 +21,6 @@ class EcranGender: public Ecran, public EcranUtil
 	private:
 		void updateScreen();
 
-		ListeTexte oListeTexte;
 		std::vector<NodeGender> vctGender;
 		int posCourante;
 

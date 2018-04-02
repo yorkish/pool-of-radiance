@@ -1,12 +1,13 @@
 #include "EtatIntro.h"
 #include "../queue/Message.h"
 
-EtatIntro::EtatIntro() : sequence(LOADING), oAffichage(Affichage::getInstance()), imagesIntro(0)
-{}
+EtatIntro::EtatIntro(Renderer &renderer) : EtatJeu(renderer), sequence(LOADING), loading(std::make_unique<ListeTexte>(renderer)), imagesIntro(0)
+{
+}
 
 bool EtatIntro::init()
 {
-	return ( oLoading.init() && chargerImage() );
+	return ( loading->init() && chargerImage() );
 }
 
 bool EtatIntro::chargerImage()
@@ -14,14 +15,14 @@ bool EtatIntro::chargerImage()
 	switch (sequence) {
 	case LOADING:
 		imagesIntro = 0;
-		oLoading.addTexte(0, 0, 24, cVERT_CLAIR);
+		loading->addTexte(0, 0, 24, Couleur::brightGreen);
 		oTimer.start();
 		break;
 
 	case SSI:
 	case POOL:
 	case CREDITS:
-		imagesIntro = oAffichage.loadImage("assets/TITLE_DAX.png", 0, 0, 255);
+		imagesIntro = renderer.loadImage("assets/TITLE_DAX.png");
 		break;
 	}
 
@@ -66,7 +67,7 @@ void EtatIntro::draw()
 
 	switch(sequence) {
 	case LOADING:
-		oLoading.draw();
+		loading->draw();
 
 		if (oTimer.get_ticks() >= LOADING_TIME) {
 			sequence = SSI;
@@ -77,17 +78,17 @@ void EtatIntro::draw()
 
 	case SSI:
 		src.x = 0; src.y = 0;
-		oAffichage.applyTexture(dst.x, dst.y, imagesIntro, src);
+		renderer.applyTexture(dst.x, dst.y, imagesIntro, src);
 		break;
 
 	case POOL:
 		src.x = 320; src.y = 0;
-		oAffichage.applyTexture(dst.x, dst.y, imagesIntro, src);
+		renderer.applyTexture(dst.x, dst.y, imagesIntro, src);
 		break;
 
 	case CREDITS:
 		src.x = 640; src.y = 0;
-		oAffichage.applyTexture(dst.x, dst.y, imagesIntro, src);
+		renderer.applyTexture(dst.x, dst.y, imagesIntro, src);
 		break;
 	}
 }
@@ -96,6 +97,7 @@ void EtatIntro::verifierMessages() {}
 
 void EtatIntro::release()
 {
+	loading->release();
 	cleanup(imagesIntro);
 }
 

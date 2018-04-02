@@ -5,7 +5,7 @@
 
 using std::vector;
 
-EcranAlignment::EcranAlignment(): posCourante(0)
+EcranAlignment::EcranAlignment(Renderer &renderer): Ecran(renderer), posCourante(0)
 {
 	vctAlignment = Donnees::getInstance().getAlignments();
 	MAX_POS = vctAlignment.size();
@@ -13,7 +13,7 @@ EcranAlignment::EcranAlignment(): posCourante(0)
 
 bool EcranAlignment::init()
 {
-	if (oListeTexte.init()) {
+	if (oListeTexte->init()) {
 		updateScreen();
 		return true;
 	} else
@@ -45,34 +45,34 @@ void EcranAlignment::handleEvent( TInfoTouches& infTouches )
 
 void EcranAlignment::draw()
 {
-	if (!oListeTexte.isEmpty()) {
-		dessinerCadre();
+	if (!oListeTexte->isEmpty()) {
+		dessinerCadre(renderer);
 
 		//Le texte
-		oListeTexte.draw();
+		oListeTexte->draw();
 	}
 }
 
 void EcranAlignment::updateScreen()
 {
 	oListeTexte.reset();
-	oListeTexte.addTexte("pick alignment", 1, 2, cMAGENTA_CLAIR);
+	oListeTexte->addTexte("pick alignment", 1, 2, Couleur::brightMagenta);
 
 	for (int i=0, ligne=3; i < MAX_POS; i++, ligne++) {
 		if (posCourante == i)
-			oListeTexte.addTexte(vctAlignment[i].nom, 3, ligne, cBLANC);
+			oListeTexte->addTexte(vctAlignment[i].nom, 3, ligne, Couleur::white);
 		else
-			oListeTexte.addTexte(vctAlignment[i].nom, 3, ligne, cVERT_CLAIR);
+			oListeTexte->addTexte(vctAlignment[i].nom, 3, ligne, Couleur::brightGreen);
 	}
 
-	oListeTexte.addTexte("exit", 1, 24, cVERT_CLAIR, cBLANC);
+	oListeTexte->addTexte("exit", 1, 24, Couleur::brightGreen, Couleur::white);
 }
 
 void EcranAlignment::verifierMessages() {}
 
 void EcranAlignment::release()
 {
-	oListeTexte.reset();
+	oListeTexte->reset();
 }
 
 EcranAlignment::~EcranAlignment()

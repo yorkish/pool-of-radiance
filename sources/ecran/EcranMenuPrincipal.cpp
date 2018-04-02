@@ -5,11 +5,11 @@
 
 using namespace std;
 
-EcranMenuPrincipal::EcranMenuPrincipal(): posMenu(MAIN_MENU)
+EcranMenuPrincipal::EcranMenuPrincipal(Renderer &renderer): Ecran(renderer), posMenu(MAIN_MENU)
 {}
 
 bool EcranMenuPrincipal::init() {
-	if (oListeTexte.init()) {
+	if (oListeTexte->init()) {
 		switchPosition();
 		return true;
 	} else
@@ -78,25 +78,25 @@ void EcranMenuPrincipal::handleEvent( TInfoTouches& infTouches )
 
 void EcranMenuPrincipal::draw()
 {
-	if (!oListeTexte.isEmpty()) {
-		dessinerCadre();
+	if (!oListeTexte->isEmpty()) {
+		dessinerCadre(renderer);
 
 		//Le texte
-		oListeTexte.draw();
+		oListeTexte->draw();
 	}
 }
 
 void EcranMenuPrincipal::switchPosition()
 {
-	oListeTexte.reset();
-	oListeTexte.addTexte("create new character"  , 2, 12, cVERT_CLAIR, cBLANC);
-	oListeTexte.addTexte("add character to party", 2, 13, cVERT_CLAIR, cBLANC);
-	oListeTexte.addTexte("load saved game"       , 2, 14, cVERT_CLAIR, cBLANC);
-	oListeTexte.addTexte("exit to os"            , 2, 15, cVERT_CLAIR, cBLANC);
+	oListeTexte->reset();
+	oListeTexte->addTexte("create new character"  , 2, 12, Couleur::brightGreen, Couleur::white);
+	oListeTexte->addTexte("add character to party", 2, 13, Couleur::brightGreen, Couleur::white);
+	oListeTexte->addTexte("load saved game"       , 2, 14, Couleur::brightGreen, Couleur::white);
+	oListeTexte->addTexte("exit to os"            , 2, 15, Couleur::brightGreen, Couleur::white);
 
 	switch (posMenu) {
 	case MAIN_MENU:
-		oListeTexte.addTexte("choose a function", 0, 24, cMAGENTA_CLAIR );
+		oListeTexte->addTexte("choose a function", 0, 24, Couleur::brightMagenta );
 		break;
 
 	case LOAD:
@@ -104,9 +104,9 @@ void EcranMenuPrincipal::switchPosition()
 		break;
 
 	case EXIT:
-		oListeTexte.addTexte("quit to os", 0 , 24, cJAUNE);
-		oListeTexte.addTexte("yes"       , 11, 24, cVERT_CLAIR, cBLANC);
-		oListeTexte.addTexte("no"        , 15, 24, cVERT_CLAIR, cBLANC);
+		oListeTexte->addTexte("quit to os", 0 , 24, Couleur::yellow);
+		oListeTexte->addTexte("yes"       , 11, 24, Couleur::brightGreen, Couleur::white);
+		oListeTexte->addTexte("no"        , 15, 24, Couleur::brightGreen, Couleur::white);
 		break;
 
 	default:
@@ -119,11 +119,11 @@ void EcranMenuPrincipal::ajouterLettresSauvegardes()
 	int x = 17;
 
 	if (lstSauvegarde.size() != 0) {
-		oListeTexte.addTexte("load which game: ",  0, 24, cMAGENTA_CLAIR );
+		oListeTexte->addTexte("load which game: ",  0, 24, Couleur::brightMagenta );
 
 		vector<char>::iterator iter = lstSauvegarde.begin();
 		while (iter != lstSauvegarde.end()) {
-			oListeTexte.addTexte( string(1, *iter), x, 24, cBLANC   );
+			oListeTexte->addTexte( string(1, *iter), x, 24, Couleur::white   );
 			x += 2;
 			iter++;
 		}
@@ -154,7 +154,7 @@ void EcranMenuPrincipal::verifierMessages()
 
 void EcranMenuPrincipal::release()
 {
-	oListeTexte.reset();
+	oListeTexte->reset();
 }
 
 EcranMenuPrincipal::~EcranMenuPrincipal() {}

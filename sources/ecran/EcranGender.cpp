@@ -5,7 +5,7 @@
 
 using std::vector;
 
-EcranGender::EcranGender(): posCourante(0)
+EcranGender::EcranGender(Renderer &renderer): Ecran(renderer), posCourante(0)
 {
 	vctGender = Donnees::getInstance().getGenders();
 	MAX_POS = vctGender.size();
@@ -13,7 +13,7 @@ EcranGender::EcranGender(): posCourante(0)
 
 bool EcranGender::init()
 {
-	if (oListeTexte.init()) {
+	if (oListeTexte->init()) {
 		updateScreen();
 		return true;
 	} else
@@ -45,34 +45,34 @@ void EcranGender::handleEvent( TInfoTouches& infTouches )
 
 void EcranGender::draw()
 {
-	if (!oListeTexte.isEmpty()) {
-		dessinerCadre();
+	if (!oListeTexte->isEmpty()) {
+		dessinerCadre(renderer);
 
 		//Le texte
-		oListeTexte.draw();
+		oListeTexte->draw();
 	}
 }
 
 void EcranGender::updateScreen()
 {
-	oListeTexte.reset();
-	oListeTexte.addTexte("pick gender", 1, 2, cMAGENTA_CLAIR);
+	oListeTexte->reset();
+	oListeTexte->addTexte("pick gender", 1, 2, Couleur::brightMagenta);
 
 	for (int i=0, ligne=3; i < MAX_POS; i++, ligne++) {
 		if (posCourante == i)
-			oListeTexte.addTexte(vctGender[i].nom, 3, ligne, cBLANC);
+			oListeTexte->addTexte(vctGender[i].nom, 3, ligne, Couleur::white);
 		else
-			oListeTexte.addTexte(vctGender[i].nom, 3, ligne, cVERT_CLAIR);
+			oListeTexte->addTexte(vctGender[i].nom, 3, ligne, Couleur::brightGreen);
 	}
 
-	oListeTexte.addTexte("exit", 1, 24, cVERT_CLAIR, cBLANC);
+	oListeTexte->addTexte("exit", 1, 24, Couleur::brightGreen, Couleur::white);
 }
 
 void EcranGender::verifierMessages() {}
 
 void EcranGender::release()
 {
-	oListeTexte.reset();
+	oListeTexte->reset();
 }
 
 EcranGender::~EcranGender()

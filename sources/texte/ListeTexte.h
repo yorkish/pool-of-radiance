@@ -4,7 +4,7 @@
 
 class ListeTexte {
 	public:
-		ListeTexte();
+		ListeTexte(Renderer &renderer);
 
 		bool init();
         void handleEvent( TInfoTouches& infTouches );
@@ -13,13 +13,13 @@ class ListeTexte {
 
 		void addTexte(int id, int colonne, int ligne,
 		              Couleur couleurTexte,
-		              Couleur couleurPremiereLettre = cMEME_COULEUR,
-		              Couleur couleurDerniereLettre = cMEME_COULEUR);
+		              Couleur couleurPremiereLettre = Couleur::sameColor,
+		              Couleur couleurDerniereLettre = Couleur::sameColor);
 
 		void addTexte(std::string texte, int colonne, int ligne,
 		              Couleur couleurTexte,
-		              Couleur couleurPremiereLettre = cMEME_COULEUR,
-		              Couleur couleurDerniereLettre = cMEME_COULEUR);
+		              Couleur couleurPremiereLettre = Couleur::sameColor,
+		              Couleur couleurDerniereLettre = Couleur::sameColor);
 
 		bool isEmpty();
 		void reset();
@@ -31,7 +31,7 @@ class ListeTexte {
 
 		std::vector <Texte*> lstTexte;
 
-        Affichage&   oAffichage;
+        Renderer&   renderer;
 		SDL_Texture* imageFont;
 };
 

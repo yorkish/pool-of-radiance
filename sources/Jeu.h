@@ -7,32 +7,34 @@
 #include "etat/EtatJeu.h"
 #include "character/Character.h"
 #include "SaveGameManager.h"
+#include "common/Renderer.h"
 
-class Jeu
-{
-	public:
-		Jeu();
+class Jeu {
+public:
+	Jeu(Renderer &renderer);
 
-		bool init();
-		void handleEvent( TInfoTouches& infTouches );
-		void move();
-		void verifierMessages();
-		void draw();
+	bool init();
+	void handleEvent(TInfoTouches& infTouches);
+	void move();
+	void verifierMessages();
+	void draw();
 
-		bool exitRequested();
+	bool exitRequested();
 
-		~Jeu();
+	~Jeu();
 
-	private:
-		EtatJeu* getEtatCourant();
-		void pushEtat( EtatJeu* etat );
-		void popEtat();
-		void popPushEtat( EtatJeu* etat );
+private:
+	EtatJeu* getEtatCourant();
+	void pushEtat(EtatJeu* etat);
+	void popEtat();
+	void popPushEtat(EtatJeu* etat);
 
-		GameState typeEtat;
-		PileMessage& oPileMessage;
-		SaveGameManager saveGameManager;
+	Renderer &renderer;
 
-		std::stack< EtatJeu* > Etats;
-		std::vector<Character*> lstCharacter;
+	GameState typeEtat;
+	PileMessage& oPileMessage;
+	SaveGameManager saveGameManager;
+
+	std::stack<EtatJeu*> Etats;
+	std::vector<Character*> lstCharacter;
 };

@@ -6,7 +6,7 @@
 
 class EcranCharacter: public Ecran, public EcranUtil {
 	public:
-		EcranCharacter();
+		EcranCharacter(Renderer &renderer);
 
 		bool init();
 		void handleEvent( TInfoTouches& infTouches );
@@ -30,10 +30,8 @@ class EcranCharacter: public Ecran, public EcranUtil {
 		const int TETES_PAR_RANGEES;
 		const int CORPS_PAR_RANGEES;
 
-		ListeTexte oListeTexte;
 		CharacterInfo character;
 
-		Affichage&   oAffichage;
 		SDL_Texture* spritesTetes;
 		SDL_Texture* spritesCorps;
 

@@ -7,27 +7,26 @@
 
 using std::cout;
 
-Jeu::Jeu(): typeEtat(GAME_STATE_UNDEFINED), oPileMessage(PileMessage::getInstance())
-{}
+Jeu::Jeu(Renderer &renderer) :
+		renderer(renderer), typeEtat(GAME_STATE_UNDEFINED), oPileMessage(PileMessage::getInstance()) {
+}
 
-bool Jeu::init()
-{
-	pushEtat( new EtatIntro() );
-	_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
+bool Jeu::init() {
+	pushEtat(new EtatIntro(renderer));
+	_gblMemory.push_back(InfoAlloc('N', __FILE__, __LINE__));
 	typeEtat = INTRO;
 
 	return true;
 }
 
-void Jeu::handleEvent( TInfoTouches& infoTouches )
-{
+void Jeu::handleEvent(TInfoTouches& infoTouches) {
 	getEtatCourant()->handleEvent(infoTouches);
 }
 
-void Jeu::move() {}
+void Jeu::move() {
+}
 
-void Jeu::draw()
-{
+void Jeu::draw() {
 	getEtatCourant()->draw();
 }
 
@@ -37,19 +36,19 @@ void Jeu::verifierMessages() {
 	if (unMessage.getDestinataire() == OBJ_JEU) {
 		switch (unMessage.getTypeMessage()) {
 		case GM_INTRO_FINI:
-			popPushEtat( new EtatMenu() );
-			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			popPushEtat(new EtatMenu(renderer));
+			_gblMemory.push_back(InfoAlloc('N', __FILE__, __LINE__));
 			typeEtat = MENU;
 			break;
 
 		case GM_NOUVEAU_PERSONNAGE:
-			lstCharacter.push_back( new Character() );
-			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
+			lstCharacter.push_back(new Character());
+			_gblMemory.push_back(InfoAlloc('N', __FILE__, __LINE__));
 			break;
 
 		case GM_ANNULER_PERSONNAGE:
 			delete lstCharacter.back();
-			_gblMemory.push_back(InfoAlloc('D',__FILE__, __LINE__));
+			_gblMemory.push_back(InfoAlloc('D', __FILE__, __LINE__));
 			lstCharacter.pop_back();
 			break;
 
@@ -57,7 +56,8 @@ void Jeu::verifierMessages() {
 			typeEtat = EXIT_REQUESTED;
 			break;
 
-		default: break;
+		default:
+			break;
 		}
 		oPileMessage.popMessage();
 	}
@@ -69,48 +69,42 @@ void Jeu::verifierMessages() {
 	saveGameManager.verifierMessages();
 }
 
-bool Jeu::exitRequested()
-{
+bool Jeu::exitRequested() {
 	return (typeEtat == EXIT_REQUESTED);
 }
 
-EtatJeu* Jeu::getEtatCourant()
-{
+EtatJeu* Jeu::getEtatCourant() {
 	if (!Etats.empty())
 		return Etats.top();
 	else
 		return 0;
 }
 
-void Jeu::pushEtat( EtatJeu* etat )
-{
-    // set current state
-	Etats.push( etat );
+void Jeu::pushEtat(EtatJeu* etat) {
+	// set current state
+	Etats.push(etat);
 	Etats.top()->init();
 }
 
-void Jeu::popEtat()
-{
-    if ( Etats.empty() )
-    	return;
+void Jeu::popEtat() {
+	if (Etats.empty())
+		return;
 
-    Etats.top()->release();
+	Etats.top()->release();
 
-    delete Etats.top();
-    _gblMemory.push_back(InfoAlloc('D',__FILE__, __LINE__));
+	delete Etats.top();
+	_gblMemory.push_back(InfoAlloc('D', __FILE__, __LINE__));
 
-    Etats.pop();
+	Etats.pop();
 }
 
-void Jeu::popPushEtat( EtatJeu* etat )
-{
-    // set current state
+void Jeu::popPushEtat(EtatJeu* etat) {
+	// set current state
 	popEtat();
 	pushEtat(etat);
 }
 
-Jeu::~Jeu()
-{
-	while(getEtatCourant() != 0)
+Jeu::~Jeu() {
+	while (getEtatCourant() != 0)
 		popEtat();
 }

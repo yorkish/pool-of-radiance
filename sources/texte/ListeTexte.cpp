@@ -2,12 +2,12 @@
 
 using namespace std;
 
-ListeTexte::ListeTexte(): oAffichage(Affichage::getInstance()), imageFont(0)
+ListeTexte::ListeTexte(Renderer &renderer): renderer(renderer), imageFont(0)
 {}
 
 bool ListeTexte::init()
 {
-	imageFont = oAffichage.loadImage("assets/font.png", 0, 0, 0);
+	imageFont = renderer.loadImage("assets/font.png", 0, 0, 0);
 
 	return (imageFont != 0);
 }
@@ -24,7 +24,7 @@ void ListeTexte::draw()
 
 void ListeTexte::addTexte(string texte, int colonne, int ligne, Couleur couleurTexte, Couleur couleurPremiereLettre, Couleur couleurDerniereLettre)
 {
-	Texte* unTexte = new Texte(imageFont);
+	Texte* unTexte = new Texte(renderer, imageFont);
 	//_gblMemory.push_back(InfoAlloc('A',__FILE__, __LINE__));
 
 	unTexte->setPosition(colonne*8, ligne*8);

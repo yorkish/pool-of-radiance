@@ -6,7 +6,7 @@
 class EtatMenu: public EtatJeu
 {
 	public:
-		EtatMenu();
+		EtatMenu(Renderer &renderer);
 
 		bool init();
 		void handleEvent( TInfoTouches& infTouches );

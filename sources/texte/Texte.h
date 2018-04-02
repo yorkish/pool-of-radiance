@@ -1,13 +1,13 @@
 #pragma once
 
 #include <list>
-#include "../common/Affichage.h"
+#include "../common/Renderer.h"
 
 class Texte 
 {
     public :
 
-        Texte(SDL_Texture* imageFont);
+        Texte(Renderer &renderer, SDL_Texture* imageFont);
 		void draw();
 		static void release();
 
@@ -21,7 +21,7 @@ class Texte
 
         void drawLettre(int pos, char lettre, int x, int y);
 
-        Affichage&  oAffichage;
+        Renderer& renderer;
 
 		int     idTexte;
 	    char*   tabTexte;

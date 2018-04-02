@@ -8,11 +8,11 @@
 #include "../ecran/EcranCharacterIcon.h"
 #include "../queue/Message.h"
 
-EtatMenu::EtatMenu() {}
+EtatMenu::EtatMenu(Renderer &renderer) : EtatJeu(renderer) {}
 
 bool EtatMenu::init()
 {
-	popPushMenu( new EcranMenuPrincipal() );
+	popPushMenu( new EcranMenuPrincipal(renderer) );
 	_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 	return true;
 }
@@ -39,37 +39,37 @@ void EtatMenu::verifierMessages()
 		switch (typeMessage) {
 
 		case GM_MENU_RACE:
-			popPushMenu( new EcranRace() );
+			popPushMenu( new EcranRace(renderer) );
 			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_GENDER:
-			popPushMenu( new EcranGender() );
+			popPushMenu( new EcranGender(renderer) );
 			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_CLASSE:
-			popPushMenu( new EcranClasse() );
+			popPushMenu( new EcranClasse(renderer) );
 			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_ALIGNMENT:
-			popPushMenu( new EcranAlignment() );
+			popPushMenu( new EcranAlignment(renderer) );
 			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_CHARACTER:
-			popPushMenu( new EcranCharacter() );
+			popPushMenu( new EcranCharacter(renderer) );
 			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_MENU_CHARACTER_ICON:
-			popPushMenu( new EcranCharacterIcon() );
+			popPushMenu( new EcranCharacterIcon(renderer) );
 			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 
 		case GM_REVENIR_MENU_PRINCIPAL:
-			popPushMenu( new EcranMenuPrincipal() );
+			popPushMenu( new EcranMenuPrincipal(renderer) );
 			_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 			break;
 

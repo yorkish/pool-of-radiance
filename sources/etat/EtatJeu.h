@@ -1,11 +1,13 @@
 #pragma once
+
 #include "../common/Global.h"
 #include "../queue/PileMessage.h"
+#include "../common/Renderer.h"
 
 class EtatJeu
 {
     public :
-		EtatJeu(): oPileMessage(PileMessage::getInstance()) {}
+		EtatJeu(Renderer &renderer): renderer(renderer), oPileMessage(PileMessage::getInstance()) {}
 
         virtual bool init() = 0;
 		virtual void handleEvent( TInfoTouches& infTouches ) = 0;
@@ -16,5 +18,6 @@ class EtatJeu
         virtual ~EtatJeu() {}
 
     protected:
-        PileMessage& oPileMessage;
+        Renderer &renderer;
+        PileMessage &oPileMessage;
 };

@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include "common/Global.h"
-#include "MainLoop.h"
+#include "Main_loop.h"
 
 using std::cout;
 using std::endl;
@@ -16,8 +16,10 @@ vector<InfoAlloc> _gblMemory;
 
 void showMemorySequence()
 {
-	int nbNew = 0, nbDel = 0;
-	int nbNewText = 0, nbDelText = 0;
+	int nbNew = 0;
+	int nbDel = 0;
+	int nbNewText = 0;
+	int nbDelText = 0;
 
 	if (_gblMemory.size() == 0) return;
 
@@ -60,7 +62,7 @@ void showMemorySequence()
 int main(int argc, char** argv)
 {
 	uint8_t returnCode = false;
-	MainLoop oMainLoop;
+	Main_loop mainLoop;
 
 	// Hack needed on a Windows system
 	setvbuf(stdout, NULL, _IONBF, 0);
@@ -69,7 +71,7 @@ int main(int argc, char** argv)
 	// Init the seed for random numbers
 	srand((unsigned) time(NULL));
 
-	returnCode = oMainLoop.start();
+	returnCode = mainLoop.start();
 
 	showMemorySequence();
 

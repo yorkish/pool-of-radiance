@@ -8,7 +8,7 @@
 class EcranClasse: public Ecran, public EcranUtil
 {
 	public:
-		EcranClasse();
+		EcranClasse(Renderer &renderer);
 
 		bool init();
 		void handleEvent( TInfoTouches& infTouches );
@@ -21,7 +21,6 @@ class EcranClasse: public Ecran, public EcranUtil
 	private:
 		void updateScreen();
 
-		ListeTexte oListeTexte;
 		std::vector<NodeClasse> vctClasse;
 		int posCourante;
 

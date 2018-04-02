@@ -1,30 +1,31 @@
-#include "MainLoop.h"
+#include "Main_loop.h"
+
+#include <iostream>
+
 #include "common/Global.h"
-#include "common/Affichage.h"
 #include "clavier/Evenement.h"
 #include "Jeu.h"
 #include "common/Timer.h"
 #include "common/Donnees.h"
-
-#include <iostream>
+#include "common/Renderer.h"
 
 using std::cout;
 using std::endl;
 
-MainLoop::MainLoop()
-{
-}
+Main_loop::Main_loop() {}
 
-uint8_t MainLoop::start()
+uint8_t Main_loop::start()
 {
-	Affichage& affichage = Affichage::getInstance();
-	Jeu oJeu;
+	raiicap<Renderer> rendererCap;
+	Renderer renderer(rendererCap);
+
+	Jeu oJeu(renderer);
 	Timer fps;
 	TInfoTouches infoTouches;
 	uint8_t returnCode = EXIT_SUCCESS;
 
 	cout << "renderer init attempt..." << endl;
-	if (affichage.initRenderer())
+	if (renderer.initRenderer())
 	{
 		cout << "game init attempt..." << endl;
 		if (oJeu.init())
@@ -39,7 +40,7 @@ uint8_t MainLoop::start()
 				{
 					if (oEvenement.estToggleFullScreen())
 					{
-						affichage.toggleFullScreen();
+						renderer.toggleFullScreen();
 					}
 					else
 						if (oEvenement.estQuitter())
@@ -55,13 +56,13 @@ uint8_t MainLoop::start()
 
 				oJeu.verifierMessages();
 
-				affichage.preRender();
+				renderer.preRender();
 
 				oJeu.draw();
 
-				affichage.postRender();
+				renderer.postRender();
 
-				affichage.introduireDelai(fps.get_ticks());
+				renderer.sleep(fps.get_ticks());
 
 				if (oJeu.exitRequested())
 				{
@@ -86,6 +87,4 @@ uint8_t MainLoop::start()
 	return returnCode;
 }
 
-MainLoop::~MainLoop()
-{
-}
+Main_loop::~Main_loop() {}
