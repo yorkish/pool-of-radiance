@@ -9,32 +9,32 @@
 #include "SaveGameManager.h"
 #include "common/Renderer.h"
 
-class Jeu {
+class Game {
 public:
-	Jeu(Renderer &renderer);
+	Game(Renderer &renderer);
 
 	bool init();
-	void handleEvent(TInfoTouches& infTouches);
+	void handleEvent(TInfoTouches& keysInfo);
 	void move();
-	void verifierMessages();
+	void checkMessages();
 	void draw();
 
 	bool exitRequested();
 
-	~Jeu();
+	~Game();
 
 private:
-	EtatJeu* getEtatCourant();
-	void pushEtat(EtatJeu* etat);
-	void popEtat();
-	void popPushEtat(EtatJeu* etat);
+	EtatJeu* getCurrentState();
+	void pushState(EtatJeu* state);
+	void popState();
+	void popPushState(EtatJeu* state);
 
 	Renderer &renderer;
 
-	GameState typeEtat;
-	PileMessage& oPileMessage;
+	GameState gameState;
+	PileMessage& messageStack;
 	SaveGameManager saveGameManager;
 
-	std::stack<EtatJeu*> Etats;
-	std::vector<Character*> lstCharacter;
+	std::stack<EtatJeu*> stateStack;
+	std::vector<Character*> lstCharacters;
 };

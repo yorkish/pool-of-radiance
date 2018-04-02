@@ -4,10 +4,10 @@
 
 #include "common/Global.h"
 #include "clavier/Evenement.h"
-#include "Jeu.h"
 #include "common/Timer.h"
 #include "common/Donnees.h"
 #include "common/Renderer.h"
+#include "Game.h"
 
 using std::cout;
 using std::endl;
@@ -19,16 +19,16 @@ uint8_t Main_loop::start()
 	raiicap<Renderer> rendererCap;
 	Renderer renderer(rendererCap);
 
-	Jeu oJeu(renderer);
+	Game game(renderer);
 	Timer fps;
-	TInfoTouches infoTouches;
+	TInfoTouches keysInfo;
 	uint8_t returnCode = EXIT_SUCCESS;
 
 	cout << "renderer init attempt..." << endl;
 	if (renderer.initRenderer())
 	{
 		cout << "game init attempt..." << endl;
-		if (oJeu.init())
+		if (game.init())
 		{
 			cout << "main loop entered..." << endl;
 
@@ -48,23 +48,23 @@ uint8_t Main_loop::start()
 							break;
 						}
 
-					infoTouches = oEvenement.lireClavier();
+					keysInfo = oEvenement.lireClavier();
 
-					oJeu.handleEvent(infoTouches);
-					oJeu.move();
+					game.handleEvent(keysInfo);
+					game.move();
 				}
 
-				oJeu.verifierMessages();
+				game.checkMessages();
 
 				renderer.preRender();
 
-				oJeu.draw();
+				game.draw();
 
 				renderer.postRender();
 
 				renderer.sleep(fps.get_ticks());
 
-				if (oJeu.exitRequested())
+				if (game.exitRequested())
 				{
 					break;
 				}
