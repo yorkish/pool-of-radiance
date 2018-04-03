@@ -9,12 +9,12 @@ class EtatJeu
     public :
 		EtatJeu(Renderer &renderer): renderer(renderer), oPileMessage(PileMessage::getInstance()) {}
 
-        virtual bool init() = 0;
-		virtual void handleEvent( TInfoTouches& infTouches ) = 0;
-        virtual void draw() = 0;
-        virtual void verifierMessages() = 0;
-        virtual void release() = 0;
-
+        virtual bool onEnter() = 0;
+		virtual void update(TInfoTouches& keysInfo) = 0;
+        virtual void render() = 0;
+        virtual void checkMessages() = 0;
+        virtual bool onExit() = 0;
+        virtual std::string getStateID() const = 0;
         virtual ~EtatJeu() {}
 
     protected:

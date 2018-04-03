@@ -5,7 +5,7 @@ EtatIntro::EtatIntro(Renderer &renderer) : EtatJeu(renderer), sequence(LOADING),
 {
 }
 
-bool EtatIntro::init()
+bool EtatIntro::onEnter()
 {
 	return ( loading->init() && chargerImage() );
 }
@@ -32,7 +32,7 @@ bool EtatIntro::chargerImage()
 		return false;
 }
 
-void EtatIntro::handleEvent( TInfoTouches& infTouches )
+void EtatIntro::update( TInfoTouches& infTouches )
 {
 	if (infTouches.bEnter){
 		switch (sequence) {
@@ -56,7 +56,7 @@ void EtatIntro::handleEvent( TInfoTouches& infTouches )
 	}
 }
 
-void EtatIntro::draw()
+void EtatIntro::render()
 {
 	SDL_Rect src;
 	SDL_Rect dst;
@@ -93,12 +93,14 @@ void EtatIntro::draw()
 	}
 }
 
-void EtatIntro::verifierMessages() {}
+void EtatIntro::checkMessages() {}
 
-void EtatIntro::release()
+bool EtatIntro::onExit()
 {
 	loading->release();
 	cleanup(imagesIntro);
+
+	return true;
 }
 
 EtatIntro::~EtatIntro()

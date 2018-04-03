@@ -10,24 +10,24 @@
 
 EtatMenu::EtatMenu(Renderer &renderer) : EtatJeu(renderer) {}
 
-bool EtatMenu::init()
+bool EtatMenu::onEnter()
 {
 	popPushMenu( new EcranMenuPrincipal(renderer) );
 	_gblMemory.push_back(InfoAlloc('N',__FILE__, __LINE__));
 	return true;
 }
 
-void EtatMenu::handleEvent( TInfoTouches& infoTouches )
+void EtatMenu::update( TInfoTouches& keysInfo )
 {
-	getMenuCourant()->handleEvent(infoTouches);
+	getMenuCourant()->handleEvent(keysInfo);
 }
 
-void EtatMenu::draw()
+void EtatMenu::render()
 {
 	getMenuCourant()->draw();
 }
 
-void EtatMenu::verifierMessages()
+void EtatMenu::checkMessages()
 {
 	Message unMessage = oPileMessage.getMessageCourant();
 	TypeMessage typeMessage;
@@ -80,10 +80,12 @@ void EtatMenu::verifierMessages()
 	getMenuCourant()->verifierMessages();
 }
 
-void EtatMenu::release()
+bool EtatMenu::onExit()
 {
 	while ( getMenuCourant() != 0)
 		popMenu();
+
+	return true;
 }
 
 Ecran* EtatMenu::getMenuCourant()

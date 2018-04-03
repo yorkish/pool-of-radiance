@@ -10,14 +10,18 @@ class EtatIntro : public EtatJeu
 	public:
 		EtatIntro(Renderer &renderer);
 
-		bool init();
+		bool onEnter();
 		bool chargerImage();
-		void handleEvent( TInfoTouches& infTouches );
-        void draw();
-        void verifierMessages();
-        void release();
+		void update( TInfoTouches& keysInfo );
+        void render();
+        void checkMessages();
+        bool onExit();
 
         bool finished();
+
+    	virtual std::string getStateID() const {
+    		return "INTRO_STATE";
+    	}
 
 		virtual ~EtatIntro();
 

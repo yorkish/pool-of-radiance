@@ -8,6 +8,7 @@
 #include "character/Character.h"
 #include "SaveGameManager.h"
 #include "common/Renderer.h"
+#include "etat/GameStateMachine.h"
 
 class Game {
 public:
@@ -24,17 +25,12 @@ public:
 	~Game();
 
 private:
-	EtatJeu* getCurrentState();
-	void pushState(EtatJeu* state);
-	void popState();
-	void popPushState(EtatJeu* state);
-
 	Renderer &renderer;
 
 	GameState gameState;
 	PileMessage& messageStack;
 	SaveGameManager saveGameManager;
 
-	std::stack<EtatJeu*> stateStack;
+	GameStateMachine stateStack;
 	std::vector<Character*> lstCharacters;
 };

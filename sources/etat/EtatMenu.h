@@ -8,11 +8,15 @@ class EtatMenu: public EtatJeu
 	public:
 		EtatMenu(Renderer &renderer);
 
-		bool init();
-		void handleEvent( TInfoTouches& infTouches );
-        void draw();
-        void verifierMessages();
-        void release();
+		bool onEnter();
+		void update( TInfoTouches& keysInfo );
+        void render();
+        void checkMessages();
+        bool onExit();
+
+    	virtual std::string getStateID() const {
+    		return "MENU_STATE";
+    	}
 
 		~EtatMenu();
 

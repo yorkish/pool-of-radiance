@@ -12,7 +12,7 @@ Game::Game(Renderer &renderer) :
 }
 
 bool Game::init() {
-	pushState(new EtatIntro(renderer));
+	stateStack.pushState(new EtatIntro(renderer));
 	_gblMemory.push_back(InfoAlloc('N', __FILE__, __LINE__));
 	gameState = INTRO;
 
@@ -20,14 +20,14 @@ bool Game::init() {
 }
 
 void Game::handleEvent(TInfoTouches& keysInfo) {
-	getCurrentState()->handleEvent(keysInfo);
+	stateStack.update(keysInfo);
 }
 
 void Game::move() {
 }
 
 void Game::draw() {
-	getCurrentState()->draw();
+	stateStack.render();
 }
 
 void Game::checkMessages() {
@@ -36,7 +36,7 @@ void Game::checkMessages() {
 	if (unMessage.getDestinataire() == OBJ_JEU) {
 		switch (unMessage.getTypeMessage()) {
 		case GM_INTRO_FINI:
-			popPushState(new EtatMenu(renderer));
+			stateStack.changeState(new EtatMenu(renderer));
 			_gblMemory.push_back(InfoAlloc('N', __FILE__, __LINE__));
 			gameState = MENU;
 			break;
@@ -65,7 +65,7 @@ void Game::checkMessages() {
 	if (lstCharacters.size() != 0)
 		lstCharacters.back()->verifierMessages();
 
-	getCurrentState()->verifierMessages();
+	stateStack.checkMessages();
 	saveGameManager.verifierMessages();
 }
 
@@ -73,38 +73,6 @@ bool Game::exitRequested() {
 	return (gameState == EXIT_REQUESTED);
 }
 
-EtatJeu* Game::getCurrentState() {
-	if (!stateStack.empty())
-		return stateStack.top();
-	else
-		return 0;
-}
-
-void Game::pushState(EtatJeu* state) {
-	// set current state
-	stateStack.push(state);
-	stateStack.top()->init();
-}
-
-void Game::popState() {
-	if (stateStack.empty())
-		return;
-
-	stateStack.top()->release();
-
-	delete stateStack.top();
-	_gblMemory.push_back(InfoAlloc('D', __FILE__, __LINE__));
-
-	stateStack.pop();
-}
-
-void Game::popPushState(EtatJeu* state) {
-	// set current state
-	popState();
-	pushState(state);
-}
-
 Game::~Game() {
-	while (getCurrentState() != 0)
-		popState();
+	stateStack.clean();
 }
