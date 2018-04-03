@@ -58,19 +58,11 @@ enum Status_e { OKAY, UNCONSCIOUS, DYING, DEAD, STONED, FLED, GONE };
 
 enum Size_e { SIZE_SMALL, SIZE_LARGE };
 
-union RgbaPixel {
-	Uint32 pixelColor;
-	Uint8 r;
-	Uint8 g;
-	Uint8 b;
-	Uint8 a;
-};
-
 enum class Couleur : Uint32 {black = 0x000000FF,    blue = 0x0000AAFF,          green = 0x00AA00FF,       cyan = 0x00AAAAFF,
 							 red = 0xAA0000FF,      magenta = 0xAA00AAFF,       brown = 0xAA5500FF,       lightGray = 0xAAAAAAFF,
 							 darkGray = 0x555555FF, brightBlue = 0x5555FFFF,    brightGreen = 0x55FF55FF, brightCyan = 0x55FFFFFF,
 							 lightRed = 0xFF5555FF, brightMagenta = 0xFF55FFFF, yellow = 0xFFFF55FF,      white = 0xFFFFFFFF,
-							 sameColor = 0xFFFFFFFF};
+							 sameColor = 0x0F0F0F0F /* this color will never be rendered */};
 
 //// Overload the Couleur++ operator
 //inline Couleur& operator++(Couleur& eDOW, int)

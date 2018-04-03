@@ -147,10 +147,14 @@ void Renderer::postRender() {
 }
 
 SDL_Color Renderer::mapColor(Couleur color) {
-	RgbaPixel pixel;
 
-	pixel.pixelColor = static_cast<Uint32>(color);
-	return SDL_Color { pixel.r, pixel.g, pixel.b, pixel.a };
+	Uint32 pixelColor = static_cast<Uint32>(color);
+	Uint8 red   = (pixelColor & 0xFF000000) >> 24;
+	Uint8 green = (pixelColor & 0x00FF0000) >> 16;
+	Uint8 blue  = (pixelColor & 0x0000FF00) >> 8;
+	Uint8 alpha = (pixelColor & 0x000000FF);
+
+	return SDL_Color { red, green, blue, alpha };
 }
 
 Renderer::~Renderer() {
